@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rental Advertisement Board</title>
+<style>
+    html {
+    position: relative;
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    padding-bottom: 60px; /* Height of the footer */
+    font-family: Arial, sans-serif;
+  }
+  footer {
+    background-color: #004466;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 20px; /* Height of the footer */
+  }
+
+  .navbar {
+    background-color: #004466;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px; /* Added padding to the navbar */
+  }
+  .navbar a.button {
+    color: white;
+    padding: 8px 12px;
+    margin: 4px 2px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+  }
+  .navbar a.button:hover {
+    background-color: #005577;
+  }
+  .user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #ddd;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  .search-bar-container {
+    padding: 10px;
+  }
+  .search-bar {
+    padding: 5px;
+    width: 100%; /* Adjusted width to 100% */
+    box-sizing: border-box;
+  }
+  .ad-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  .ad-card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    margin: 8px;
+    padding: 20px;
+    width: 70%; /* Adjusted for a larger width */
+    text-align: center;
+    border-radius: 10px;
+  }
+  .ad-card img {
+    width: 100%;
+    border-radius: 10px;
+  }
+  footer {
+    background-color: #004466;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+  }
+</style>
+</head>
+<body>
+
+<div class="content">    
+    <div class="navbar">
+      <div>
+        <a class="button" href="#home">Home</a>
+        <a class="button" href="#browse">Browse Ads</a>
+        <a class="button" href="#postad">Post Ad</a>
+      </div>
+      <div>
+        <span class="user-avatar"></span>
+        <a class="button" href="#login">Login/Register</a>
+      </div>
+    </div>
+
+    <div class="search-bar-container">
+      <input type="text" class="search-bar" placeholder="Search ads...">
+    </div>
+
+    <div class="ad-container">
+      <!-- Repeat this block for each ad -->
+      <div class="ad-card">
+        <img src="placeholder-image.jpg" alt="Ad Image">
+        <h3>Property Address</h3>
+        <p>Short description of the property...</p>
+        <button>View Details</button>
+      </div>
+      <div class="ad-card">
+        <img src="placeholder-image.jpg" alt="Ad Image">
+        <h3>Property Address</h3>
+        <p>Short description of the property...</p>
+        <button>View Details</button>
+      </div>
+      <div class="ad-card">
+        <img src="placeholder-image.jpg" alt="Ad Image">
+        <h3>Property Address</h3>
+        <p>Short description of the property...</p>
+        <button>View Details</button>
+      </div>
+      <!-- Repeat the ad-card div for more ads -->
+    </div>
+</div>
+
+<footer>
+  Contact us at: <a href="mailto:contact@example.com">contact@example.com</a> | <a href="#terms">Terms of Service</a> | <a href="#privacy">Privacy Policy</a>
+</footer>
+
+
+</body>
+</html>

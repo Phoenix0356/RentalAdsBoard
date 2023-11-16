@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Advertisement Board</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .navbar { background-color: #004466; overflow: hidden; }
+        .navbar a { float: left; display: block; color: white; text-align: center; padding: 14px 20px; text-decoration: none; transition: background-color 0.3s; border: none; cursor: pointer; }
+        .navbar a:hover { background-color: #ddd; color: black; }
+        .button { background-color: #006699; color: white; border: none; cursor: pointer; padding: 10px 15px; margin: 10px 5px; transition: background-color 0.3s; }
+        .button:hover { background-color: #005577; }
+        .search-bar { margin: 10px; padding: 5px; }
+        .ad-container { display: flex; flex-wrap: wrap; justify-content: space-around; padding: 10px; }
+        .ad-card { box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); margin: 8px; padding: 16px; width: 200px; text-align: center; }
+        .ad-card img { width: 100%; }
+        footer { background-color: #004466; color: white; text-align: center; padding: 10px; position: fixed; bottom: 0; width: 100%; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a class="button" href=" ">Home</a >
+    <a class="button" href="#browse">Browse Ads</a >
+    <a class="button" href="#login">Login/Register</a >
+    <a class="button" href="#postad">Post Ad</a >
+</div>
+
+<input type="text" class="search-bar" placeholder="Search ads...">
+
+<div class="ad-container">
+    <!-- Repeat this block for each ad -->
+    <div class="ad-card">
+        < img src="placeholder-image.jpg" alt="Ad Image">
+        <h3>Property Address</h3>
+        <p>Short description of the property...</p >
+        <button>View Details</button>
+    </div>
+    <!-- End Ad Block -->
+</div>
+
+<footer>
+    Contact us at:  | Terms of Service | Privacy Policy
+</footer>
+
+</body>
+</html>
