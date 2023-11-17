@@ -1,4 +1,4 @@
-package com.example.rentaladsboard;
+package com.example.RentalAdsBoard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

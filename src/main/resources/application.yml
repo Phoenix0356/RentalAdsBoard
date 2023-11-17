@@ -1,2 +1,13 @@
 server:
   port: 8091
+
+spring:
+  #Postgresql
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/Rental_ads_board
+    username: postgres
+    password: hdu
+  devtools:
+    restart:
+      enabled: false
