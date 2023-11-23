@@ -2,6 +2,15 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
+        <!--配置连接池-->
+        <!-- 使用HikariCP连接池 配置连接池提供的供应商-->
+        <property name="connection.provider_class">com.zaxxer.hikari.hibernate.HikariConnectionProvider</property>
+        <!--在连接池中可用的数据库连接的最少数目 -->
+        <property name="hikari.minimumIdle">5</property>
+        <!--在连接池中所有数据库连接的最大数目 -->
+        <property name="hikari.maximumPoolSize">20</property>
+        <!--设定数据库连接的过期时间,以秒为单位,  如果连接池中的某个数据库连接处于空闲状态的时间超过了timeout时间,就会从连接池中清除 -->
+        <property name="hikari.idleTimeout">120000</property>
         <!-- Database connection properties -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/Rental_ads_board</property>
