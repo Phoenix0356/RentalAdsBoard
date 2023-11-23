@@ -3,7 +3,8 @@ package com.example.RentalAdsBoard.service.serviceImpl;
 import com.example.RentalAdsBoard.dao.UserDao;
 import com.example.RentalAdsBoard.entity.User;
 import com.example.RentalAdsBoard.service.UserService;
-import com.example.RentalAdsBoard.util.Security;
+
+import com.example.RentalAdsBoard.util.PasswordEncoder;
 import com.example.RentalAdsBoard.vo.LoginVo;
 import com.example.RentalAdsBoard.vo.RegisterVo;
 import com.example.RentalAdsBoard.vo.ResultBean;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService  {
     @Autowired
     UserDao userDao;
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @Override
     public ResultBean getUserById(Integer userId){
         User user;
@@ -39,7 +42,7 @@ public class UserServiceImpl implements UserService  {
     public ResultBean register(RegisterVo registerVo){
         User user=new User();
         user.setUsername(registerVo.getUsername());
-        user.setPassword(Security.encodePassword(registerVo.getPassword()));
+        user.setPassword(passwordEncoder.encodePassword(registerVo.getPassword()));
         user.setEmail(registerVo.getEmail());
         user.setRole(registerVo.getRole());
         try {
@@ -58,7 +61,7 @@ public class UserServiceImpl implements UserService  {
         } catch (Exception e){
             return new ResultBean().error();
         }
-        return Security.matchPassword(loginVo.getPassword(),user.getPassword())?
+        return passwordEncoder.matchPassword(loginVo.getPassword(),user.getPassword())?
                 new ResultBean().success(user):new ResultBean().error();
     }
 }
