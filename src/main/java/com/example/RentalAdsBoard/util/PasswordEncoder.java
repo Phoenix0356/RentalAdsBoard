@@ -1,13 +1,12 @@
 package com.example.RentalAdsBoard.util;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@Configuration
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
+
+@Component
 public class PasswordEncoder {
-    private static final BCryptPasswordEncoder INSTANCE = new BCryptPasswordEncoder();
-    @Bean
+    private final BCryptPasswordEncoder INSTANCE = new BCryptPasswordEncoder();
     public BCryptPasswordEncoder passwordEncoder() {
         return INSTANCE;
     }
