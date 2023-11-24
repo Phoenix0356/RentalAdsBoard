@@ -8,7 +8,7 @@
         <!--在连接池中可用的数据库连接的最少数目 -->
         <property name="hikari.minimumIdle">5</property>
         <!--在连接池中所有数据库连接的最大数目 -->
-        <property name="hikari.maximumPoolSize">20</property>
+        <property name="hikari.maximumPoolSize">30</property>
         <!--设定数据库连接的过期时间,以秒为单位,  如果连接池中的某个数据库连接处于空闲状态的时间超过了timeout时间,就会从连接池中清除 -->
         <property name="hikari.idleTimeout">120000</property>
         <!-- Database connection properties -->
@@ -26,5 +26,6 @@
         <!-- Mapping files or annotated classes -->
         <!-- Add your entity classes or mapping files here for ex: entity used below -->
         <mapping class="com.example.RentalAdsBoard.entity.User"/>
+        <mapping class="com.example.RentalAdsBoard.entity.Ad"/>
     </session-factory>
 </hibernate-configuration>

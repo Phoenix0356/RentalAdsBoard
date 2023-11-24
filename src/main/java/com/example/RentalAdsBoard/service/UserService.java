@@ -2,23 +2,23 @@ package com.example.RentalAdsBoard.service;
 
 import com.example.RentalAdsBoard.vo.LoginVo;
 import com.example.RentalAdsBoard.vo.RegisterVo;
-import com.example.RentalAdsBoard.vo.ResultBean;
+import com.example.RentalAdsBoard.vo.ResultVo;
 import com.example.RentalAdsBoard.vo.UserVo;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-    ResultBean getUserById(Integer userId);
+    ResultVo getUserById(Integer userId);
 
-//    ResultBean getByUsername(String username);
+//    ResultVo getByUsername(String username);
 
-    ResultBean updateUserById(UserVo userVo);
+    ResultVo updateUserById(UserVo userVo);
 
-    ResultBean updateUserPassword(UserVo userVo);
+    ResultVo updateUserPassword(UserVo userVo);
 
-    ResultBean deleteUserById(Integer userId);
+    ResultVo deleteUserById(Integer userId);
 
-    ResultBean register(RegisterVo registerVo);
+    ResultVo register(RegisterVo registerVo);
 
-    ResultBean login(LoginVo loginVo);
+    ResultVo login(LoginVo loginVo);
 }

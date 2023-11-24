@@ -8,6 +8,4 @@ spring:
     url: jdbc:postgresql://localhost:5432/Rental_ads_board
     username: postgres
     password: hdu
-  devtools:
-    restart:
-      enabled: false
+

@@ -1,10 +1,11 @@
-package com.example.RentalAdsBoard.dao;
+package com.example.RentalAdsBoard.util;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Repository
+@Component
 public class HibernateUtil {
     private static final SessionFactory sessionFactory;
 
