@@ -6,12 +6,11 @@ import com.example.RentalAdsBoard.entity.User;
 import com.example.RentalAdsBoard.service.UserService;
 
 import com.example.RentalAdsBoard.util.PasswordEncoder;
-import com.example.RentalAdsBoard.vo.LoginVo;
-import com.example.RentalAdsBoard.vo.RegisterVo;
-import com.example.RentalAdsBoard.vo.ResultVo;
-import com.example.RentalAdsBoard.vo.UserVo;
+import com.example.RentalAdsBoard.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService  {
@@ -68,16 +67,16 @@ public class UserServiceImpl implements UserService  {
         return new ResultVo().success();
     }
 
-//    @Override
-//    public ResultVo getByUsername(String username){
-//        User user;
-//        try {
-//            user=userDao.getByUsername(username);
-//        }catch (Exception e){
-//            return new ResultVo().error();
-//        }
-//        return new ResultVo().success(user);
-//    }
+    @Override
+    public ResultVo getUsersList(){
+        List<User> list;
+        try {
+            list=userDao.getUsersList();
+        }catch (Exception e){
+            return new ResultVo().error();
+        }
+        return new ResultVo().success(list);
+    }
     @Override
     public ResultVo register(RegisterVo registerVo){
         User user=new User();
@@ -104,4 +103,18 @@ public class UserServiceImpl implements UserService  {
         return passwordEncoder.matchPassword(loginVo.getPassword(),user.getPassword())?
                 new ResultVo().success(user):new ResultVo().error();
     }
+
+    @Override
+    public ResultVo manageAuthority(AuthorityVo authorityVo) {
+        try {
+            User user=userDao.getByUsername(authorityVo.getUsername());
+            user.setRole(authorityVo.getLevel());
+            baseDao.save(user);
+        }catch (Exception e){
+            return new ResultVo().error();
+        }
+        return new ResultVo().success();
+    }
+
+
 }

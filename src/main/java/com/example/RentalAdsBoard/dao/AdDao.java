@@ -64,7 +64,6 @@ public class AdDao {
             throw e;
         }
         return list;
-
     }
 
 }

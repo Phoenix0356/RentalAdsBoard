@@ -1,9 +1,7 @@
 package com.example.RentalAdsBoard.service;
 
-import com.example.RentalAdsBoard.vo.LoginVo;
-import com.example.RentalAdsBoard.vo.RegisterVo;
-import com.example.RentalAdsBoard.vo.ResultVo;
-import com.example.RentalAdsBoard.vo.UserVo;
+import com.example.RentalAdsBoard.entity.User;
+import com.example.RentalAdsBoard.vo.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +16,11 @@ public interface UserService {
 
     ResultVo deleteUserById(Integer userId);
 
+    ResultVo getUsersList();
+
     ResultVo register(RegisterVo registerVo);
 
     ResultVo login(LoginVo loginVo);
+
+    ResultVo manageAuthority(AuthorityVo authorityVo);
 }

@@ -1,10 +1,14 @@
 package com.example.RentalAdsBoard.dao;
+import com.example.RentalAdsBoard.entity.Ad;
 import com.example.RentalAdsBoard.entity.User;
 import com.example.RentalAdsBoard.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 @Scope("prototype")
@@ -40,6 +44,23 @@ public class UserDao {
             throw e;
         }
         return user;
+    }
+    public List<User> getUsersList(){
+        Transaction transaction=null;
+        List<User> list=null;
+        try(Session session=HibernateUtil.getSessionFactory().openSession()){
+            transaction= session.beginTransaction();
+            String hql="FROM User ORDER BY userId DESC";
+            Query<User> query= session.createQuery(hql, User.class);
+            list=query.list();
+            transaction.commit();
+        }catch (Exception e){
+            if (transaction!=null){
+                transaction.rollback();
+            }
+            throw e;
+        }
+        return list;
     }
 //    public User save(User user) {
 //        Transaction transaction = null;
