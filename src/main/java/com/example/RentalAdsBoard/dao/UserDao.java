@@ -16,7 +16,7 @@ public class UserDao {
     //get User after login
     public User getById(Integer userId)throws Exception{
         Transaction transaction = null;
-        User user=null;
+        User user;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             user = session.get(User.class,userId);
@@ -32,10 +32,13 @@ public class UserDao {
     //login
     public User getByUsername(String username) {
         Transaction transaction=null;
-        User user=null;
+        User user;
         try(Session session=HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            user=session.get(User.class,username);
+            String hql="FROM User where username=:username";
+            Query<User> query= session.createQuery(hql, User.class);
+            query.setParameter("username",username);
+            user=query.uniqueResult();
             transaction.commit();
         }catch (Exception e){
             if (transaction != null) {
@@ -51,7 +54,7 @@ public class UserDao {
         try(Session session=HibernateUtil.getSessionFactory().openSession()){
             transaction= session.beginTransaction();
             String hql="FROM User ORDER BY userId DESC";
-            Query<User> query= session.createQuery(hql, User.class);
+            Query<User> query = session.createQuery(hql, User.class);
             list=query.list();
             transaction.commit();
         }catch (Exception e){

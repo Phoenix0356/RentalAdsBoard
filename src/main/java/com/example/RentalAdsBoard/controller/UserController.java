@@ -4,7 +4,7 @@ import com.example.RentalAdsBoard.service.UserService;
 import com.example.RentalAdsBoard.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin(origins = "*")
 @RestController
 public class UserController {
     @Autowired
@@ -30,7 +30,7 @@ public class UserController {
         return userService.login(loginVo);
     }
     @PostMapping("/board/register")
-    public ResultVo register(@RequestParam()RegisterVo registerVo){
+    public ResultVo register(@RequestBody()RegisterVo registerVo){
         return userService.register(registerVo);
     }
     @PutMapping("/board/update/password")

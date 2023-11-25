@@ -2,6 +2,7 @@ package com.example.RentalAdsBoard.dao;
 import com.example.RentalAdsBoard.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -33,6 +34,20 @@ public class BaseDao<T> {
             }
             throw e;
         }
+    }
+
+    public void deleteAll(T entity){
+        Transaction transaction=null;
+        try (Session session=HibernateUtil.getSessionFactory().openSession()){
+            transaction = session.beginTransaction();
+            transaction.commit();
+        }catch (Exception e){
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+
     }
 
 }

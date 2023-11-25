@@ -6,6 +6,9 @@ import lombok.Data;
 public class RegisterVo {
     String username;
     String password;
-    Integer role;
+    String role;
     String email;
+    private Integer toInteger(String s){
+        return Integer.parseInt(s);
+    }
 }

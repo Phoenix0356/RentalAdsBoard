@@ -34,7 +34,7 @@ public class PictureServiceImpl implements PictureService {
         }catch (Exception e){
             return new ResultVo().error();
         }
-        return new ResultVo().success();
+        return new ResultVo().success(list);
     }
 
     @Override
