@@ -13,15 +13,15 @@ public class Ad implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ad_id")
-    Integer adId;
+    private Integer adId;
     @Column(name = "user_id")
-    Integer userId;
+    private Integer userId;
     @Column(name = "title")
-    String title;
+    private String title;
     @Column(name = "address")
-    String address;
+    private String address;
     @Column(name = "description")
-    String description;
+    private String description;
 
 
 }

@@ -6,5 +6,4 @@ import org.springframework.context.annotation.Bean;
 public class LoginVo {
     String username;
     String password;
-
 }
