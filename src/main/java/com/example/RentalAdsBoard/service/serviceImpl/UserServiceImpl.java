@@ -101,6 +101,7 @@ public class UserServiceImpl implements UserService  {
         try {
             user=userDao.getByUsername(loginVo.getUsername());
             if (user==null) return new ResultVo().error();
+            user.setPassword(null);
         } catch (Exception e){
             return new ResultVo().error();
         }
