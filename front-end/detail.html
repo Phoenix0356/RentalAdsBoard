@@ -122,7 +122,32 @@
 
   /* ... */
 </style>
-</head>
+
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<script>
+    function getAdVo(adId) {
+        return fetch('http://localhost:8091/ads/user/get?ad_id=' + adId)
+            // .then(response => console.log(response))
+            .then(response => response.json())
+            // .then(response => response.textContent).then(text => console.log(text))
+            .then(resultVo => {
+                const adVo = resultVo.obj;
+                console.log(adVo);
+                return adVo;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    function updatePage() {
+        getAdVo(1).then(function(adVo) {
+            // 更新 HTML
+            document.getElementById('ad-title').textContent += adVo.title;
+            document.getElementById('ad-address').textContent += adVo.address;
+            document.getElementById('ad-description').textContent += adVo.description;
+        });
+    }
+    // 当页面加载完成后，调用 updatePage 函数
+    window.onload = updatePage;
+</script>
 <body>
 
 <div class="navbar">
@@ -142,22 +167,21 @@
 </div>
 
 <div class="details-container">
-  <div class="image-section">
-    <img class="ad-image" src="path-to-your-image.jpg" alt="Property Image">
-    <!-- Optionally, add more images or a slider here -->
-  </div>
-  <div class="text-section">
-    <h2>Property Title</h2>
-    <p>Full address of the property</p>
-    <h3>Price: $XXXX</h3>
-    <p>Description of the property with all details...</p>
-    <!-- Add more details as needed -->
-  </div>
+    <div class="image-section">
+        <!-- 注意，这里的 src 属性现在是空的，我们会在 JavaScript 中设置它 -->
+        <img class="ad-image" src="" alt="Property Image">
+    </div>
+    <div class="text-section">
+        <!-- 注意，这些元素现在没有文本内容，我们会在 JavaScript 中添加内容 -->
+        <h1 id="ad-title"></h1>
+        <p id="ad-address">Address: </p>
+        <p id="ad-description">description: </p>
+    </div>
 </div>
 
 <footer>
     Contact us at: <a href="mailto:contact@example.com">contact@example.com</a> | <a href="#terms">Terms of Service</a> | <a href="#privacy">Privacy Policy</a>
-  </footer>
+</footer>
 
 </body>
 </html>

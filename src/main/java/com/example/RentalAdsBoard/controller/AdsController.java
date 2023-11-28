@@ -22,7 +22,6 @@ public class AdsController {
     public ResultVo getAdById(@RequestParam("ad_id")Integer adId){
         return adService.getAdById(adId);
     }
-
     @PostMapping("/ads/save")
     public ResultVo saveAd(@RequestBody() AdVo adVo ){
         return adService.SaveOrUpdateAd(adVo);
