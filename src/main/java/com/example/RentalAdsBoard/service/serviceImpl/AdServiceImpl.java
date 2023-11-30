@@ -2,7 +2,10 @@ package com.example.RentalAdsBoard.service.serviceImpl;
 
 import com.example.RentalAdsBoard.dao.AdDao;
 import com.example.RentalAdsBoard.dao.BaseDao;
+import com.example.RentalAdsBoard.dao.PictureDao;
+import com.example.RentalAdsBoard.dao.UserDao;
 import com.example.RentalAdsBoard.entity.Ad;
+import com.example.RentalAdsBoard.entity.User;
 import com.example.RentalAdsBoard.service.AdService;
 import com.example.RentalAdsBoard.vo.AdVo;
 import com.example.RentalAdsBoard.vo.ResultVo;
@@ -17,6 +20,8 @@ public class AdServiceImpl implements AdService {
     BaseDao<Ad> baseDao;
     @Autowired
     AdDao adDao;
+    @Autowired
+    UserDao userDao;
     @Override
     public ResultVo getUserAdList(Integer userId){
         List<Ad> list;
@@ -53,8 +58,9 @@ public class AdServiceImpl implements AdService {
         ad.setAddress(adVo.getAddress());
         ad.setTitle(adVo.getTitle());
         ad.setDescription(adVo.getDescription());
-        ad.setUserId(adVo.getUserId());
         try {
+            User user=userDao.getById(adVo.getUserId());
+            ad.setUser(user);
             baseDao.save(ad);
         }catch (Exception e){
             return new ResultVo().error();

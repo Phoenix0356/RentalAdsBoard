@@ -37,10 +37,8 @@ public class UserController {
     public ResultVo updatePassword(@RequestBody() UserVo userVo){
         return userService.updateUserPassword(userVo);
     }
-    @DeleteMapping("/board/delete")
+    @GetMapping("/board/delete")
     public ResultVo deleteUserById(@RequestParam("user_id") Integer userId){
         return userService.deleteUserById(userId);
     }
-
-
 }

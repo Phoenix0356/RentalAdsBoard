@@ -1,9 +1,12 @@
 package com.example.RentalAdsBoard.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -21,5 +24,11 @@ public class User implements Serializable {
     private String password;
     @Column(name="email")
     private String email;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true,fetch = FetchType.EAGER)
+    private List<Ad> ads = new ArrayList<>();
+
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.RentalAdsBoard.service.serviceImpl;
 
+import com.example.RentalAdsBoard.dao.AdDao;
 import com.example.RentalAdsBoard.dao.BaseDao;
 import com.example.RentalAdsBoard.dao.UserDao;
 import com.example.RentalAdsBoard.entity.User;
@@ -7,6 +8,7 @@ import com.example.RentalAdsBoard.service.UserService;
 
 import com.example.RentalAdsBoard.util.PasswordEncoder;
 import com.example.RentalAdsBoard.vo.*;
+import net.bytebuddy.utility.nullability.AlwaysNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ public class UserServiceImpl implements UserService  {
     UserDao userDao;
     @Autowired
     BaseDao<User> baseDao;
+    @Autowired
+    AdDao adDao;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Override
@@ -98,14 +102,16 @@ public class UserServiceImpl implements UserService  {
     @Override
     public ResultVo login(LoginVo loginVo){
         User user;
+        String password;
         try {
             user=userDao.getByUsername(loginVo.getUsername());
             if (user==null) return new ResultVo().error();
+            password=user.getPassword();
             user.setPassword(null);
         } catch (Exception e){
             return new ResultVo().error();
         }
-        return passwordEncoder.matchPassword(loginVo.getPassword(),user.getPassword())?
+        return passwordEncoder.matchPassword(loginVo.getPassword(),password)?
                 new ResultVo().success(user):new ResultVo().error();
     }
 
