@@ -18,8 +18,8 @@ public class Ad implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ad_id")
     private Integer adId;
-//    @Column(name = "user_id",insertable = false, updatable = false)
-//    private Integer userId;
+    @Column(name = "user_id",insertable = false, updatable = false)
+    private Integer userId;
     @Column(name = "title")
     private String title;
     @Column(name = "address")
@@ -33,7 +33,7 @@ public class Ad implements Serializable {
     private User user;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ad", cascade = CascadeType.REMOVE, orphanRemoval = true,fetch = FetchType.EAGER)
     private List<Picture> pictures = new ArrayList<>();
 
 

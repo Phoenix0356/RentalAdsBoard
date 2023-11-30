@@ -24,11 +24,11 @@ public class User implements Serializable {
     private String password;
     @Column(name="email")
     private String email;
+    @Column(name = "avatar_path")
+    private String avatarPath;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true,fetch = FetchType.EAGER)
     private List<Ad> ads = new ArrayList<>();
-
-
 
 }

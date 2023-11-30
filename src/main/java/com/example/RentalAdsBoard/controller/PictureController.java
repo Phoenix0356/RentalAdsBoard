@@ -15,6 +15,11 @@ public class PictureController {
     public ResultVo getPictureById(@RequestParam("picture_id")Integer pictureId){
         return pictureService.getPictureById(pictureId);
     }
+    //获取用户主页广告的第一张图片
+    @GetMapping("/picture/get/first")
+    public ResultVo getAdFirstPicture(@RequestParam("ad_id")Integer adId){
+        return pictureService.getAdFirstPicture(adId);
+    }
     @GetMapping("/picture/list")
     public ResultVo getPictureListById(@RequestParam("ad_id") Integer adId){
         return pictureService.getAdPictureList(adId);

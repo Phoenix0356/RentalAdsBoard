@@ -6,10 +6,12 @@ import com.example.RentalAdsBoard.dao.UserDao;
 import com.example.RentalAdsBoard.entity.User;
 import com.example.RentalAdsBoard.service.UserService;
 
+import com.example.RentalAdsBoard.util.DataUtil;
 import com.example.RentalAdsBoard.util.PasswordEncoder;
 import com.example.RentalAdsBoard.vo.*;
 import net.bytebuddy.utility.nullability.AlwaysNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,23 +19,27 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService  {
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
     @Autowired
-    BaseDao<User> baseDao;
+    private BaseDao<User> baseDao;
     @Autowired
-    AdDao adDao;
+    private DataUtil dataUtil;
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
+    @Value("${avatar_storage.path}")
+    private String path;
     @Override
     public ResultVo getUserById(Integer userId){
-        User user;
+        UserVo userVo=new UserVo();
         try {
-            user=userDao.getById(userId);
-            user.setPassword(null);
+            User user=userDao.getById(userId);
+            userVo.setUsername(user.getUsername());
+            userVo.setEmail(user.getEmail());
+//            userVo.setAvatarBase64(dataUtil.pictureToBase64(user.getAvatarPath()));
         } catch (Exception e){
             return new ResultVo().error();
         }
-        return new ResultVo().success(user);
+        return new ResultVo().success(userVo);
     }
     @Override
     public ResultVo updateUserById(UserVo userVo){
@@ -41,6 +47,8 @@ public class UserServiceImpl implements UserService  {
         try {
             user=userDao.getById(userVo.getUserId());
             user.setEmail(userVo.getEmail());
+            user.setAvatarPath(dataUtil.saveOrUpdateImage(userVo.getAvatarBase64(), user.getAvatarPath(),path,true));
+//            user.setAvatarPath(user.getAvatarPath());
             baseDao.save(user);
         }catch (Exception e){
             return new ResultVo().error();
@@ -49,9 +57,8 @@ public class UserServiceImpl implements UserService  {
     }
     @Override
     public ResultVo updateUserPassword(UserVo userVo){
-        User user;
         try {
-            user=userDao.getById(userVo.getUserId());
+            User user=userDao.getById(userVo.getUserId());
             String newPassword= user.getPassword();
             if (passwordEncoder.matchPassword(newPassword,user.getPassword())) user.setPassword(newPassword);
             else return new ResultVo().error();
@@ -59,7 +66,7 @@ public class UserServiceImpl implements UserService  {
         }catch (Exception e){
             return new ResultVo().error();
         }
-        return new ResultVo().success(user);
+        return new ResultVo().success();
     }
     @Override
     public ResultVo deleteUserById(Integer userId){
@@ -88,6 +95,8 @@ public class UserServiceImpl implements UserService  {
         user.setPassword(passwordEncoder.encodePassword(registerVo.getPassword()));
         user.setEmail(registerVo.getEmail());
         user.setRole(Integer.parseInt(registerVo.getRole()));
+        user.setAvatarPath(dataUtil.saveOrUpdateImage(registerVo.getAvatarBase64(),user.getAvatarPath(),path,true));
+//        user.setAvatarPath(registerVo.getAvatarBase64());
         try {
             if (userDao.getByUsername(registerVo.getUsername())!=null){
                 return new ResultVo().error();

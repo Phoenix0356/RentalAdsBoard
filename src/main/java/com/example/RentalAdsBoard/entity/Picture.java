@@ -15,8 +15,8 @@ public class Picture implements Serializable {
     @Column(name = "picture_id")
     private Integer pictureId;
 
-//    @Column(name = "ad_id",insertable = false, updatable = false)
-//    private Integer adId;
+    @Column(name = "ad_id",insertable = false, updatable = false)
+    private Integer adId;
 
     @Column(name = "path")
     private String path;

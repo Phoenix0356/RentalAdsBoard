@@ -14,7 +14,7 @@ import java.util.List;
 @Scope("prototype")
 public class UserDao {
     //get User after login
-    public User getById(Integer userId)throws Exception{
+    public User getById(Integer userId){
         Transaction transaction = null;
         User user;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {

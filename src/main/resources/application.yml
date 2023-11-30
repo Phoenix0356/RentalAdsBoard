@@ -12,3 +12,9 @@ spring:
 #    password: admin
     password: hdu
 
+avatar_storage:
+  default: default.jpg
+  path: static/avatar
+
+picture_storage:
+  path: static/itemPicture
