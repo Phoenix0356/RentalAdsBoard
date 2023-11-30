@@ -11,8 +11,8 @@ public class AdsController {
     @Autowired
     AdService adService;
     @GetMapping("/ads/home")
-    public ResultVo getLatestAdsList(@RequestParam("batch_size")Integer batchSize){
-        return adService.getLatestAdList(batchSize);
+    public ResultVo getLatestAdsList(){
+        return adService.getLatestAdList();
     }
     @GetMapping("/ads/get")
     public ResultVo getUserAds(@RequestParam("user_id") Integer userId){

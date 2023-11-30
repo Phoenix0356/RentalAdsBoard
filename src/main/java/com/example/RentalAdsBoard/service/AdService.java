@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public interface AdService {
     ResultVo getUserAdList(Integer userId);
 
-    ResultVo getLatestAdList(Integer batchSize);
+    ResultVo getLatestAdList();
 
     ResultVo getAdById(Integer adId);
 

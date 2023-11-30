@@ -15,8 +15,8 @@ import java.util.UUID;
 @Component
 public class DataUtil {
     @Value("${avatar_storage.default}")
-    private String defaultAvatar;
-    public  String pictureToBase64(String path)  {
+    private static String defaultAvatar;
+    public static String pictureToBase64(String path)  {
         String pictureBase64;
         try {
             byte[] pictureBytes = Files.readAllBytes(Paths.get(path));
@@ -27,11 +27,11 @@ public class DataUtil {
         return pictureBase64;
     }
 
-    public String saveOrUpdateImage(String pictureBase64,String originalPath,String path,boolean isAvatar){
+    public static String saveOrUpdateImage(String pictureBase64,String originalPath,String path,boolean isAvatar){
         String newPath=null;
         try {
             //delete the uploaded image
-            deleteImage(originalPath);
+            if (!deleteImage(originalPath))return null;
             String resourcesPath = new ClassPathResource(path).getFile().getAbsolutePath();
             // if user don't upload an image
             if (pictureBase64 == null || pictureBase64.isEmpty()){
@@ -44,8 +44,6 @@ public class DataUtil {
                 //create save path and decode the Base64
                 String alterFileName = UUID.randomUUID().toString();
                 newPath = resourcesPath + "\\" + alterFileName + ".png";
-                System.out.println(resourcesPath);
-                System.out.println(newPath);
                 String base64WithoutPrefix = pictureBase64.replaceFirst("^data:image/\\w+;base64,", "");
 
                 byte[] pictureBytes = Base64.getDecoder().decode(base64WithoutPrefix);
@@ -58,11 +56,13 @@ public class DataUtil {
         return newPath;
     }
 
-    //if there is already an uploaded picture,delete it
-    private void deleteImage(String path) throws IOException {
+    //if there is already an uploaded picture,delete it.
+    // And if path not exist,return false,otherwise return true
+    private static boolean deleteImage(String path) throws IOException {
         if ((path != null && !path.isEmpty()) && !path.contains("default")) {
-            Files.deleteIfExists(Paths.get(path));
+            return (Files.deleteIfExists(Paths.get(path)));
         }
+        return true;
     }
 
 

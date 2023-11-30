@@ -47,14 +47,13 @@ public class AdDao {
         }
         return list;
     }
-    public List<Ad> getAdsList(Integer batchSize){
+    public List<Ad> getAdsList(){
         Transaction transaction=null;
         List<Ad> list=null;
         try(Session session=HibernateUtil.getSessionFactory().openSession()){
             transaction= session.beginTransaction();
             String hql="FROM Ad ORDER BY adId DESC";
             Query<Ad> query= session.createQuery(hql,Ad.class);
-            query.setMaxResults(batchSize);
             list=query.list();
             transaction.commit();
         }catch (Exception e){

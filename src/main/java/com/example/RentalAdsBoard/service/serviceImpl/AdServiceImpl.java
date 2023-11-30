@@ -2,7 +2,6 @@ package com.example.RentalAdsBoard.service.serviceImpl;
 
 import com.example.RentalAdsBoard.dao.AdDao;
 import com.example.RentalAdsBoard.dao.BaseDao;
-import com.example.RentalAdsBoard.dao.PictureDao;
 import com.example.RentalAdsBoard.dao.UserDao;
 import com.example.RentalAdsBoard.entity.Ad;
 import com.example.RentalAdsBoard.entity.User;
@@ -12,6 +11,7 @@ import com.example.RentalAdsBoard.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,33 +24,48 @@ public class AdServiceImpl implements AdService {
     UserDao userDao;
     @Override
     public ResultVo getUserAdList(Integer userId){
-        List<Ad> list;
+        List<AdVo> adVoList=new ArrayList<>();
         try {
-            list=adDao.getUserADs(userId);
+            List<Ad> list=adDao.getUserADs(userId);
+
+            for (Ad ad:list){
+                AdVo adVo=new AdVo();
+                adVo.setAdVo(ad);
+                adVoList.add(adVo);
+            }
+
         }catch (Exception e){
             return new ResultVo().error();
         }
-        return new ResultVo().success(list);
+        return new ResultVo().success(adVoList);
     }
     @Override
-    public ResultVo getLatestAdList(Integer batchSize){
-        List<Ad> list;
+    public ResultVo getLatestAdList(){
+        List<AdVo> adVoList=new ArrayList<>();
         try {
-            list=adDao.getAdsList(batchSize);
+            List<Ad> list=adDao.getAdsList();
+
+            for (Ad ad:list){
+               AdVo adVo=new AdVo();
+               adVo.setAdVo(ad);
+               adVoList.add(adVo);
+            }
         }catch (Exception e){
             return new ResultVo().error();
         }
-        return new ResultVo().success(list);
+        return new ResultVo().success(adVoList);
     }
     @Override
     public ResultVo getAdById(Integer adId){
-        Ad ad;
+        AdVo adVo;
         try {
-            ad=adDao.getById(adId);
+            Ad ad=adDao.getById(adId);
+            adVo=new AdVo();
+            adVo.setAdVo(ad);
         }catch (Exception e){
             return new ResultVo().error();
         }
-        return new ResultVo().success(ad);
+        return new ResultVo().success(adVo);
     }
     @Override
     public ResultVo SaveOrUpdateAd(AdVo adVo){
@@ -65,7 +80,7 @@ public class AdServiceImpl implements AdService {
         }catch (Exception e){
             return new ResultVo().error();
         }
-        return new ResultVo().success(ad);
+        return new ResultVo().success(adVo);
     }
 
     @Override

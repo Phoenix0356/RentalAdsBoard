@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,8 +24,6 @@ public class UserServiceImpl implements UserService  {
     @Autowired
     private BaseDao<User> baseDao;
     @Autowired
-    private DataUtil dataUtil;
-    @Autowired
     private PasswordEncoder passwordEncoder;
     @Value("${avatar_storage.path}")
     private String path;
@@ -33,27 +32,40 @@ public class UserServiceImpl implements UserService  {
         UserVo userVo=new UserVo();
         try {
             User user=userDao.getById(userId);
-            userVo.setUsername(user.getUsername());
-            userVo.setEmail(user.getEmail());
-//            userVo.setAvatarBase64(dataUtil.pictureToBase64(user.getAvatarPath()));
+            userVo.setUserVo(user);
         } catch (Exception e){
             return new ResultVo().error();
         }
         return new ResultVo().success(userVo);
     }
+
+    @Override
+    public ResultVo getUsersList(){
+        List<UserVo> userVoList=new ArrayList<>();
+        try {
+            List<User> list=userDao.getUsersList();
+            for (User user:list){
+                UserVo userVo=new UserVo();
+                userVo.setUserVo(user);
+                userVoList.add(userVo);
+            }
+
+        }catch (Exception e){
+            return new ResultVo().error();
+        }
+        return new ResultVo().success(userVoList);
+    }
     @Override
     public ResultVo updateUserById(UserVo userVo){
-        User user;
         try {
-            user=userDao.getById(userVo.getUserId());
+            User user=userDao.getById(userVo.getUserId());
             user.setEmail(userVo.getEmail());
-            user.setAvatarPath(dataUtil.saveOrUpdateImage(userVo.getAvatarBase64(), user.getAvatarPath(),path,true));
-//            user.setAvatarPath(user.getAvatarPath());
+            user.setAvatarPath(DataUtil.saveOrUpdateImage(userVo.getAvatarBase64(), user.getAvatarPath(),path,true));
             baseDao.save(user);
         }catch (Exception e){
             return new ResultVo().error();
         }
-        return new ResultVo().success(user);
+        return new ResultVo().success(userVo);
     }
     @Override
     public ResultVo updateUserPassword(UserVo userVo){
@@ -78,16 +90,7 @@ public class UserServiceImpl implements UserService  {
         return new ResultVo().success();
     }
 
-    @Override
-    public ResultVo getUsersList(){
-        List<User> list;
-        try {
-            list=userDao.getUsersList();
-        }catch (Exception e){
-            return new ResultVo().error();
-        }
-        return new ResultVo().success(list);
-    }
+
     @Override
     public ResultVo register(RegisterVo registerVo){
         User user=new User();
@@ -95,8 +98,7 @@ public class UserServiceImpl implements UserService  {
         user.setPassword(passwordEncoder.encodePassword(registerVo.getPassword()));
         user.setEmail(registerVo.getEmail());
         user.setRole(Integer.parseInt(registerVo.getRole()));
-        user.setAvatarPath(dataUtil.saveOrUpdateImage(registerVo.getAvatarBase64(),user.getAvatarPath(),path,true));
-//        user.setAvatarPath(registerVo.getAvatarBase64());
+        user.setAvatarPath(DataUtil.saveOrUpdateImage(registerVo.getAvatarBase64(),user.getAvatarPath(),path,true));
         try {
             if (userDao.getByUsername(registerVo.getUsername())!=null){
                 return new ResultVo().error();
@@ -105,23 +107,24 @@ public class UserServiceImpl implements UserService  {
         }catch (Exception e){
             return new ResultVo().error();
         }
-        return new ResultVo().success(user);
+        return new ResultVo().success();
     }
 
     @Override
     public ResultVo login(LoginVo loginVo){
-        User user;
+        UserVo userVo=new UserVo();
         String password;
         try {
-            user=userDao.getByUsername(loginVo.getUsername());
+            User user=userDao.getByUsername(loginVo.getUsername());
             if (user==null) return new ResultVo().error();
             password=user.getPassword();
-            user.setPassword(null);
+
+            userVo.setUserVo(user);
         } catch (Exception e){
             return new ResultVo().error();
         }
         return passwordEncoder.matchPassword(loginVo.getPassword(),password)?
-                new ResultVo().success(user):new ResultVo().error();
+                new ResultVo().success(userVo):new ResultVo().error();
     }
 
     @Override

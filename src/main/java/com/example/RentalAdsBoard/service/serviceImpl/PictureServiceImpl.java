@@ -24,8 +24,6 @@ public class PictureServiceImpl implements PictureService {
     private BaseDao<Picture> baseDao;
     @Autowired
     private AdDao adDao;
-    @Autowired
-    private DataUtil dataUtil;
     @Value("${picture_storage.path}")
     private String path;
     @Override
@@ -33,7 +31,7 @@ public class PictureServiceImpl implements PictureService {
         PictureVo pictureVo = new PictureVo();
         try {
             Picture picture=pictureDao.getPictureById(pictureId);
-            pictureVo.setPictureBase64(dataUtil.pictureToBase64(picture.getPath()));
+            pictureVo.setPictureVo(picture);
         }catch (Exception e){
             return new ResultVo().error();
         }
@@ -47,9 +45,7 @@ public class PictureServiceImpl implements PictureService {
             Picture picture=pictureDao.getFirstPicture(adId);
             if (picture==null) return new ResultVo().success();
 
-            pictureVo.setAdId(picture.getAdId());
-            pictureVo.setPictureId(picture.getPictureId());
-            pictureVo.setPictureBase64(dataUtil.pictureToBase64(picture.getPath()));
+            pictureVo.setPictureVo(picture);
 
         }catch (Exception e){
             return new ResultVo().error();
@@ -58,15 +54,14 @@ public class PictureServiceImpl implements PictureService {
     }
     @Override
     public ResultVo getAdPictureList(Integer adId){
-        List<Picture> list;
+
         List<PictureVo> listVo = new ArrayList<>();
         try {
-            list=pictureDao.getAdPictureList(adId);
+            List<Picture> list=pictureDao.getAdPictureList(adId);
+
             for (Picture picture:list){
                 PictureVo pictureVo=new PictureVo();
-                pictureVo.setAdId(pictureVo.getAdId());
-                pictureVo.setPictureId(picture.getPictureId());
-                pictureVo.setPictureBase64(dataUtil.pictureToBase64(picture.getPath()));
+                pictureVo.setPictureVo(picture);
                 listVo.add(pictureVo);
             }
 
@@ -82,13 +77,13 @@ public class PictureServiceImpl implements PictureService {
         try {
             Ad ad=adDao.getById(pictureVo.getAdId());
             picture.setAd(ad);
-            picture.setPath(dataUtil.saveOrUpdateImage(pictureVo.getPictureBase64(), picture.getPath(), path,false));
+            picture.setPath(DataUtil.saveOrUpdateImage(pictureVo.getPictureBase64(), picture.getPath(), path,false));
             baseDao.save(picture);
         }catch (Exception e){
             return new ResultVo().error();
 
         }
-        return new ResultVo().success();
+        return new ResultVo().success(pictureVo);
     }
 
     @Override
