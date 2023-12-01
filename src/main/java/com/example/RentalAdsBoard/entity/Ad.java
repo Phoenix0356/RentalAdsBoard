@@ -37,4 +37,6 @@ public class Ad implements Serializable {
     private List<Picture> pictures = new ArrayList<>();
 
 
+
+
 }

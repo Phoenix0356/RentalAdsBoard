@@ -23,9 +23,9 @@ public class PictureController {
     public ResultVo getPictureListById(@RequestParam("ad_id") Integer adId){
         return pictureService.getAdPictureList(adId);
     }
-    @GetMapping("picture/save")
-    public ResultVo savePicture(@RequestBody PictureVo pictureVo){
-        return pictureService.savePicture(pictureVo);
+    @PostMapping("/picture/save")
+    public ResultVo saveOrUpdatePicture(@RequestBody PictureVo pictureVo){
+        return pictureService.saveOrUpdatePicture(pictureVo);
     }
 
     @DeleteMapping("/picture/delete")

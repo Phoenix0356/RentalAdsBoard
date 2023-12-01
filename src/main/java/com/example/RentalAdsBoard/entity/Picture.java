@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Entity
@@ -15,7 +16,7 @@ public class Picture implements Serializable {
     @Column(name = "picture_id")
     private Integer pictureId;
 
-    @Column(name = "ad_id",insertable = false, updatable = false)
+    @Column(name = "ad_id", insertable = false, updatable = false)
     private Integer adId;
 
     @Column(name = "path")
@@ -26,3 +27,7 @@ public class Picture implements Serializable {
     @JoinColumn(name = "ad_id")
     private Ad ad;
 }
+
+
+
+

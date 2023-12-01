@@ -9,11 +9,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Scope("prototype")
 public class BaseDao<T> {
-    public void save(T entity) {
+    public Integer save(T entity) {
         Transaction transaction = null;
+        Integer id;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.save(entity);
+            id= (Integer) session.save(entity);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -21,6 +22,7 @@ public class BaseDao<T> {
             }
             throw e;
         }
+        return id;
     }
     public void delete(T entity){
         Transaction transaction=null;

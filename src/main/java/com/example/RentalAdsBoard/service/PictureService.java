@@ -13,7 +13,8 @@ public interface PictureService {
 
     ResultVo getAdPictureList(Integer adId);
 
-    ResultVo savePicture(PictureVo pictureVo);
+
+    ResultVo saveOrUpdatePicture(PictureVo pictureVo);
 
     ResultVo deletePictureById(Integer pictureId);
 }

@@ -93,21 +93,22 @@ public class UserServiceImpl implements UserService  {
 
     @Override
     public ResultVo register(RegisterVo registerVo){
-        User user=new User();
-        user.setUsername(registerVo.getUsername());
-        user.setPassword(passwordEncoder.encodePassword(registerVo.getPassword()));
-        user.setEmail(registerVo.getEmail());
-        user.setRole(Integer.parseInt(registerVo.getRole()));
-        user.setAvatarPath(DataUtil.saveOrUpdateImage(registerVo.getAvatarBase64(),null,path,true));
+
         try {
             if (userDao.getByUsername(registerVo.getUsername())!=null){
                 return new ResultVo().error();
             }
+            User user=new User();
+            user.setUsername(registerVo.getUsername());
+            user.setPassword(passwordEncoder.encodePassword(registerVo.getPassword()));
+            user.setEmail(registerVo.getEmail());
+            user.setRole(Integer.parseInt(registerVo.getRole()));
+            user.setAvatarPath(DataUtil.saveOrUpdateImage(registerVo.getAvatarBase64(),user.getAvatarPath(),path,true));
             baseDao.save(user);
         }catch (Exception e){
             return new ResultVo().error();
         }
-        return new ResultVo().success(user);
+        return new ResultVo().success();
     }
 
     @Override

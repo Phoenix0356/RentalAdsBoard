@@ -27,10 +27,10 @@ public class AdsController {
         return adService.SaveOrUpdateAd(adVo);
     }
 
-    @PutMapping("/ads/update")
-    public ResultVo updateAd(@RequestBody() AdVo adVo ){
-        return adService.SaveOrUpdateAd(adVo);
-    }
+//    @PutMapping("/ads/update")
+//    public ResultVo updateAd(@RequestBody() AdVo adVo ){
+//        return adService.SaveOrUpdateAd(adVo);
+//    }
 
     @DeleteMapping("/ads/delete")
     public ResultVo deleteAd(@RequestParam("ad_id")Integer adId){

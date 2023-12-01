@@ -31,4 +31,8 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true,fetch = FetchType.EAGER)
     private List<Ad> ads = new ArrayList<>();
 
+
+
+
+
 }

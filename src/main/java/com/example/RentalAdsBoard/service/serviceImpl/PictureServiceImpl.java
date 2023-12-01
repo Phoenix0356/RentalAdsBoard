@@ -72,15 +72,24 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public ResultVo savePicture(PictureVo pictureVo){
-        Picture picture=new Picture();
+    public ResultVo saveOrUpdatePicture(PictureVo pictureVo){
+
         try {
+            Picture picture;
+            if (pictureVo.getPictureId()==null) picture=new Picture();
+            else  picture=pictureDao.getPictureById(pictureVo.getPictureId());
+
             Ad ad=adDao.getById(pictureVo.getAdId());
             picture.setAd(ad);
+
             picture.setPath(DataUtil.saveOrUpdateImage(pictureVo.getPictureBase64(), picture.getPath(), path,false));
-            baseDao.save(picture);
+
+           int pictureId = baseDao.save(picture);
+           pictureVo.setPictureId(pictureId);
+
         }catch (Exception e){
             return new ResultVo().error();
+
 
         }
         return new ResultVo().success(pictureVo);
