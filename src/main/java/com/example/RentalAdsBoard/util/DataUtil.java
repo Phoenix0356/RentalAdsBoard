@@ -28,15 +28,16 @@ public class DataUtil {
     }
 
     public static String saveOrUpdateImage(String pictureBase64,String originalPath,String path,boolean isAvatar){
+        System.out.println(pictureBase64);
         String newPath=null;
         try {
             //delete the uploaded image
-            if (!deleteImage(originalPath))return null;
+            deleteImage(originalPath);
             String resourcesPath = new ClassPathResource(path).getFile().getAbsolutePath();
             // if user don't upload an image
             if (pictureBase64 == null || pictureBase64.isEmpty()){
                 if (isAvatar) {
-                    return resourcesPath + "\\" +defaultAvatar;
+                    return resourcesPath + "\\" + "default";
                 } else return null;
             }
             // if user uploads an image

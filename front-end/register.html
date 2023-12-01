@@ -55,6 +55,7 @@
                 body: JSON.stringify({username: username,
                     email: email,
                     password: password,
+                    avatarBase64: null,
                     role: "1"}),
             })
                 .then(response => response.json())

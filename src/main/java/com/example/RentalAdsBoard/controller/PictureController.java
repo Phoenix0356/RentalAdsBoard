@@ -1,11 +1,10 @@
 package com.example.RentalAdsBoard.controller;
 import com.example.RentalAdsBoard.service.PictureService;
+import com.example.RentalAdsBoard.vo.PictureVo;
 import com.example.RentalAdsBoard.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 @RestController
 public class PictureController {
     @Autowired
@@ -23,6 +22,10 @@ public class PictureController {
     @GetMapping("/picture/list")
     public ResultVo getPictureListById(@RequestParam("ad_id") Integer adId){
         return pictureService.getAdPictureList(adId);
+    }
+    @GetMapping("picture/save")
+    public ResultVo savePicture(@RequestBody PictureVo pictureVo){
+        return pictureService.savePicture(pictureVo);
     }
 
     @DeleteMapping("/picture/delete")

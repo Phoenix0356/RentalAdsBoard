@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService  {
         user.setPassword(passwordEncoder.encodePassword(registerVo.getPassword()));
         user.setEmail(registerVo.getEmail());
         user.setRole(Integer.parseInt(registerVo.getRole()));
-        user.setAvatarPath(DataUtil.saveOrUpdateImage(registerVo.getAvatarBase64(),user.getAvatarPath(),path,true));
+        user.setAvatarPath(DataUtil.saveOrUpdateImage(registerVo.getAvatarBase64(),null,path,true));
         try {
             if (userDao.getByUsername(registerVo.getUsername())!=null){
                 return new ResultVo().error();
@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService  {
         }catch (Exception e){
             return new ResultVo().error();
         }
-        return new ResultVo().success();
+        return new ResultVo().success(user);
     }
 
     @Override
