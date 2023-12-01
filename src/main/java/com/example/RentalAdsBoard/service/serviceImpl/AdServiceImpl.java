@@ -55,6 +55,23 @@ public class AdServiceImpl implements AdService {
         }
         return new ResultVo().success(adVoList);
     }
+
+    @Override
+    public ResultVo getAdsFromIndex(int startNumber,int adsNumber){
+        List<AdVo> adVoList=new ArrayList<>();
+        try {
+            List<Ad> list=adDao.getAdsList();
+
+            for (Ad ad:list){
+                AdVo adVo=new AdVo();
+                adVo.setAdVo(ad);
+                adVoList.add(adVo);
+            }
+        }catch (Exception e){
+            return new ResultVo().error();
+        }
+        return new ResultVo().success(adVoList);
+    }
     @Override
     public ResultVo getAdById(Integer adId){
         AdVo adVo;

@@ -10,6 +10,8 @@ public interface AdService {
 
     ResultVo getLatestAdList();
 
+    ResultVo getAdsFromIndex(int startNumber, int adsNumber);
+
     ResultVo getAdById(Integer adId);
 
     ResultVo SaveOrUpdateAd(AdVo adVo);

@@ -65,4 +65,27 @@ public class AdDao {
         return list;
     }
 
+    public List<Ad> getAdsFromIndex(int startNumber,int adsNumber){
+        Transaction transaction=null;
+        List<Ad> list=null;
+        try(Session session=HibernateUtil.getSessionFactory().openSession()){
+            transaction= session.beginTransaction();
+            String hql="FROM Ad ORDER BY adId DESC";
+            Query<Ad> query= session.createQuery(hql,Ad.class);
+            query.setFirstResult(startNumber);
+            query.setMaxResults(adsNumber);
+            list=query.list();
+            transaction.commit();
+        }catch (Exception e){
+            if (transaction!=null){
+                transaction.rollback();
+            }
+            throw e;
+        }
+        return list;
+    }
+
+
+
+
 }

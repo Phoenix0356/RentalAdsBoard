@@ -31,9 +31,9 @@
         <mapping class="com.example.RentalAdsBoard.entity.Ad"/>
         <mapping class="com.example.RentalAdsBoard.entity.Picture"/>
 
-<!--        <event type="delete">-->
-<!--            <listener class="com.example.RentalAdsBoard.dao.listener.PictureDeleteListener" type="post-delete"/>-->
-<!--        </event>-->
+        <event type="post-delete">
+            <listener class="com.example.RentalAdsBoard.dao.listener.PictureDeleteListener" type="post-delete"/>
+        </event>
 
     </session-factory>
 </hibernate-configuration>
