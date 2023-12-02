@@ -130,7 +130,6 @@ public class UserServiceImpl implements UserService  {
         return passwordEncoder.matchPassword(loginVo.getPassword(),password)?
                 new ResultVo().success(jwtTokenUtil.createToken(userId,role)):new ResultVo().error("the password is wrong");
     }
-
     @Override
     public ResultVo manageAuthority(Integer userId, Integer level) {
         try {
