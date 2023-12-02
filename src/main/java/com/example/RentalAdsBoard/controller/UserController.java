@@ -23,8 +23,8 @@ public class UserController extends BaseController{
     @PutMapping("/board/update")
     public ResultVo updateUserById(@ModelAttribute("userId") Integer userId,
                                    @RequestBody()UserVo userVo){
-        userVo.setUserId(userId);
-        return userService.updateUserById(userVo);
+
+        return userService.updateUserById(userId,userVo);
     }
     @PutMapping("/board/root/manage")
     public ResultVo manageAuthority(@RequestBody()AuthorityVo authorityVo){
@@ -41,8 +41,8 @@ public class UserController extends BaseController{
     @PutMapping("/board/update/password")
     public ResultVo updatePassword(@ModelAttribute("userId") Integer userId,
                                    @RequestBody() UserVo userVo){
-        userVo.setUserId(userId);
-        return userService.updateUserPassword(userVo);
+
+        return userService.updateUserPassword(userId,userVo);
     }
     @DeleteMapping("/board/delete")
     public ResultVo deleteUserById(@ModelAttribute("userId") Integer userId){

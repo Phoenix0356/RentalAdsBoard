@@ -59,9 +59,9 @@ public class UserServiceImpl implements UserService  {
         return new ResultVo().success(userVoList);
     }
     @Override
-    public ResultVo updateUserById(UserVo userVo){
+    public ResultVo updateUserById(Integer userId,UserVo userVo){
         try {
-            User user=userDao.getById(userVo.getUserId());
+            User user=userDao.getById(userId);
             user.setEmail(userVo.getEmail());
             user.setAvatarPath(DataUtil.saveOrUpdateImage(userVo.getAvatarBase64(), user.getAvatarPath(),path,true));
             baseDao.save(user);
@@ -71,9 +71,9 @@ public class UserServiceImpl implements UserService  {
         return new ResultVo().success(userVo);
     }
     @Override
-    public ResultVo updateUserPassword(UserVo userVo){
+    public ResultVo updateUserPassword(Integer userId,UserVo userVo){
         try {
-            User user=userDao.getById(userVo.getUserId());
+            User user=userDao.getById(userId);
             String newPassword= user.getPassword();
             if (passwordEncoder.matchPassword(newPassword,user.getPassword())) user.setPassword(newPassword);
             else return new ResultVo().error("wrong password");
@@ -116,19 +116,20 @@ public class UserServiceImpl implements UserService  {
 
     @Override
     public ResultVo login(LoginVo loginVo){
-        UserVo userVo=new UserVo();
+        Integer userId;
         String password;
         try {
             User user=userDao.getByUsername(loginVo.getUsername());
             if (user==null) return new ResultVo().error("the username is invalidate");
             password=user.getPassword();
+            userId=user.getUserId();
 
-            userVo.setUserVo(user);
+
         } catch (Exception e){
             return new ResultVo().error("login failed");
         }
         return passwordEncoder.matchPassword(loginVo.getPassword(),password)?
-                new ResultVo().success(jwtTokenUtil.createToken(userVo.getUserId())):new ResultVo().error("the password is wrong");
+                new ResultVo().success(jwtTokenUtil.createToken(userId)):new ResultVo().error("the password is wrong");
     }
 
     @Override
