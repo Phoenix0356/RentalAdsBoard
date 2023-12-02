@@ -5,6 +5,7 @@ import com.example.RentalAdsBoard.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
@@ -27,8 +28,10 @@ public class UserController extends BaseController{
         return userService.updateUserById(userId,userVo);
     }
     @PutMapping("/board/root/manage")
-    public ResultVo manageAuthority(@RequestBody()AuthorityVo authorityVo){
-        return userService.manageAuthority(authorityVo);
+    public ResultVo manageAuthority(@ModelAttribute("userId") Integer userId,
+                                    @RequestParam("role") Integer role){
+
+        return userService.manageAuthority(userId,role);
     }
     @PostMapping("/board/login")
     public ResultVo login(@RequestBody() LoginVo loginVo){

@@ -1,6 +1,5 @@
 package com.example.RentalAdsBoard.service.serviceImpl;
 
-import com.example.RentalAdsBoard.dao.AdDao;
 import com.example.RentalAdsBoard.dao.BaseDao;
 import com.example.RentalAdsBoard.dao.UserDao;
 import com.example.RentalAdsBoard.entity.User;
@@ -10,7 +9,6 @@ import com.example.RentalAdsBoard.util.DataUtil;
 import com.example.RentalAdsBoard.util.JwtTokenUtil;
 import com.example.RentalAdsBoard.util.PasswordEncoder;
 import com.example.RentalAdsBoard.vo.*;
-import net.bytebuddy.utility.nullability.AlwaysNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -111,33 +109,36 @@ public class UserServiceImpl implements UserService  {
         }catch (Exception e){
             return new ResultVo().error("register failed");
         }
-        return new ResultVo().success(jwtTokenUtil.createToken(userId));
+        return new ResultVo().success(jwtTokenUtil.createToken(userId,1));
     }
 
     @Override
     public ResultVo login(LoginVo loginVo){
-        Integer userId;
+        Integer userId,role;
         String password;
         try {
             User user=userDao.getByUsername(loginVo.getUsername());
             if (user==null) return new ResultVo().error("the username is invalidate");
             password=user.getPassword();
             userId=user.getUserId();
+            role=user.getRole();
 
 
         } catch (Exception e){
             return new ResultVo().error("login failed");
         }
         return passwordEncoder.matchPassword(loginVo.getPassword(),password)?
-                new ResultVo().success(jwtTokenUtil.createToken(userId)):new ResultVo().error("the password is wrong");
+                new ResultVo().success(jwtTokenUtil.createToken(userId,role)):new ResultVo().error("the password is wrong");
     }
 
     @Override
-    public ResultVo manageAuthority(AuthorityVo authorityVo) {
+    public ResultVo manageAuthority(Integer userId, Integer level) {
         try {
-            User user=userDao.getById(authorityVo.getUserId());
-            user.setRole(authorityVo.getLevel());
-            baseDao.save(user);
+            System.out.println(userId);
+            System.out.println(level);
+            User user=userDao.getById(userId);
+            user.setRole(level);
+            baseDao.update(user);
         }catch (Exception e){
             return new ResultVo().error("manage level failed");
         }

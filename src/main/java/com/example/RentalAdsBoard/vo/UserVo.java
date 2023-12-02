@@ -9,12 +9,14 @@ public class UserVo {
     String username;
     String email;
     String avatarBase64;
+    String role;
     String newPassword;
     String originPassword;
 
     public UserVo(){}
     public void setUserVo(User user){
         this.setAvatarBase64(DataUtil.pictureToBase64(user.getAvatarPath()));
+        this.setRole(String.valueOf(user.getRole()));
         this.setEmail(user.getEmail());
         this.setUsername(user.getUsername());
 

@@ -22,5 +22,5 @@ public interface UserService {
 
     ResultVo login(LoginVo loginVo);
 
-    ResultVo manageAuthority(AuthorityVo authorityVo);
+    ResultVo manageAuthority(Integer userId, Integer level);
 }

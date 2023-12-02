@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 public class BaseController {
     @ModelAttribute("userId")
     public Integer getUserId(HttpServletRequest request) {
-        return (Integer) request.getAttribute("userId");
+        System.out.println((Integer) request.getAttribute("userId"));return (Integer) request.getAttribute("userId");
     }
+    @ModelAttribute("role")
+    public Integer getUserRole(HttpServletRequest request) {
+        return (Integer) request.getAttribute("role");
+    }
+
 }
