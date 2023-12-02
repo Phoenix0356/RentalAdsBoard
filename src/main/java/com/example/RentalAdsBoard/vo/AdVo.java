@@ -11,14 +11,12 @@ public class AdVo {
     String title;
     String address;
     String description;
-    Integer userId;
     public AdVo(){}
     public void setAdVo(Ad ad){
         this.setTitle(ad.getTitle());
         this.setAdId(ad.getAdId());
         this.setAddress(ad.getAddress());
         this.setDescription(ad.getDescription());
-        this.setUserId(ad.getUserId());
     }
 
 }

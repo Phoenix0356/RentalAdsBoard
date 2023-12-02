@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class AuthorityVo {
-    String username;
+    Integer userId;
     Integer level;
 }

@@ -10,9 +10,9 @@ public interface UserService {
 
 //    ResultVo getByUsername(String username);
 
-    ResultVo updateUserById(UserVo userVo);
+    ResultVo updateUserById(Integer userId,UserVo userVo);
 
-    ResultVo updateUserPassword(UserVo userVo);
+    ResultVo updateUserPassword(Integer userId,UserVo userVo);
 
     ResultVo deleteUserById(Integer userId);
 

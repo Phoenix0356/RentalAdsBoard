@@ -33,7 +33,7 @@ public class PictureServiceImpl implements PictureService {
             Picture picture=pictureDao.getPictureById(pictureId);
             pictureVo.setPictureVo(picture);
         }catch (Exception e){
-            return new ResultVo().error();
+            return new ResultVo().error("get picture failed");
         }
         return new ResultVo().success(pictureVo);
     }
@@ -48,7 +48,7 @@ public class PictureServiceImpl implements PictureService {
             pictureVo.setPictureVo(picture);
 
         }catch (Exception e){
-            return new ResultVo().error();
+            return new ResultVo().error("load picture failed");
         }
         return new ResultVo().success(pictureVo);
     }
@@ -66,7 +66,7 @@ public class PictureServiceImpl implements PictureService {
             }
 
         }catch (Exception e){
-            return new ResultVo().error();
+            return new ResultVo().error("load picture list failed");
         }
         return new ResultVo().success(listVo);
     }
@@ -86,7 +86,7 @@ public class PictureServiceImpl implements PictureService {
            pictureVo.setPictureId(pictureId);
 
         }catch (Exception e){
-            return new ResultVo().error();
+            return new ResultVo().error("save picture failed");
         }
         return new ResultVo().success(pictureVo);
     }
@@ -104,7 +104,7 @@ public class PictureServiceImpl implements PictureService {
             baseDao.update(picture);
 
         }catch (Exception e){
-            return new ResultVo().error();
+            return new ResultVo().error("Update picture failed");
 
 
         }
@@ -116,7 +116,7 @@ public class PictureServiceImpl implements PictureService {
         try {
             baseDao.delete(pictureDao.getPictureById(pictureId));
         }catch (Exception e){
-            return new ResultVo().error();
+            return new ResultVo().error("delete picture failed");
         }
         return new ResultVo().success();
     }
