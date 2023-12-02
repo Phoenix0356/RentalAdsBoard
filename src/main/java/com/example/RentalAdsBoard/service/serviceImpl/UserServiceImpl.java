@@ -1,6 +1,5 @@
 package com.example.RentalAdsBoard.service.serviceImpl;
 
-import com.example.RentalAdsBoard.dao.AdDao;
 import com.example.RentalAdsBoard.dao.BaseDao;
 import com.example.RentalAdsBoard.dao.UserDao;
 import com.example.RentalAdsBoard.entity.User;
@@ -10,7 +9,6 @@ import com.example.RentalAdsBoard.util.DataUtil;
 import com.example.RentalAdsBoard.util.JwtTokenUtil;
 import com.example.RentalAdsBoard.util.PasswordEncoder;
 import com.example.RentalAdsBoard.vo.*;
-import net.bytebuddy.utility.nullability.AlwaysNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -133,10 +131,10 @@ public class UserServiceImpl implements UserService  {
     }
 
     @Override
-    public ResultVo manageAuthority(AuthorityVo authorityVo) {
+    public ResultVo manageAuthority(Integer userId, Integer level) {
         try {
-            User user=userDao.getById(authorityVo.getUserId());
-            user.setRole(authorityVo.getLevel());
+            User user=userDao.getById(userId);
+            user.setRole(level);
             baseDao.save(user);
         }catch (Exception e){
             return new ResultVo().error("manage level failed");

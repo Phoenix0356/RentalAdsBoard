@@ -9,6 +9,7 @@ public class UserVo {
     String username;
     String email;
     String avatarBase64;
+    String role;
     String newPassword;
     String originPassword;
 
