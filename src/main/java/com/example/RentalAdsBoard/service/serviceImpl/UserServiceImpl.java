@@ -132,16 +132,15 @@ public class UserServiceImpl implements UserService  {
     }
     @Override
     public ResultVo manageAuthority(Integer userId, Integer level) {
+        User user;
         try {
-            System.out.println(userId);
-            System.out.println(level);
-            User user=userDao.getById(userId);
+            user=userDao.getById(userId);
             user.setRole(level);
             baseDao.update(user);
         }catch (Exception e){
             return new ResultVo().error("manage level failed");
         }
-        return new ResultVo().success();
+        return new ResultVo().success(user);
     }
 
 
