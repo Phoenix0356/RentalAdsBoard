@@ -61,6 +61,8 @@ public class UserServiceImpl implements UserService  {
             User user=userDao.getById(userVo.getUserId());
             user.setEmail(userVo.getEmail());
             user.setAvatarPath(DataUtil.saveOrUpdateImage(userVo.getAvatarBase64(), user.getAvatarPath(),path,true));
+            user.setRole((userVo.getRole()));
+            System.out.println(user.getRole());
             baseDao.save(user);
         }catch (Exception e){
             return new ResultVo().error();
@@ -120,7 +122,7 @@ public class UserServiceImpl implements UserService  {
             if (user==null) return new ResultVo().error();
             password=user.getPassword();
 
-            userVo.setUserVo(user);
+            userVo.setUserVo(user); 
         } catch (Exception e){
             return new ResultVo().error();
         }
