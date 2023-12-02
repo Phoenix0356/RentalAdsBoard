@@ -6,8 +6,10 @@ import com.example.RentalAdsBoard.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
-public class AdsController {
+public class AdsController extends BaseController{
     @Autowired
     AdService adService;
     //get ads for home page
@@ -17,7 +19,7 @@ public class AdsController {
     }
     //get ads owned by the user
     @GetMapping("/ads/get")
-    public ResultVo getUserAds(@RequestParam("user_id") Integer userId){
+    public ResultVo getUserAds(@ModelAttribute("userId") Integer userId){
         return adService.getUserAdList(userId);
     }
     //get one ad by adId
@@ -31,13 +33,17 @@ public class AdsController {
         return adService.getAdsFromIndex(startNumber,adsNumber);
     }
     @PostMapping("/ads/save")
-    public ResultVo saveAd(@RequestBody() AdVo adVo ){
-        return adService.SaveAdById(adVo);
+    public ResultVo saveAd(@ModelAttribute("userId") Integer userId,
+                           @RequestBody() AdVo adVo ){
+
+        return adService.SaveAdById(userId,adVo);
     }
 
     @PostMapping("/ads/update")
-    public ResultVo updateAd(@RequestBody() AdVo adVo ){
-        return adService.updateAdById(adVo);
+    public ResultVo updateAd(@ModelAttribute("userId") Integer userId,
+                             @RequestBody() AdVo adVo ){
+
+        return adService.updateAdById(userId,adVo);
     }
 
 //    @PutMapping("/ads/update")

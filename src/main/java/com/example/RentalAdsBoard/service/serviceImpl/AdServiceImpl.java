@@ -35,7 +35,7 @@ public class AdServiceImpl implements AdService {
             }
 
         }catch (Exception e){
-            return new ResultVo().error();
+            return new ResultVo().error("load user ads list failed");
         }
         return new ResultVo().success(adVoList);
     }
@@ -51,7 +51,7 @@ public class AdServiceImpl implements AdService {
                adVoList.add(adVo);
             }
         }catch (Exception e){
-            return new ResultVo().error();
+            return new ResultVo().error("load ads list failed");
         }
         return new ResultVo().success(adVoList);
     }
@@ -68,7 +68,7 @@ public class AdServiceImpl implements AdService {
                 adVoList.add(adVo);
             }
         }catch (Exception e){
-            return new ResultVo().error();
+            return new ResultVo().error("load ads failed");
         }
         return new ResultVo().success(adVoList);
     }
@@ -80,12 +80,12 @@ public class AdServiceImpl implements AdService {
             adVo=new AdVo();
             adVo.setAdVo(ad);
         }catch (Exception e){
-            return new ResultVo().error();
+            return new ResultVo().error("get ads failed");
         }
         return new ResultVo().success(adVo);
     }
     @Override
-    public ResultVo SaveAdById(AdVo adVo){
+    public ResultVo SaveAdById(Integer userId,AdVo adVo){
         boolean saveFlag=true;
         try {
             Ad ad;
@@ -98,7 +98,7 @@ public class AdServiceImpl implements AdService {
             ad.setAddress(adVo.getAddress());
             ad.setTitle(adVo.getTitle());
             ad.setDescription(adVo.getDescription());
-            User user=userDao.getById(adVo.getUserId());
+            User user=userDao.getById(userId);
             ad.setUser(user);
 
             if (saveFlag){
@@ -107,12 +107,12 @@ public class AdServiceImpl implements AdService {
             }else baseDao.update(ad);
 
         }catch (Exception e){
-            return new ResultVo().error();
+            return new ResultVo().error("save ad failed");
         }
         return new ResultVo().success(adVo);
     }
     @Override
-    public ResultVo updateAdById(AdVo adVo){
+    public ResultVo updateAdById(Integer userId,AdVo adVo){
         try {
             Ad ad=adDao.getById(adVo.getAdId());
 
@@ -123,7 +123,7 @@ public class AdServiceImpl implements AdService {
             baseDao.update(ad);
 
         }catch (Exception e){
-            return new ResultVo().error();
+            return new ResultVo().error("update ad failed");
         }
         return new ResultVo().success(adVo);
     }
@@ -134,7 +134,7 @@ public class AdServiceImpl implements AdService {
         try {
             baseDao.delete(adDao.getById(adId));
         }catch (Exception e){
-            return new ResultVo().error();
+            return new ResultVo().error("delete ad failed");
         }
         return new ResultVo().success();
     }
