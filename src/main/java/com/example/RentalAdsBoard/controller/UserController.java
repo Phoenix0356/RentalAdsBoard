@@ -29,8 +29,9 @@ public class UserController extends BaseController{
     }
     @PutMapping("/board/root/manage")
     public ResultVo manageAuthority(@ModelAttribute("userId") Integer userId,
+                                    @ModelAttribute("role") Integer roleLeve,
                                     @RequestParam("role") Integer role){
-
+        if (roleLeve<2) return new ResultVo().error("Your permissions are insufficient");
         return userService.manageAuthority(userId,role);
     }
     @PostMapping("/board/login")
