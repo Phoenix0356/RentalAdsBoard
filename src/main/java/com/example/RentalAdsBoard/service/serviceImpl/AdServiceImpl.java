@@ -98,10 +98,10 @@ public class AdServiceImpl implements AdService {
             ad.setAddress(adVo.getAddress());
             ad.setTitle(adVo.getTitle());
             ad.setDescription(adVo.getDescription());
-            User user=userDao.getById(userId);
-            ad.setUser(user);
 
             if (saveFlag){
+                User user=userDao.getById(userId);
+                ad.setUser(user);
                 int adId=baseDao.save(ad);
                 adVo.setAdId(adId);
             }else baseDao.update(ad);
