@@ -21,6 +21,6 @@ picture_storage:
 jwt:
   secret: aminuosaminuosaminuosaminuosaminuosaminuosaminuosaminuosaminuos
   #  60*60*24
-  expiration: 86400
+  expiration: 604800
 
 excludePaths: /board/login,/board/register

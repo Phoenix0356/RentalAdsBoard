@@ -22,10 +22,12 @@ public class JwtInterceptor implements HandlerInterceptor {
             Claims claims = jwtTokenUtil.validateToken(token);
             if (claims != null) {
                 // 解析token中的userid
-                Integer userId = jwtTokenUtil.getUserIdFromToken(token);
-                System.out.println(userId);
+                Integer userId = Integer.parseInt(claims.get("sub").toString());
+                Integer role = Integer.parseInt(claims.get("role").toString());
+
                 // 将userid添加到请求头中
                 request.setAttribute("userId", userId);
+                request.setAttribute("role",role);
                 return true;
             }else {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

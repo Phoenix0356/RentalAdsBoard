@@ -29,8 +29,9 @@ public class UserController extends BaseController{
     }
     @PutMapping("/board/root/manage")
     public ResultVo manageAuthority(@ModelAttribute("userId") Integer userId,
-                                    @RequestParam("level")Integer level){
-        return userService.manageAuthority(userId,level);
+                                    @RequestParam("role") Integer role){
+
+        return userService.manageAuthority(userId,role);
     }
     @PostMapping("/board/login")
     public ResultVo login(@RequestBody() LoginVo loginVo){

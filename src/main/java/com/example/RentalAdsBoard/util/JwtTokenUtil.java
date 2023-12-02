@@ -34,10 +34,10 @@ public class JwtTokenUtil {
                 .signWith(getSigningKey())
                 .compact();
     }
-    public String createToken(Integer userId){
+    public String createToken(Integer userId,Integer role){
         HashMap<String,Object> claims=new HashMap<>();
         claims.put("sub",String.valueOf(userId));
-        claims.put("exp",new Date());
+        claims.put("role",String.valueOf(role));
         return createToken(claims);
     }
     public Claims validateToken(String token) {
@@ -53,13 +53,5 @@ public class JwtTokenUtil {
         }
         return claims;
     }
-    public Integer getUserIdFromToken(String token){
-        String userId;
-        Claims claims = validateToken(token);
-        if (claims==null) return null;
-        userId = claims.get("sub").toString();
-        return Integer.parseInt(userId);
-    }
-
 
 }

@@ -16,6 +16,7 @@ public class UserVo {
     public UserVo(){}
     public void setUserVo(User user){
         this.setAvatarBase64(DataUtil.pictureToBase64(user.getAvatarPath()));
+        this.setRole(String.valueOf(user.getRole()));
         this.setEmail(user.getEmail());
         this.setUsername(user.getUsername());
 

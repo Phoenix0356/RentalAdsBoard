@@ -11,4 +11,9 @@ public class BaseController {
     public Integer getUserId(HttpServletRequest request) {
         return (Integer) request.getAttribute("userId");
     }
+    @ModelAttribute("userId")
+    public Integer getUserRole(HttpServletRequest request) {
+        return (Integer) request.getAttribute("role");
+    }
+
 }

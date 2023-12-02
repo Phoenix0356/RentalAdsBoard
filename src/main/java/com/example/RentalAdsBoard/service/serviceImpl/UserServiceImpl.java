@@ -109,33 +109,36 @@ public class UserServiceImpl implements UserService  {
         }catch (Exception e){
             return new ResultVo().error("register failed");
         }
-        return new ResultVo().success(jwtTokenUtil.createToken(userId));
+        return new ResultVo().success(jwtTokenUtil.createToken(userId,1));
     }
 
     @Override
     public ResultVo login(LoginVo loginVo){
-        Integer userId;
+        Integer userId,role;
         String password;
         try {
             User user=userDao.getByUsername(loginVo.getUsername());
             if (user==null) return new ResultVo().error("the username is invalidate");
             password=user.getPassword();
             userId=user.getUserId();
+            role=user.getRole();
 
 
         } catch (Exception e){
             return new ResultVo().error("login failed");
         }
         return passwordEncoder.matchPassword(loginVo.getPassword(),password)?
-                new ResultVo().success(jwtTokenUtil.createToken(userId)):new ResultVo().error("the password is wrong");
+                new ResultVo().success(jwtTokenUtil.createToken(userId,role)):new ResultVo().error("the password is wrong");
     }
 
     @Override
     public ResultVo manageAuthority(Integer userId, Integer level) {
         try {
+            System.out.println(userId);
+            System.out.println(level);
             User user=userDao.getById(userId);
             user.setRole(level);
-            baseDao.save(user);
+            baseDao.update(user);
         }catch (Exception e){
             return new ResultVo().error("manage level failed");
         }
