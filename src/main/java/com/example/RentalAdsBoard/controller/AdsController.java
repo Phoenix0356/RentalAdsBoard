@@ -30,10 +30,14 @@ public class AdsController {
                                    @RequestParam("ads_number")Integer adsNumber){
         return adService.getAdsFromIndex(startNumber,adsNumber);
     }
-    @GetMapping("/ads/")
     @PostMapping("/ads/save")
     public ResultVo saveAd(@RequestBody() AdVo adVo ){
-        return adService.SaveOrUpdateAd(adVo);
+        return adService.SaveAdById(adVo);
+    }
+
+    @PostMapping("/ads/update")
+    public ResultVo updateAd(@RequestBody() AdVo adVo ){
+        return adService.updateAdById(adVo);
     }
 
 //    @PutMapping("/ads/update")

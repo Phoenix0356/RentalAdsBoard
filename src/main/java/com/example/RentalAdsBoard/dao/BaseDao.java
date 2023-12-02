@@ -24,6 +24,25 @@ public class BaseDao<T> {
         }
         return id;
     }
+
+    public void update(T entity) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.update(entity);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+
+    }
+
+
+
+
     public void delete(T entity){
         Transaction transaction=null;
         try (Session session=HibernateUtil.getSessionFactory().openSession()){
@@ -37,7 +56,4 @@ public class BaseDao<T> {
             throw e;
         }
     }
-
-
-
 }

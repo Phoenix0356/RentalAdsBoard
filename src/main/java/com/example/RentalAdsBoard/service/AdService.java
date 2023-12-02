@@ -14,7 +14,9 @@ public interface AdService {
 
     ResultVo getAdById(Integer adId);
 
-    ResultVo SaveOrUpdateAd(AdVo adVo);
+    ResultVo SaveAdById(AdVo adVo);
+
+    ResultVo updateAdById(AdVo adVo);
 
     ResultVo deleteAdById(Integer adId);
 }

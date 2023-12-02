@@ -14,7 +14,9 @@ public interface PictureService {
     ResultVo getAdPictureList(Integer adId);
 
 
-    ResultVo saveOrUpdatePicture(PictureVo pictureVo);
+    ResultVo savePictureById(PictureVo pictureVo);
+
+    ResultVo updatePictureById(PictureVo pictureVo);
 
     ResultVo deletePictureById(Integer pictureId);
 }

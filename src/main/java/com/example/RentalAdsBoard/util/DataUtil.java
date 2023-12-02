@@ -33,6 +33,7 @@ public class DataUtil {
 
             String resourcesPath = new ClassPathResource(path).getFile().getAbsolutePath();
 
+
             // if user don't upload an image
             if (pictureBase64 == null || pictureBase64.isEmpty()){
                 if (isAvatar) {
@@ -49,6 +50,7 @@ public class DataUtil {
                 byte[] pictureBytes = Base64.getDecoder().decode(base64WithoutPrefix);
                 //save the new image
                 Files.write(Paths.get(newPath), pictureBytes);
+                System.out.println(newPath);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

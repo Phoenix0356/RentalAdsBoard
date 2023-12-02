@@ -72,12 +72,10 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public ResultVo saveOrUpdatePicture(PictureVo pictureVo){
-
+    public ResultVo savePictureById(PictureVo pictureVo){
         try {
-            Picture picture;
-            if (pictureVo.getPictureId()==null) picture=new Picture();
-            else  picture=pictureDao.getPictureById(pictureVo.getPictureId());
+            Picture picture=new Picture();
+
 
             Ad ad=adDao.getById(pictureVo.getAdId());
             picture.setAd(ad);
@@ -86,6 +84,24 @@ public class PictureServiceImpl implements PictureService {
 
            int pictureId = baseDao.save(picture);
            pictureVo.setPictureId(pictureId);
+
+        }catch (Exception e){
+            return new ResultVo().error();
+        }
+        return new ResultVo().success(pictureVo);
+    }
+
+    @Override
+    public ResultVo updatePictureById(PictureVo pictureVo){
+        try {
+            Picture picture=pictureDao.getPictureById(pictureVo.getPictureId());
+
+
+            Ad ad=adDao.getById(pictureVo.getAdId());
+            picture.setAd(ad);
+            picture.setPath(DataUtil.saveOrUpdateImage(pictureVo.getPictureBase64(), picture.getPath(), path,false));
+
+            baseDao.update(picture);
 
         }catch (Exception e){
             return new ResultVo().error();

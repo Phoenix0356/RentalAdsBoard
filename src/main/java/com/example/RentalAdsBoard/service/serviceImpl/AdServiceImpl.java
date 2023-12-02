@@ -57,7 +57,7 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public ResultVo getAdsFromIndex(int startNumber,int adsNumber){
+    public ResultVo getAdsFromIndex(int startNumber, int adsNumber){
         List<AdVo> adVoList=new ArrayList<>();
         try {
             List<Ad> list=adDao.getAdsList();
@@ -85,11 +85,9 @@ public class AdServiceImpl implements AdService {
         return new ResultVo().success(adVo);
     }
     @Override
-    public ResultVo SaveOrUpdateAd(AdVo adVo){
+    public ResultVo SaveAdById(AdVo adVo){
         try {
-            Ad ad;
-            if (adVo.getAdId()==null) ad=new Ad();
-            else ad=adDao.getById(adVo.getAdId());
+            Ad ad=new Ad();
 
             ad.setAddress(adVo.getAddress());
             ad.setTitle(adVo.getTitle());
@@ -104,6 +102,23 @@ public class AdServiceImpl implements AdService {
         }
         return new ResultVo().success(adVo);
     }
+    @Override
+    public ResultVo updateAdById(AdVo adVo){
+        try {
+            Ad ad=adDao.getById(adVo.getAdId());
+
+            ad.setAddress(adVo.getAddress());
+            ad.setTitle(adVo.getTitle());
+            ad.setDescription(adVo.getDescription());
+
+            baseDao.update(ad);
+
+        }catch (Exception e){
+            return new ResultVo().error();
+        }
+        return new ResultVo().success(adVo);
+    }
+
 
     @Override
     public ResultVo deleteAdById(Integer adId){
