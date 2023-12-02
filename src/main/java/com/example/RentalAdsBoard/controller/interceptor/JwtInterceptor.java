@@ -27,7 +27,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
                 // 将userid添加到请求头中
                 request.setAttribute("userId", userId);
-                request.setAttribute("role",role);
+                request.setAttribute("roleLevel",role);
                 return true;
             }else {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
