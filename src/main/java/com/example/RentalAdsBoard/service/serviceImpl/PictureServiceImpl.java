@@ -82,8 +82,8 @@ public class PictureServiceImpl implements PictureService {
 
             picture.setPath(DataUtil.saveOrUpdateImage(pictureVo.getPictureBase64(), picture.getPath(), path,false));
 
-           int pictureId = baseDao.save(picture);
-           pictureVo.setPictureId(pictureId);
+            int pictureId = baseDao.save(picture);
+            pictureVo.setPictureId(pictureId);
 
         }catch (Exception e){
             return new ResultVo().error("save picture failed");
