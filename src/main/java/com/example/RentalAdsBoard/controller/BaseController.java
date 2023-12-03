@@ -13,7 +13,6 @@ public class BaseController {
     }
     @ModelAttribute("role")
     public Integer getUserRole(HttpServletRequest request) {
-
         return (Integer) request.getAttribute("role");
     }
 

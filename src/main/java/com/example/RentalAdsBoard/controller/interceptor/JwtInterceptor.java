@@ -26,7 +26,7 @@ public class JwtInterceptor implements HandlerInterceptor {
                 Integer role = Integer.parseInt(claims.get("role").toString());
 
                 request.setAttribute("userId", userId);
-                request.setAttribute("roleLevel",role);
+                request.setAttribute("role",role);
                 return true;
             }else {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
