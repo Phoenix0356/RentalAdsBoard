@@ -19,8 +19,8 @@ picture_storage:
   path: static/itemPicture
 
 jwt:
-  secret: aminuosaminuosaminuosaminuosaminuosaminuosaminuosaminuosaminuos
+  secret: fhajshVRBUslhfihvmfahFSFSGgliaebhgiojfcoSFSDFhgiwf
   #  60*60*24
-  expiration: 604800
+  expiration: 86400
 
 excludePaths: /board/login,/board/register
