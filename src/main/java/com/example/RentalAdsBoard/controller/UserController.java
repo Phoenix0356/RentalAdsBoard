@@ -28,10 +28,12 @@ public class UserController extends BaseController{
         return userService.updateUserById(userId,userVo);
     }
     @PutMapping("/board/root/manage")
-    public ResultVo manageAuthority(@ModelAttribute("userId") Integer userId,
-                                    @RequestParam("role") Integer role){
-
-        return userService.manageAuthority(userId,role);
+    public ResultVo manageAuthority(@ModelAttribute("role") Integer role,
+                                    @ModelAttribute("userId") Integer userId,
+                                    @RequestParam("roleChanged") Integer roleChanged,
+                                    @RequestParam("username") String username){
+        if (role<2) return new ResultVo().error("Permission denied");
+        return userService.manageAuthority(username,roleChanged,userId);
     }
     @PostMapping("/board/login")
     public ResultVo login(@RequestBody() LoginVo loginVo){

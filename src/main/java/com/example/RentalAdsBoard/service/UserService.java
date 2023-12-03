@@ -22,5 +22,5 @@ public interface UserService {
 
     ResultVo login(LoginVo loginVo);
 
-    ResultVo manageAuthority(Integer userId, Integer level);
+    ResultVo manageAuthority(String username, Integer level,Integer userId);
 }

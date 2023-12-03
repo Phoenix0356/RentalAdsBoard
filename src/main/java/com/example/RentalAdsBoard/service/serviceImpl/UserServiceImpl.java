@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService  {
@@ -132,12 +133,15 @@ public class UserServiceImpl implements UserService  {
                 new ResultVo().success(jwtTokenUtil.createToken(userId,role)):new ResultVo().error("the password is wrong");
     }
     @Override
-    public ResultVo manageAuthority(Integer userId, Integer level) {
+    public ResultVo manageAuthority(String username, Integer level, Integer userId) {
 
         try {
-            User user=userDao.getById(userId);
-            user.setRole(level);
-            baseDao.update(user);
+            User userTarget=userDao.getByUsername(username);
+            userTarget.setRole(level);
+            baseDao.update(userTarget);
+            if (Objects.equals(userTarget.getUserId(), userId)) {
+                return new ResultVo().success(jwtTokenUtil.createToken(userId,level));
+            }
         }catch (Exception e){
             return new ResultVo().error("manage level failed");
         }
