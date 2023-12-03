@@ -60,9 +60,10 @@ public class UserServiceImpl implements UserService  {
     public ResultVo updateUserById(Integer userId,UserVo userVo){
         try {
             User user=userDao.getById(userId);
+            user.setUsername(userVo.getUsername());
             user.setEmail(userVo.getEmail());
             user.setAvatarPath(DataUtil.saveOrUpdateImage(userVo.getAvatarBase64(), user.getAvatarPath(),path,true));
-            baseDao.save(user);
+            baseDao.update(user);
         }catch (Exception e){
             return new ResultVo().error("update user info failed");
         }
