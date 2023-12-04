@@ -74,15 +74,18 @@ public class UserServiceImpl implements UserService  {
     public ResultVo updateUserPassword(Integer userId,UserVo userVo){
         try {
             User user=userDao.getById(userId);
-            String originPassword= user.getPassword();
-            String newPassword= userVo.getNewPassword();
+            String originPassword= userVo.getOriginPassword();
 
-            if (passwordEncoder.encodePassword(newPassword).equals(originPassword)){
+            String newPassword= passwordEncoder.encodePassword(userVo.getNewPassword());
+
+            if (newPassword.equals(user.getPassword())){
                 return new ResultVo().error("The new password can't be the same with the original password");
             }
-            if (passwordEncoder.matchPassword(newPassword,originPassword)) user.setPassword(newPassword);
+            if (passwordEncoder.matchPassword(originPassword, user.getPassword())) {
+                user.setPassword(newPassword);
+            }
             else return new ResultVo().error("wrong password");
-            user.setPassword(passwordEncoder.encodePassword(user.getPassword()));
+
             baseDao.update(user);
         }catch (Exception e){
             return new ResultVo().error("reset password failed");
