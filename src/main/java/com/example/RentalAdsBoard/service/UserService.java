@@ -14,6 +14,8 @@ public interface UserService {
 
     ResultVo updateUserPassword(Integer userId,UserVo userVo);
 
+    ResultVo resetPasswordByManager(String username);
+
     ResultVo deleteUserById(Integer userId);
 
     ResultVo getUsersList();

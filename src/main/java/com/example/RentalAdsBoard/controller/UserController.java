@@ -27,14 +27,7 @@ public class UserController extends BaseController{
 
         return userService.updateUserById(userId,userVo);
     }
-    @PutMapping("/board/root/manage")
-    public ResultVo manageAuthority(@ModelAttribute("role") Integer role,
-                                    @ModelAttribute("userId") Integer userId,
-                                    @RequestParam("roleChanged") Integer roleChanged,
-                                    @RequestParam("username") String username){
-        if (role<2) return new ResultVo().error("Permission denied");
-        return userService.manageAuthority(username,roleChanged,userId);
-    }
+
     @PostMapping("/board/login")
     public ResultVo login(@RequestBody() LoginVo loginVo){
         return userService.login(loginVo);
@@ -52,5 +45,19 @@ public class UserController extends BaseController{
     @DeleteMapping("/board/delete")
     public ResultVo deleteUserById(@ModelAttribute("userId") Integer userId){
         return userService.deleteUserById(userId);
+    }
+    @PutMapping("/board/root/manage")
+    public ResultVo manageAuthority(@ModelAttribute("role") Integer role,
+                                    @ModelAttribute("userId") Integer userId,
+                                    @RequestParam("roleChanged") Integer roleChanged,
+                                    @RequestParam("username") String username){
+        if (role<2) return new ResultVo().error("Permission denied");
+        return userService.manageAuthority(username,roleChanged,userId);
+    }
+    @PutMapping("/board/root/resetPassword")
+    public ResultVo resetPassword(@ModelAttribute("role") Integer role,
+                                   @RequestParam("username") String username){
+        if (role<2) return new ResultVo().error("Permission denied");
+        return userService.resetPasswordByManager(username);
     }
 }
