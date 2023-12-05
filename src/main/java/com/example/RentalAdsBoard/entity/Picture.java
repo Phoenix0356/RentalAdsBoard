@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "pictures")
-public class Picture implements Serializable {
+public class Picture extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "picture_id")
@@ -26,6 +26,11 @@ public class Picture implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ad_id")
     private Ad ad;
+
+    @Override
+    public Integer getId() {
+        return pictureId;
+    }
 }
 
 

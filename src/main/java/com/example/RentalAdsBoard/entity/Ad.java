@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "ads")
-public class Ad implements Serializable {
+public class Ad extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ad_id")
@@ -36,7 +36,11 @@ public class Ad implements Serializable {
     @OneToMany(mappedBy = "ad", cascade = CascadeType.REMOVE, orphanRemoval = true,fetch = FetchType.EAGER)
     private List<Picture> pictures = new ArrayList<>();
 
-
+    @Override
+    public Integer getId() {
+        return adId;
+    }
+    
 
 
 }

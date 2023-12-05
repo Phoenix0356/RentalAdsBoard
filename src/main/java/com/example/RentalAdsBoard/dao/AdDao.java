@@ -38,7 +38,7 @@ public class AdDao {
         }
     }
 
-    public List<Ad> getAdsFromIndex(int startNumber, int adsNumber){
+/*    public List<Ad> getAdsFromIndex(int startNumber, int adsNumber){
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String hql = "FROM Ad ORDER BY adId DESC";
             Query<Ad> query = session.createQuery(hql, Ad.class);
@@ -46,5 +46,5 @@ public class AdDao {
             query.setMaxResults(adsNumber);
             return query.list();
         }
-    }
+    }*/
 }
