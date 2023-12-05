@@ -10,8 +10,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
 #    url: jdbc:postgresql://localhost:5432/Rental_ads_board
     username: postgres
-#    password: admin
-    password: hdu
+    password: admin
+#    password: hdu
 
 avatar_storage:
   path: static\avatar
