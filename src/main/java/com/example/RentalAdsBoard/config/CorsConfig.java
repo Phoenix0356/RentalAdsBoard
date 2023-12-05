@@ -10,7 +10,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Collections;
 
-@Configuration
+/*@Configuration
 public class CorsConfig {
 
     @Bean
@@ -34,4 +34,4 @@ public class CorsConfig {
 
         return filterRegistrationBean;
     }
-}
+}*/
