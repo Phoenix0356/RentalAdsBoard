@@ -108,7 +108,9 @@ public class UserServiceImpl implements UserService  {
     @Override
     public ResultVo deleteUserById(Integer userId){
         try {
-            baseDao.delete(userDao.getById(userId));
+            User user=userDao.getById(userId);
+            baseDao.delete(user);
+            DataUtil.deleteAllPictures(user);
         }catch (Exception e){
             return new ResultVo().error("delete user failed");
         }
@@ -118,7 +120,9 @@ public class UserServiceImpl implements UserService  {
     @Override
     public ResultVo deleteUserByAdmin(String username){
         try {
-            baseDao.delete(userDao.getByUsername(username));
+            User user=userDao.getByUsername(username);
+            baseDao.delete(user);
+            DataUtil.deleteAllPictures(user);
         }catch (Exception e){
             return new ResultVo().error("delete user failed");
         }

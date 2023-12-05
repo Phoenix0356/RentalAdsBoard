@@ -4,16 +4,18 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "ads")
-public class Ad extends BaseEntity implements Serializable {
+public class Ad extends BaseEntity<Picture> implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ad_id")
@@ -40,7 +42,11 @@ public class Ad extends BaseEntity implements Serializable {
     public Integer getId() {
         return adId;
     }
-    
+
+    @Override
+    public List<Picture> getList() {
+        return pictures;
+    }
 
 
 }

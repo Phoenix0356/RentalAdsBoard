@@ -6,6 +6,7 @@ import com.example.RentalAdsBoard.dao.UserDao;
 import com.example.RentalAdsBoard.entity.Ad;
 import com.example.RentalAdsBoard.entity.User;
 import com.example.RentalAdsBoard.service.AdService;
+import com.example.RentalAdsBoard.util.DataUtil;
 import com.example.RentalAdsBoard.vo.AdVo;
 import com.example.RentalAdsBoard.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,7 +133,9 @@ public class AdServiceImpl implements AdService {
     @Override
     public ResultVo deleteAdById(Integer adId){
         try {
-            baseDao.delete(adDao.getById(adId));
+            Ad ad=adDao.getById(adId);
+            baseDao.delete(ad);
+            DataUtil.deleteAllPictures(ad);
         }catch (Exception e){
             return new ResultVo().error("delete ad failed");
         }

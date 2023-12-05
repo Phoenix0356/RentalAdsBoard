@@ -2,15 +2,17 @@ package com.example.RentalAdsBoard.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "pictures")
-public class Picture extends BaseEntity implements Serializable {
+public class Picture extends BaseEntity<Picture> implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "picture_id")
@@ -30,6 +32,11 @@ public class Picture extends BaseEntity implements Serializable {
     @Override
     public Integer getId() {
         return pictureId;
+    }
+
+    @Override
+    public List<Picture> getList() {
+        return null;
     }
 }
 

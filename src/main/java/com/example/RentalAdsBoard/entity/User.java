@@ -2,16 +2,18 @@ package com.example.RentalAdsBoard.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity implements Serializable {
+public class User extends BaseEntity<Ad> implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
@@ -35,6 +37,11 @@ public class User extends BaseEntity implements Serializable {
     @Override
     public Integer getId() {
         return userId;
+    }
+
+    @Override
+    public List<Ad> getList() {
+        return ads;
     }
 
 
