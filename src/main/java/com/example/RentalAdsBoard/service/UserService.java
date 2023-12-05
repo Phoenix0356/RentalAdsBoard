@@ -20,6 +20,8 @@ public interface UserService {
 
     ResultVo getUsersList();
 
+    ResultVo deleteUserByAdmin(String username);
+
     ResultVo register(RegisterVo registerVo);
 
     ResultVo login(LoginVo loginVo);

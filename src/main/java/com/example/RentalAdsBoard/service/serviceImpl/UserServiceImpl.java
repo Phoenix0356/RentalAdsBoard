@@ -115,6 +115,15 @@ public class UserServiceImpl implements UserService  {
         return new ResultVo().success();
     }
 
+    @Override
+    public ResultVo deleteUserByAdmin(String username){
+        try {
+            baseDao.delete(userDao.getByUsername(username));
+        }catch (Exception e){
+            return new ResultVo().error("delete user failed");
+        }
+        return new ResultVo().success();
+    }
 
     @Override
     public ResultVo register(RegisterVo registerVo){
