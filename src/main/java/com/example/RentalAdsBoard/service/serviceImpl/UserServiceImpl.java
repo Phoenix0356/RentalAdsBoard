@@ -74,13 +74,35 @@ public class UserServiceImpl implements UserService  {
     public ResultVo updateUserPassword(Integer userId,UserVo userVo){
         try {
             User user=userDao.getById(userId);
-            String newPassword= user.getPassword();
-            if (passwordEncoder.matchPassword(newPassword,user.getPassword())) user.setPassword(newPassword);
+            String originPassword= userVo.getOriginPassword();
+
+            String newPassword= passwordEncoder.encodePassword(userVo.getNewPassword());
+
+            if (newPassword.equals(user.getPassword())){
+                return new ResultVo().error("The new password can't be the same with the original password");
+            }
+            if (passwordEncoder.matchPassword(originPassword, user.getPassword())) {
+                user.setPassword(newPassword);
+            }
             else return new ResultVo().error("wrong password");
-            baseDao.save(user);
+
+            baseDao.update(user);
         }catch (Exception e){
             return new ResultVo().error("reset password failed");
         }
+        return new ResultVo().success();
+    }
+
+    @Override
+    public ResultVo resetPasswordByManager(String username){
+        try {
+            User user=userDao.getByUsername(username);
+            user.setPassword(passwordEncoder.encodePassword("12345"));
+            baseDao.update(user);
+        }catch (Exception e){
+            return new ResultVo().error("reset password failed");
+        }
+
         return new ResultVo().success();
     }
     @Override
@@ -93,6 +115,15 @@ public class UserServiceImpl implements UserService  {
         return new ResultVo().success();
     }
 
+    @Override
+    public ResultVo deleteUserByAdmin(String username){
+        try {
+            baseDao.delete(userDao.getByUsername(username));
+        }catch (Exception e){
+            return new ResultVo().error("delete user failed");
+        }
+        return new ResultVo().success();
+    }
 
     @Override
     public ResultVo register(RegisterVo registerVo){

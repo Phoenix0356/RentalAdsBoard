@@ -16,7 +16,6 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         final String header = request.getHeader("Authorization");
-
         if (header!=null&&header.startsWith("Bearer ")) {
             String token=header.substring(7);
             Claims claims = jwtTokenUtil.validateToken(token);
@@ -30,12 +29,12 @@ public class JwtInterceptor implements HandlerInterceptor {
                 return true;
             }else {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("illegal Token");
+                response.getWriter().write("need to login");
                 return false;
             }
         }else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("need to login");
+            response.getWriter().write("illegal Token");
             return false;
         }
     }

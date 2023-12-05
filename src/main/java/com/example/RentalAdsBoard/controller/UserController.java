@@ -17,23 +17,12 @@ public class UserController extends BaseController{
     public ResultVo getUserById(@ModelAttribute("userId") Integer userId){
         return userService.getUserById(userId);
     }
-    @GetMapping("/board/root")
-    public ResultVo getUsersList(){
-        return userService.getUsersList();
-    }
+
     @PutMapping("/board/update")
     public ResultVo updateUserById(@ModelAttribute("userId") Integer userId,
                                    @RequestBody()UserVo userVo){
 
         return userService.updateUserById(userId,userVo);
-    }
-    @PutMapping("/board/root/manage")
-    public ResultVo manageAuthority(@ModelAttribute("role") Integer role,
-                                    @ModelAttribute("userId") Integer userId,
-                                    @RequestParam("roleChanged") Integer roleChanged,
-                                    @RequestParam("username") String username){
-        if (role<2) return new ResultVo().error("Permission denied");
-        return userService.manageAuthority(username,roleChanged,userId);
     }
     @PostMapping("/board/login")
     public ResultVo login(@RequestBody() LoginVo loginVo){
@@ -52,5 +41,32 @@ public class UserController extends BaseController{
     @DeleteMapping("/board/delete")
     public ResultVo deleteUserById(@ModelAttribute("userId") Integer userId){
         return userService.deleteUserById(userId);
+    }
+    @GetMapping("/board/root")
+    public ResultVo getUsersList(){
+        return userService.getUsersList();
+    }
+
+    @DeleteMapping("/board/root/delete")
+    public ResultVo deleteUserByAdmin(@ModelAttribute("role") Integer role,
+                                      @RequestParam("username") String username){
+
+        if (role<2) return new ResultVo().error("Permission denied");
+        return userService.deleteUserByAdmin(username);
+    }
+
+    @PutMapping("/board/root/manage")
+    public ResultVo manageAuthority(@ModelAttribute("role") Integer role,
+                                    @ModelAttribute("userId") Integer userId,
+                                    @RequestParam("roleChanged") Integer roleChanged,
+                                    @RequestParam("username") String username){
+        if (role<2) return new ResultVo().error("Permission denied");
+        return userService.manageAuthority(username,roleChanged,userId);
+    }
+    @PutMapping("/board/root/resetPassword")
+    public ResultVo resetPassword(@ModelAttribute("role") Integer role,
+                                   @RequestParam("username") String username){
+        if (role<2) return new ResultVo().error("Permission denied");
+        return userService.resetPasswordByManager(username);
     }
 }
