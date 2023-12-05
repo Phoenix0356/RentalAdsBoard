@@ -14,11 +14,11 @@
         <!-- Database connection properties -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
 <!--        <property name="hibernate.connection.url">jdbc:postgresql://192.168.1.109:5432/Rental_ads_board</property>-->
-<!--        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>-->
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/Rental_ads_board</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>
+<!--        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/Rental_ads_board</property>-->
         <property name="hibernate.connection.username">postgres</property>
-        <property name="hibernate.connection.password">hdu</property>
-<!--        <property name="hibernate.connection.password">admin</property>-->
+<!--        <property name="hibernate.connection.password">hdu</property>-->
+        <property name="hibernate.connection.password">admin</property>
 
         <!-- Other Hibernate properties -->
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
@@ -32,9 +32,6 @@
         <mapping class="com.example.RentalAdsBoard.entity.Ad"/>
         <mapping class="com.example.RentalAdsBoard.entity.Picture"/>
 
-<!--        <event type="post-delete">-->
-<!--            <listener class="com.example.RentalAdsBoard.dao.listener.PictureDeleteListener" type="post-delete"/>-->
-<!--        </event>-->
 
     </session-factory>
 </hibernate-configuration>
