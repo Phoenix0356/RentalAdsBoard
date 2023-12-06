@@ -30,12 +30,13 @@ public class UserServiceImpl implements UserService  {
     @Value("${avatar_storage.path}")
     private String path;
     @Override
-    public ResultVo getUserById(Integer userId){
+    public ResultVo getUser(Integer userId, String username) {
         UserVo userVo=new UserVo();
         try {
-            User user=userDao.getById(userId);
+            User user=username==null?userDao.getById(userId):userDao.getByUsername(username);
             userVo.setUserVo(user);
         } catch (Exception e){
+
             return new ResultVo().error("get user info failed");
         }
         return new ResultVo().success(userVo);
@@ -159,7 +160,6 @@ public class UserServiceImpl implements UserService  {
             password=user.getPassword();
             userId=user.getUserId();
             role=user.getRole();
-
 
         } catch (Exception e){
             return new ResultVo().error("login failed");

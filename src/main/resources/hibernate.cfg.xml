@@ -22,7 +22,7 @@
 
         <!-- Other Hibernate properties -->
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
-        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
 <!---->

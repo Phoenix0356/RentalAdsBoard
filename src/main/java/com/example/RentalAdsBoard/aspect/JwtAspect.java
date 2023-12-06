@@ -1,5 +1,5 @@
 package com.example.RentalAdsBoard.aspect;
-
+import io.jsonwebtoken.*;
 import com.example.RentalAdsBoard.util.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import org.aspectj.lang.JoinPoint;
@@ -19,37 +19,32 @@ import javax.servlet.http.HttpServletResponse;
 public class JwtAspect {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
-    @Pointcut(value = "execution(* com.example.RentalAdsBoard.controller.BaseController.*(..))")
+    @Pointcut(value = "execution(* com.example.RentalAdsBoard.controller.*Controller.*(..)) "
+            + "&& !execution(* com.example.RentalAdsBoard.controller.UserController.login(..)) "
+            + "&& !execution(* com.example.RentalAdsBoard.controller.UserController.register(..))")
     public void point(){
     }
     @Before(value = "point()")
-    public boolean authorize(){
+    public void authorize() throws JwtException {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
-
-        // 获取请求头中的token
         String header = request.getHeader("Authorization");
-
-        // 验证token
-
         if (header!=null&&header.startsWith("Bearer ")) {
             String token=header.substring(7);
-            Claims claims = jwtTokenUtil.validateToken(token);
-            if (claims != null) {
-
+            try {
+                Claims claims = jwtTokenUtil.validateToken(token);
                 Integer userId = Integer.parseInt(claims.get("sub").toString());
                 Integer role = Integer.parseInt(claims.get("role").toString());
-
                 request.setAttribute("userId", userId);
                 request.setAttribute("role",role);
-
-            }else {
-                return false;
+            } catch (JwtException ex) {
+                throw new JwtException("invalid token, need to login");
             }
-        }else {
-            return false;
+        } else {
+            throw new JwtException("illegal token");
         }
-        return true;
     }
+
 }
+
 

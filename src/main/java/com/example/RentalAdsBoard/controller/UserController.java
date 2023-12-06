@@ -7,24 +7,28 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 @RestController
-public class UserController extends BaseController{
+public class UserController {
     @Autowired
     UserService userService;
-
     @GetMapping("/board/home")
-    public ResultVo getUserById(@ModelAttribute("userId") Integer userId){
-        return userService.getUserById(userId);
+    public ResultVo getUser(HttpServletRequest request,
+                            @RequestParam("username") Optional<String> username) throws Exception {
+        Integer userId=(Integer) request.getAttribute("userId");
+        return userService.getUser(userId,username.orElse(null));
     }
 
     @PutMapping("/board/update")
-    public ResultVo updateUserById(@RequestAttribute("userId") Integer userId,
+    public ResultVo updateUserById(HttpServletRequest request,
                                    @RequestBody()UserVo userVo){
-        return userService.updateUserById(userId,userVo);
+        Integer userId=(Integer) request.getAttribute("userId");
+        return userService.updateUserById((Integer) userId,userVo);
     }
     @PostMapping("/board/login")
     public ResultVo login(@RequestBody() LoginVo loginVo){
+
         return userService.login(loginVo);
     }
     @PostMapping("/board/register")
@@ -32,13 +36,14 @@ public class UserController extends BaseController{
         return userService.register(registerVo);
     }
     @PutMapping("/board/update/password")
-    public ResultVo updatePassword(@ModelAttribute("userId") Integer userId,
+    public ResultVo updatePassword(HttpServletRequest request,
                                    @RequestBody() UserVo userVo){
-
+        Integer userId=(Integer) request.getAttribute("userId");
         return userService.updateUserPassword(userId,userVo);
     }
     @DeleteMapping("/board/delete")
-    public ResultVo deleteUserById(@ModelAttribute("userId") Integer userId){
+    public ResultVo deleteUserById(HttpServletRequest request) {
+        Integer userId=(Integer) request.getAttribute("userId");
         return userService.deleteUserById(userId);
     }
     @GetMapping("/board/root")
@@ -47,24 +52,26 @@ public class UserController extends BaseController{
     }
 
     @DeleteMapping("/board/root/delete")
-    public ResultVo deleteUserByAdmin(@ModelAttribute("role") Integer role,
+    public ResultVo deleteUserByAdmin(HttpServletRequest request,
                                       @RequestParam("username") String username){
-
+        Integer role=(Integer) request.getAttribute("role");
         if (role<2) return new ResultVo().error("Permission denied");
         return userService.deleteUserByAdmin(username);
     }
 
     @PutMapping("/board/root/manage")
-    public ResultVo manageAuthority(@ModelAttribute("role") Integer role,
-                                    @ModelAttribute("userId") Integer userId,
+    public ResultVo manageAuthority(HttpServletRequest request,
                                     @RequestParam("roleChanged") Integer roleChanged,
                                     @RequestParam("username") String username){
+        Integer userId=(Integer) request.getAttribute("userId");
+        Integer role=(Integer) request.getAttribute("role");
         if (role<2) return new ResultVo().error("Permission denied");
         return userService.manageAuthority(username,roleChanged,userId);
     }
     @PutMapping("/board/root/resetPassword")
-    public ResultVo resetPassword(@ModelAttribute("role") Integer role,
+    public ResultVo resetPassword(HttpServletRequest request,
                                    @RequestParam("username") String username){
+        Integer role=(Integer) request.getAttribute("role");
         if (role<2) return new ResultVo().error("Permission denied");
         return userService.resetPasswordByManager(username);
     }

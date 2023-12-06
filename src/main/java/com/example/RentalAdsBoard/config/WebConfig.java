@@ -11,23 +11,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-//    @Autowired
-//    private final JwtInterceptor jwtInterceptor;
-
-    @Value("${excludePaths}")
-    String[] excludePaths;
-
-//    public WebConfig(JwtInterceptor jwtInterceptor) {
-//        this.jwtInterceptor = jwtInterceptor;
-//    }
-
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(jwtInterceptor)
-//                .excludePathPatterns(excludePaths);
-//
-//    }
-
 //    @Override
 //    public void addCorsMappings(CorsRegistry registry) {
 //        registry.addMapping("/**")

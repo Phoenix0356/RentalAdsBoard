@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class PictureController extends BaseController{
+public class PictureController {
     @Autowired
     PictureService pictureService;
 

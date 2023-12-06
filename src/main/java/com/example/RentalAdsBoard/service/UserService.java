@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-    ResultVo getUserById(Integer userId);
+
 
 //    ResultVo getByUsername(String username);
 
@@ -17,6 +17,8 @@ public interface UserService {
     ResultVo resetPasswordByManager(String username);
 
     ResultVo deleteUserById(Integer userId);
+
+    ResultVo getUser(Integer userId, String username) throws Exception;
 
     ResultVo getUsersList();
 

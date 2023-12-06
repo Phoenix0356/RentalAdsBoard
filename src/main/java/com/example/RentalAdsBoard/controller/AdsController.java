@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-public class AdsController extends BaseController{
+public class AdsController {
     @Autowired
     AdService adService;
     //get ads for home page
@@ -19,7 +19,8 @@ public class AdsController extends BaseController{
     }
     //get ads owned by the user
     @GetMapping("/ads/get")
-    public ResultVo getUserAds(@ModelAttribute("userId") Integer userId){
+    public ResultVo getUserAds(HttpServletRequest request){
+        Integer userId=(Integer) request.getAttribute("userId");
         return adService.getUserAdList(userId);
     }
     //get one ad by adId
@@ -33,16 +34,16 @@ public class AdsController extends BaseController{
         return adService.getAdsFromIndex(startNumber,adsNumber);
     }
     @PostMapping("/ads/save")
-    public ResultVo saveAd(@ModelAttribute("userId") Integer userId,
+    public ResultVo saveAd(HttpServletRequest request,
                            @RequestBody() AdVo adVo ){
-
+        Integer userId=(Integer) request.getAttribute("userId");
         return adService.SaveAdById(userId,adVo);
     }
 
     @PostMapping("/ads/update")
-    public ResultVo updateAd(@ModelAttribute("userId") Integer userId,
+    public ResultVo updateAd(HttpServletRequest request,
                              @RequestBody() AdVo adVo ){
-
+        Integer userId=(Integer) request.getAttribute("userId");
         return adService.updateAdById(userId,adVo);
     }
 

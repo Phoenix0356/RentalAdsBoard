@@ -42,15 +42,11 @@ public class JwtTokenUtil {
     }
     public Claims validateToken(String token) {
         Claims claims = null;
-        try {
-            claims = Jwts.parser()
-                    .verifyWith(getSigningKey())
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
-        }catch (JwtException ex){
-            return null;
-        }
+        claims = Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
         return claims;
     }
 
