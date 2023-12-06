@@ -1,21 +1,37 @@
-package com.example.RentalAdsBoard.controller.interceptor;
+package com.example.RentalAdsBoard.aspect;
 
 import com.example.RentalAdsBoard.util.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Aspect
 @Component
-public class JwtInterceptor implements HandlerInterceptor {
+public class JwtAspect {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        final String header = request.getHeader("Authorization");
+    @Pointcut(value = "execution(* com.example.RentalAdsBoard.controller.BaseController.*(..))")
+    public void point(){
+    }
+    @Before(value = "point()")
+    public boolean authorize(){
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+
+        // 获取请求头中的token
+        String header = request.getHeader("Authorization");
+
+        // 验证token
+
         if (header!=null&&header.startsWith("Bearer ")) {
             String token=header.substring(7);
             Claims claims = jwtTokenUtil.validateToken(token);
@@ -26,17 +42,14 @@ public class JwtInterceptor implements HandlerInterceptor {
 
                 request.setAttribute("userId", userId);
                 request.setAttribute("role",role);
-                return true;
+
             }else {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("need to login");
                 return false;
             }
         }else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("illegal Token");
             return false;
         }
+        return true;
     }
-
 }
+

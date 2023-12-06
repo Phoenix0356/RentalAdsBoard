@@ -19,9 +19,8 @@ public class UserController extends BaseController{
     }
 
     @PutMapping("/board/update")
-    public ResultVo updateUserById(@ModelAttribute("userId") Integer userId,
+    public ResultVo updateUserById(@RequestAttribute("userId") Integer userId,
                                    @RequestBody()UserVo userVo){
-
         return userService.updateUserById(userId,userVo);
     }
     @PostMapping("/board/login")

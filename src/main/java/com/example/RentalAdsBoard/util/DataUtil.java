@@ -35,8 +35,6 @@ public class DataUtil {
 
             //String resourcesPath = new ClassPathResource(path).getFile().getAbsolutePath();
             String resourcesPath = System.getProperty("user.dir") + "\\src\\main\\resources\\" + path;
-            System.out.println(resourcesPath);
-
 
             // if user don't upload an image
             if (pictureBase64 == null || pictureBase64.isEmpty()) {
@@ -50,7 +48,6 @@ public class DataUtil {
                 String alterFileName = UUID.randomUUID().toString();
                 newPath = resourcesPath + "\\" + alterFileName + ".png";
                 String base64WithoutPrefix = pictureBase64.replaceFirst("^data:image/\\w+;base64,", "");
-                System.out.println(newPath);
                 byte[] pictureBytes = Base64.getDecoder().decode(base64WithoutPrefix);
                 //save the new image
                 Files.write(Paths.get(newPath), pictureBytes);

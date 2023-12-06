@@ -14,15 +14,15 @@
         <!-- Database connection properties -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
 <!--        <property name="hibernate.connection.url">jdbc:postgresql://192.168.1.109:5432/Rental_ads_board</property>-->
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>
-<!--        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/Rental_ads_board</property>-->
+<!--        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>-->
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/Rental_ads_board</property>
         <property name="hibernate.connection.username">postgres</property>
-<!--        <property name="hibernate.connection.password">hdu</property>-->
-        <property name="hibernate.connection.password">admin</property>
+        <property name="hibernate.connection.password">hdu</property>
+<!--        <property name="hibernate.connection.password">admin</property>-->
 
         <!-- Other Hibernate properties -->
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
-        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.show_sql">false</property>
         <property name="hibernate.format_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
 <!---->
