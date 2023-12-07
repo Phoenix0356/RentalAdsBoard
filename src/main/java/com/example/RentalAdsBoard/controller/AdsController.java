@@ -12,12 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 public class AdsController {
     @Autowired
     AdService adService;
-    //get ads for home page
+    // get all ads list
     @GetMapping("/ads/list")
     public ResultVo getLatestAdsList(){
         return adService.getLatestAdList();
     }
-    //get ads owned by the user
+    //get ads list posted by user with pagination
     @GetMapping("/ads/list/self")
     public ResultVo getUserAds(HttpServletRequest request){
         Integer userId=(Integer) request.getAttribute("userId");
@@ -28,7 +28,8 @@ public class AdsController {
     public ResultVo getAdById(@RequestParam("ad_id")Integer adId){
         return adService.getAdById(adId);
     }
-    @GetMapping("/ads/get/index")
+    // get ads list with pagination
+    @GetMapping("/ads/list/index")
     public ResultVo getAdFromIndex(@RequestParam("start_number")Integer startNumber,
                                    @RequestParam("ads_number")Integer adsNumber){
         return adService.getAdsFromIndex(startNumber,adsNumber);
@@ -46,11 +47,6 @@ public class AdsController {
         Integer userId=(Integer) request.getAttribute("userId");
         return adService.updateAdById(userId,adVo);
     }
-
-//    @PutMapping("/ads/update")
-//    public ResultVo updateAd(@RequestBody() AdVo adVo ){
-//        return adService.SaveOrUpdateAd(adVo);
-//    }
 
     @DeleteMapping("/ads/delete")
     public ResultVo deleteAd(@RequestParam("ad_id")Integer adId){

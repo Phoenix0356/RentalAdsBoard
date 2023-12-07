@@ -9,16 +9,17 @@ import org.springframework.web.bind.annotation.*;
 public class PictureController {
     @Autowired
     PictureService pictureService;
-
+    // get a picture by pictureId
     @GetMapping("/picture/get")
     public ResultVo getPictureById(@RequestParam("picture_id")Integer pictureId){
         return pictureService.getPictureById(pictureId);
     }
-    //获取用户主页广告的第一张图片
+    // get the first picture of the ad
     @GetMapping("/picture/ad/first")
     public ResultVo getAdFirstPicture(@RequestParam("ad_id")Integer adId){
         return pictureService.getAdFirstPicture(adId);
     }
+    // get all pictures list of the ad
     @GetMapping("/picture/ad/list")
     public ResultVo getPictureListById(@RequestParam("ad_id") Integer adId){
         return pictureService.getAdPictureList(adId);

@@ -13,13 +13,14 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     UserService userService;
+    // get userinfo by token or given username
     @GetMapping("/user/get")
     public ResultVo getUser(HttpServletRequest request,
                             @RequestParam("username") Optional<String> username) throws Exception {
         Integer userId=(Integer) request.getAttribute("userId");
         return userService.getUser(userId,username.orElse(null));
     }
-
+    // update username, email, avatar
     @PutMapping("/user/update/info")
     public ResultVo updateUserById(HttpServletRequest request,
                                    @RequestBody()UserVo userVo){
@@ -41,16 +42,18 @@ public class UserController {
         Integer userId=(Integer) request.getAttribute("userId");
         return userService.updateUserPassword(userId,userVo);
     }
+    // a user deleting himself
     @DeleteMapping("/user/delete")
     public ResultVo deleteUserById(HttpServletRequest request) {
         Integer userId=(Integer) request.getAttribute("userId");
         return userService.deleteUserById(userId);
     }
+    // get all users list
     @GetMapping("/user/list")
     public ResultVo getUsersList(){
         return userService.getUsersList();
     }
-
+    // admin deleting other user
     @DeleteMapping("/user/admin/delete")
     public ResultVo deleteUserByAdmin(HttpServletRequest request,
                                       @RequestParam("username") String username){
@@ -58,7 +61,7 @@ public class UserController {
         if (role<2) return new ResultVo().error("Permission denied");
         return userService.deleteUserByAdmin(username);
     }
-
+    // admin switching other user's role
     @PutMapping("/user/admin/role")
     public ResultVo manageAuthority(HttpServletRequest request,
                                     @RequestParam("roleChanged") Integer roleChanged,
@@ -68,6 +71,7 @@ public class UserController {
         if (role<2) return new ResultVo().error("Permission denied");
         return userService.manageAuthority(username,roleChanged,userId);
     }
+    // admin resetting other user's password
     @PutMapping("/user/admin/resetPassword")
     public ResultVo resetPassword(HttpServletRequest request,
                                    @RequestParam("username") String username){
