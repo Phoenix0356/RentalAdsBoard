@@ -12,16 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 public class AdsController {
     @Autowired
     AdService adService;
-    //get ads for home page
-    @GetMapping("/ads/home")
-    public ResultVo getLatestAdsList(){
-        return adService.getLatestAdList();
-    }
-    //get ads owned by the user
     @GetMapping("/ads/get")
-    public ResultVo getUserAds(HttpServletRequest request){
+    public ResultVo getUserAds(HttpServletRequest request,
+                               @RequestParam("page_number")Integer page_number,
+                               @RequestParam("size")Integer size){
         Integer userId=(Integer) request.getAttribute("userId");
-        return adService.getUserAdList(userId);
+        return adService.getUserAdList(userId,page_number,size);
     }
     //get one ad by adId
     @GetMapping("/ads/user/get")
@@ -29,9 +25,9 @@ public class AdsController {
         return adService.getAdById(adId);
     }
     @GetMapping("/ads/index/get")
-    public ResultVo getAdFromIndex(@RequestParam("start_number")Integer startNumber,
-                                   @RequestParam("ads_number")Integer adsNumber){
-        return adService.getAdsFromIndex(startNumber,adsNumber);
+    public ResultVo getAdFromIndex(@RequestParam("page_number") Integer pageNumber,
+                                   @RequestParam("size") Integer size){
+        return adService.getAdsFromIndex(pageNumber,size);
     }
     @PostMapping("/ads/save")
     public ResultVo saveAd(HttpServletRequest request,
@@ -46,11 +42,6 @@ public class AdsController {
         Integer userId=(Integer) request.getAttribute("userId");
         return adService.updateAdById(userId,adVo);
     }
-
-//    @PutMapping("/ads/update")
-//    public ResultVo updateAd(@RequestBody() AdVo adVo ){
-//        return adService.SaveOrUpdateAd(adVo);
-//    }
 
     @DeleteMapping("/ads/delete")
     public ResultVo deleteAd(@RequestParam("ad_id")Integer adId){
