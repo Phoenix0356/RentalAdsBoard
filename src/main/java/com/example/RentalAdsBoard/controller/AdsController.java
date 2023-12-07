@@ -13,22 +13,22 @@ public class AdsController {
     @Autowired
     AdService adService;
     //get ads for home page
-    @GetMapping("/ads/home")
+    @GetMapping("/ads/list")
     public ResultVo getLatestAdsList(){
         return adService.getLatestAdList();
     }
     //get ads owned by the user
-    @GetMapping("/ads/get")
+    @GetMapping("/ads/list/self")
     public ResultVo getUserAds(HttpServletRequest request){
         Integer userId=(Integer) request.getAttribute("userId");
         return adService.getUserAdList(userId);
     }
     //get one ad by adId
-    @GetMapping("/ads/user/get")
+    @GetMapping("/ads/get")
     public ResultVo getAdById(@RequestParam("ad_id")Integer adId){
         return adService.getAdById(adId);
     }
-    @GetMapping("/ads/index/get")
+    @GetMapping("/ads/get/index")
     public ResultVo getAdFromIndex(@RequestParam("start_number")Integer startNumber,
                                    @RequestParam("ads_number")Integer adsNumber){
         return adService.getAdsFromIndex(startNumber,adsNumber);

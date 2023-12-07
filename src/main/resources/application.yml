@@ -6,12 +6,10 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     #url: jdbc:postgresql://game-meet-werewolf.ngrok-free.app/Rental_ads_board
-#    url: jdbc:postgresql://192.168.1.109:5432/Rental_ads_board
-#    url: jdbc:postgresql://localhost:5432/postgres
-    url: jdbc:postgresql://localhost:5432/Rental_ads_board
+    #    url: jdbc:postgresql://0.tcp.jp.ngrok.io:17424/Rental_ads_board
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-#    password: admin
-    password: hdu
+    password: 123456
 
 avatar_storage:
   path: static\avatar
@@ -24,6 +22,6 @@ jwt:
   #  60*60*24
   expiration: 86400
 
-
+excludePaths: /board/login,/board/register
 
 

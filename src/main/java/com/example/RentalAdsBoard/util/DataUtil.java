@@ -39,7 +39,7 @@ public class DataUtil {
             // if user don't upload an image
             if (pictureBase64 == null || pictureBase64.isEmpty()) {
                 if (isAvatar) {
-                    return resourcesPath + "\\" + "default.jpg";
+                    return resourcesPath + "\\" + "default.webp";
                 } else return null;
             }
             // if user uploads an image
