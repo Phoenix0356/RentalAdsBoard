@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-@Scope("prototype")
 public class AdDao {
     public Ad getById(Integer adId){
         Transaction transaction=null;

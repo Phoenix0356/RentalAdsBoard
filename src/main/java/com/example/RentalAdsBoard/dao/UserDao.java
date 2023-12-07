@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-@Scope("prototype")
 public class UserDao {
     //get User after login
     public User getById(Integer userId){

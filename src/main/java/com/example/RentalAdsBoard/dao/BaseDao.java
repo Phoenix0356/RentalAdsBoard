@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Scope("prototype")
 public class BaseDao<T> {
     public Integer save(T entity) {
         Transaction transaction = null;

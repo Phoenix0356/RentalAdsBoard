@@ -2,16 +2,24 @@ package com.example.RentalAdsBoard.service.serviceImpl;
 
 import com.example.RentalAdsBoard.dao.AdDao;
 import com.example.RentalAdsBoard.dao.BaseDao;
+import com.example.RentalAdsBoard.dao.PageDao;
 import com.example.RentalAdsBoard.dao.UserDao;
 import com.example.RentalAdsBoard.entity.Ad;
 import com.example.RentalAdsBoard.entity.User;
 import com.example.RentalAdsBoard.service.AdService;
 import com.example.RentalAdsBoard.vo.AdVo;
+import com.example.RentalAdsBoard.vo.PageVo;
 import com.example.RentalAdsBoard.vo.ResultVo;
+import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -22,6 +30,8 @@ public class AdServiceImpl implements AdService {
     AdDao adDao;
     @Autowired
     UserDao userDao;
+    @Autowired
+    PageDao pageDao;
     @Override
     public ResultVo getUserAdList(Integer userId){
         List<AdVo> adVoList=new ArrayList<>();
@@ -57,20 +67,28 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public ResultVo getAdsFromIndex(int startNumber, int adsNumber){
+    public ResultVo getAdsFromIndex(Integer pageNumber, Integer size){
         List<AdVo> adVoList=new ArrayList<>();
+        PageVo pageVo=new PageVo();
+        long totalPages;
         try {
-            List<Ad> list=adDao.getAdsList();
+            Sort sort = Sort.by(Sort.Direction.DESC, "adId");
+            Pageable pageable= PageRequest.of(pageNumber, size,sort);
+            Page<Ad> page=pageDao.findAll(pageable);
+            totalPages=page.getTotalElements();
 
-            for (Ad ad:list){
+            for (Ad ad:page){
                 AdVo adVo=new AdVo();
                 adVo.setAdVo(ad);
                 adVoList.add(adVo);
             }
+
+            pageVo.setTotalPage(totalPages);
+            pageVo.setList(adVoList);
         }catch (Exception e){
             return new ResultVo().error("load ads failed");
         }
-        return new ResultVo().success(adVoList);
+        return new ResultVo().success(pageVo);
     }
     @Override
     public ResultVo getAdById(Integer adId){

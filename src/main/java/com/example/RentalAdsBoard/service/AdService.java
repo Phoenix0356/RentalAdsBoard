@@ -10,7 +10,7 @@ public interface AdService {
 
     ResultVo getLatestAdList();
 
-    ResultVo getAdsFromIndex(int startNumber, int adsNumber);
+    ResultVo getAdsFromIndex(Integer startNumber, Integer adsNumber);
 
     ResultVo getAdById(Integer adId);
 

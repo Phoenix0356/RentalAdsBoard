@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-@Scope("prototype")
 public class PictureDao {
     public Picture getPictureById(Integer pictureId){
         Transaction transaction=null;

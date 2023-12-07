@@ -28,9 +28,9 @@ public class AdsController extends BaseController{
         return adService.getAdById(adId);
     }
     @GetMapping("/ads/index/get")
-    public ResultVo getAdFromIndex(@RequestParam("start_number")Integer startNumber,
-                                   @RequestParam("ads_number")Integer adsNumber){
-        return adService.getAdsFromIndex(startNumber,adsNumber);
+    public ResultVo getAdFromIndex(@RequestParam("page")Integer page,
+                                   @RequestParam("size")Integer size){
+        return adService.getAdsFromIndex(page,size);
     }
     @PostMapping("/ads/save")
     public ResultVo saveAd(@ModelAttribute("userId") Integer userId,
