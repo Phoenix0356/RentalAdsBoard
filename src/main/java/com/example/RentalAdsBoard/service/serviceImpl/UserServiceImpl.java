@@ -35,8 +35,7 @@ public class UserServiceImpl implements UserService  {
     private UserPageDao userPageDao;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Value("${avatar_storage.path}")
-    private String path;
+
     @Override
     public ResultVo getUser(Integer userId, String username) {
         UserVo userVo=new UserVo();
@@ -81,7 +80,7 @@ public class UserServiceImpl implements UserService  {
             User user=userDao.getById(userId);
             user.setUsername(userVo.getUsername());
             user.setEmail(userVo.getEmail());
-            user.setAvatarPath(DataUtil.saveOrUpdateImage(userVo.getAvatarBase64(), user.getAvatarPath(),path,true));
+            user.setAvatarPath(DataUtil.saveOrUpdateImage(userVo.getAvatarBase64(), user.getAvatarPath(),"static\\avatar",true));
             baseDao.update(user);
         }catch (Exception e){
             return new ResultVo().error("update user info failed");
@@ -159,7 +158,7 @@ public class UserServiceImpl implements UserService  {
             user.setPassword(passwordEncoder.encodePassword(registerVo.getPassword()));
             user.setEmail(registerVo.getEmail());
             user.setRole(Integer.parseInt(registerVo.getRole()));
-            user.setAvatarPath(DataUtil.saveOrUpdateImage(registerVo.getAvatarBase64(),user.getAvatarPath(),path,true));
+            user.setAvatarPath(DataUtil.saveOrUpdateImage(registerVo.getAvatarBase64(),user.getAvatarPath(),"static\\avatar",true));
             userId=baseDao.save(user);
         }catch (Exception e){
             return new ResultVo().error("register failed");

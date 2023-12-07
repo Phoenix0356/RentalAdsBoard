@@ -109,25 +109,19 @@ public class AdServiceImpl implements AdService {
     }
     @Override
     public ResultVo SaveAdById(Integer userId,AdVo adVo){
-        boolean saveFlag=true;
         try {
-            Ad ad;
-            if (adVo.getAdId()==null)ad =new Ad();
-            else {
-                saveFlag=false;
-                ad=adDao.getById(adVo.getAdId());
-            }
+            Ad ad=new Ad();
 
             ad.setAddress(adVo.getAddress());
             ad.setTitle(adVo.getTitle());
             ad.setDescription(adVo.getDescription());
 
-            if (saveFlag){
-                User user=userDao.getById(userId);
-                ad.setUser(user);
-                int adId=baseDao.save(ad);
-                adVo.setAdId(adId);
-            }else baseDao.update(ad);
+            User user=userDao.getById(userId);
+            ad.setUser(user);
+
+            int adId=baseDao.save(ad);
+            adVo.setAdId(adId);
+
 
         }catch (Exception e){
             return new ResultVo().error("save ad failed");
