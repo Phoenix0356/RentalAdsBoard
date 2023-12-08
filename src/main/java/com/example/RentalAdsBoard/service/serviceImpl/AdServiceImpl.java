@@ -53,22 +53,6 @@ public class AdServiceImpl implements AdService {
         }
         return new ResultVo().success(pageVo);
     }
-    @Override
-    public ResultVo getLatestAdList(){
-        List<AdVo> adVoList=new ArrayList<>();
-        try {
-            List<Ad> list=adDao.getAdsList();
-
-            for (Ad ad:list){
-               AdVo adVo=new AdVo();
-               adVo.setAdVo(ad);
-               adVoList.add(adVo);
-            }
-        }catch (Exception e){
-            return new ResultVo().error("load ads list failed");
-        }
-        return new ResultVo().success(adVoList);
-    }
 
     @Override
     public ResultVo getAdsFromIndex(Integer pageNumber, Integer size){

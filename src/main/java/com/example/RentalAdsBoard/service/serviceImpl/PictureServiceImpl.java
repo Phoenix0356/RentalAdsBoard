@@ -102,8 +102,6 @@ public class PictureServiceImpl implements PictureService {
 
         }catch (Exception e){
             return new ResultVo().error("Update picture failed");
-
-
         }
         return new ResultVo().success(pictureVo);
     }
