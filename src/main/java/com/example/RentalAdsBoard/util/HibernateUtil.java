@@ -11,10 +11,8 @@ public class HibernateUtil {
 
     static {
         try {
-            // 创建SessionFactory
             sessionFactory = new Configuration().configure().buildSessionFactory();
         } catch (Throwable ex) {
-            // 确保SessionFactory创建失败时，抛出异常
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }

@@ -1,21 +1,18 @@
 server:
-  port: 8091
+  port: 9810
 
 spring:
   #Postgresql
   datasource:
     driver-class-name: org.postgresql.Driver
-    #url: jdbc:postgresql://game-meet-werewolf.ngrok-free.app/Rental_ads_board
-    #    url: jdbc:postgresql://0.tcp.jp.ngrok.io:17424/Rental_ads_board
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: 123456
 
 jwt:
-  secret: fhajshVRBUslhfihvmfahFSFSGgliaebhgiojfcoSFSDFhgiwf
+  secret: kdgKDBSAHFSDkjfhsFBSDBFDSFsalfjsaDAHDhfkjsdsfsdfsdfdsfGENSHIN
   #  60*60*24
   expiration: 86400
 
-excludePaths: /board/login,/board/register
 
 

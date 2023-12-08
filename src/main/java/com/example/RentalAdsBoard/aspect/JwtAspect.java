@@ -37,11 +37,11 @@ public class JwtAspect {
                 Integer role = Integer.parseInt(claims.get("role").toString());
                 request.setAttribute("userId", userId);
                 request.setAttribute("role",role);
-            } catch (JwtException ex) {
-                throw new JwtException("invalid token, need to login");
+            } catch (JwtException je) {
+                throw new JwtException("Auth expired, please re-login");
             }
         } else {
-            throw new JwtException("illegal token");
+            throw new JwtException("Illegal token");
         }
     }
 

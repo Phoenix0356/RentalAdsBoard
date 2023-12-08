@@ -1,5 +1,6 @@
 package com.example.RentalAdsBoard.service.serviceImpl;
 
+import com.example.RentalAdsBoard.controller.exception.DataBaseException;
 import com.example.RentalAdsBoard.dao.BaseDao;
 import com.example.RentalAdsBoard.dao.UserDao;
 import com.example.RentalAdsBoard.dao.pageDao.UserPageDao;
@@ -37,20 +38,20 @@ public class UserServiceImpl implements UserService  {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public ResultVo getUser(Integer userId, String username) {
+    public ResultVo getUser(Integer userId, String username) throws DataBaseException {
         UserVo userVo=new UserVo();
         try {
             User user=username==null?userDao.getById(userId):userDao.getByUsername(username);
             userVo.setUserVo(user);
         } catch (Exception e){
 
-            return new ResultVo().error("Failed loading user info");
+            throw new DataBaseException("Failed loading user info");
         }
         return new ResultVo().success(userVo);
     }
 
     @Override
-    public ResultVo getUsersList(Integer pageNumber, Integer size){
+    public ResultVo getUsersList(Integer pageNumber, Integer size) throws DataBaseException {
         List<UserVo> userVoList=new ArrayList<>();
         PageVo<UserVo> pageVo=new PageVo<>();
 
@@ -70,12 +71,12 @@ public class UserServiceImpl implements UserService  {
             pageVo.setTotalPages(totalPages);
 
         }catch (Exception e){
-            return new ResultVo().error("Failed loading users list");
+            throw new DataBaseException("Failed loading users list");
         }
         return new ResultVo().success(pageVo);
     }
     @Override
-    public ResultVo updateUserById(Integer userId,UserVo userVo){
+    public ResultVo updateUserById(Integer userId,UserVo userVo) throws DataBaseException {
         try {
             User user=userDao.getById(userId);
             user.setUsername(userVo.getUsername());
@@ -83,12 +84,12 @@ public class UserServiceImpl implements UserService  {
             user.setAvatarPath(DataUtil.saveOrUpdateImage(userVo.getAvatarBase64(), user.getAvatarPath(),"static\\avatar",true));
             baseDao.update(user);
         }catch (Exception e){
-            return new ResultVo().error("Failed updating user info");
+            throw new DataBaseException("Failed updating user info");
         }
         return new ResultVo().success(userVo);
     }
     @Override
-    public ResultVo updateUserPassword(Integer userId,UserVo userVo){
+    public ResultVo updateUserPassword(Integer userId,UserVo userVo) throws DataBaseException {
         try {
             User user=userDao.getById(userId);
             String originPassword= userVo.getOriginPassword();
@@ -96,62 +97,62 @@ public class UserServiceImpl implements UserService  {
             String newPassword= passwordEncoder.encodePassword(userVo.getNewPassword());
 
             if (newPassword.equals(user.getPassword())){
-                return new ResultVo().error("The new password can't be the same with the original password");
+                throw new DataBaseException("The new password can't be the same with the original password");
             }
             if (passwordEncoder.matchPassword(originPassword, user.getPassword())) {
                 user.setPassword(newPassword);
             }
-            else return new ResultVo().error("Wrong password");
+            else throw new DataBaseException("Wrong password");
 
             baseDao.update(user);
         }catch (Exception e){
-            return new ResultVo().error("Failed resetting password");
+            throw new DataBaseException("Failed resetting password");
         }
         return new ResultVo().success();
     }
 
     @Override
-    public ResultVo resetPasswordByManager(String username){
+    public ResultVo resetPasswordByManager(String username) throws DataBaseException {
         try {
             User user=userDao.getByUsername(username);
             user.setPassword(passwordEncoder.encodePassword("12345"));
             baseDao.update(user);
         }catch (Exception e){
-            return new ResultVo().error("Failed resetting password");
+            throw new DataBaseException("Failed resetting password");
         }
 
         return new ResultVo().success();
     }
     @Override
-    public ResultVo deleteUserById(Integer userId){
+    public ResultVo deleteUserById(Integer userId) throws DataBaseException {
         try {
             User user=userDao.getById(userId);
             baseDao.delete(user);
             DataUtil.deleteAllImages(user);
         }catch (Exception e){
-            return new ResultVo().error("Failed deleting user");
+            throw new DataBaseException("Failed deleting user");
         }
         return new ResultVo().success();
     }
 
     @Override
-    public ResultVo deleteUserByAdmin(String username){
+    public ResultVo deleteUserByAdmin(String username) throws DataBaseException {
         try {
             User user=userDao.getByUsername(username);
             baseDao.delete(user);
             DataUtil.deleteAllImages(user);
         }catch (Exception e){
-            return new ResultVo().error("Failed deleting user");
+            throw new DataBaseException("Failed deleting user");
         }
         return new ResultVo().success();
     }
 
     @Override
-    public ResultVo register(RegisterVo registerVo){
+    public ResultVo register(RegisterVo registerVo) throws DataBaseException {
         Integer userId;
         try {
             if (userDao.getByUsername(registerVo.getUsername())!=null){
-                return new ResultVo().error("The name has already been taken");
+                throw new DataBaseException("The name has already been taken");
             }
             User user=new User();
             user.setUsername(registerVo.getUsername());
@@ -161,43 +162,41 @@ public class UserServiceImpl implements UserService  {
             user.setAvatarPath(DataUtil.saveOrUpdateImage(registerVo.getAvatarBase64(),user.getAvatarPath(),"static\\avatar",true));
             userId=baseDao.save(user);
         }catch (Exception e){
-            return new ResultVo().error("Register failed");
+            throw new DataBaseException("Register failed");
         }
-        return new ResultVo().success(jwtTokenUtil.createToken(userId,1));
+        return new ResultVo().success(jwtTokenUtil.genToken(userId,1));
     }
 
     @Override
-    public ResultVo login(LoginVo loginVo){
+    public ResultVo login(LoginVo loginVo) throws DataBaseException {
         Integer userId,role;
         String password;
         try {
             User user=userDao.getByUsername(loginVo.getUsername());
-            if (user==null) return new ResultVo().error("Username not found, please register first");
+            if (user==null) throw new DataBaseException("Username not found, please register first");
             password=user.getPassword();
             userId=user.getUserId();
             role=user.getRole();
 
         } catch (Exception e){
-            return new ResultVo().error("Login failed");
+            throw new DataBaseException("Login failed");
         }
         return passwordEncoder.matchPassword(loginVo.getPassword(),password)?
-                new ResultVo().success(jwtTokenUtil.createToken(userId,role)):new ResultVo().error("Wrong password");
+                new ResultVo().success(jwtTokenUtil.genToken(userId,role)):new ResultVo().error("Wrong password");
     }
     @Override
-    public ResultVo manageAuthority(String username, Integer level, Integer userId) {
+    public ResultVo manageAuthority(String username, Integer level, Integer userId) throws DataBaseException {
 
         try {
             User userTarget=userDao.getByUsername(username);
             userTarget.setRole(level);
             baseDao.update(userTarget);
             if (Objects.equals(userTarget.getUserId(), userId)) {
-                return new ResultVo().success(jwtTokenUtil.createToken(userId,level));
+                return new ResultVo().success(jwtTokenUtil.genToken(userId,level));
             }
         }catch (Exception e){
-            return new ResultVo().error("Failed changing role");
+            throw new DataBaseException("Failed changing role");
         }
         return new ResultVo().success();
     }
-
-
 }

@@ -1,5 +1,6 @@
 package com.example.RentalAdsBoard.service.serviceImpl;
 
+import com.example.RentalAdsBoard.controller.exception.DataBaseException;
 import com.example.RentalAdsBoard.dao.*;
 import com.example.RentalAdsBoard.dao.pageDao.AdPageDao;
 import com.example.RentalAdsBoard.entity.Ad;
@@ -30,7 +31,7 @@ public class AdServiceImpl implements AdService {
     @Autowired
     AdPageDao adpageDao;
     @Override
-    public ResultVo getUserAdList(Integer userId, Integer pageNumber, Integer size){
+    public ResultVo getUserAdList(Integer userId, Integer pageNumber, Integer size) throws DataBaseException {
         List<AdVo> adVoList=new ArrayList<>();
         PageVo<AdVo> pageVo=new PageVo<>();
         try {
@@ -49,13 +50,13 @@ public class AdServiceImpl implements AdService {
             pageVo.setTotalPages(totalPage);
 
         }catch (Exception e){
-            return new ResultVo().error("Failed loading user ads");
+            throw new DataBaseException("Failed loading user ads");
         }
         return new ResultVo().success(pageVo);
     }
 
     @Override
-    public ResultVo getAdsFromIndex(Integer pageNumber, Integer size){
+    public ResultVo getAdsFromIndex(Integer pageNumber, Integer size) throws DataBaseException {
         List<AdVo> adVoList=new ArrayList<>();
         PageVo<AdVo> pageVo=new PageVo<>();
         try {
@@ -75,24 +76,24 @@ public class AdServiceImpl implements AdService {
             pageVo.setTotalPages(totalPages);
 
         }catch (Exception e){
-            return new ResultVo().error("Failed loading ads");
+            throw new DataBaseException("Failed loading ads");
         }
         return new ResultVo().success(pageVo);
     }
     @Override
-    public ResultVo getAdById(Integer adId){
+    public ResultVo getAdById(Integer adId) throws DataBaseException {
         AdVo adVo;
         try {
             Ad ad=adDao.getById(adId);
             adVo=new AdVo();
             adVo.setAdVo(ad);
         }catch (Exception e){
-            return new ResultVo().error("Failed loading ad info");
+            throw new DataBaseException("Failed loading info");
         }
         return new ResultVo().success(adVo);
     }
     @Override
-    public ResultVo SaveAdById(Integer userId,AdVo adVo){
+    public ResultVo SaveAdById(Integer userId,AdVo adVo) throws DataBaseException {
         try {
             Ad ad=new Ad();
 
@@ -108,12 +109,12 @@ public class AdServiceImpl implements AdService {
 
 
         }catch (Exception e){
-            return new ResultVo().error("Failed saving ad");
+            throw new DataBaseException("Failed saving ad");
         }
         return new ResultVo().success(adVo);
     }
     @Override
-    public ResultVo updateAdById(Integer userId,AdVo adVo){
+    public ResultVo updateAdById(Integer userId,AdVo adVo) throws DataBaseException {
         try {
             Ad ad=adDao.getById(adVo.getAdId());
 
@@ -124,20 +125,20 @@ public class AdServiceImpl implements AdService {
             baseDao.update(ad);
 
         }catch (Exception e){
-            return new ResultVo().error("Failed editing ad");
+            throw new DataBaseException("Failed editing ad");
         }
         return new ResultVo().success(adVo);
     }
 
 
     @Override
-    public ResultVo deleteAdById(Integer adId){
+    public ResultVo deleteAdById(Integer adId) throws DataBaseException {
         try {
             Ad ad=adDao.getById(adId);
             baseDao.delete(ad);
             DataUtil.deleteAllImages(ad);
         }catch (Exception e){
-            return new ResultVo().error("Failed deleting ad");
+            throw new DataBaseException("Failed deleting ad");
         }
         return new ResultVo().success();
     }
