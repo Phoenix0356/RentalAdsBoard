@@ -27,18 +27,15 @@ public class JwtTokenUtil {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 
-    private String createToken(HashMap<String,Object> claims){
-        return Jwts.builder()
-                .claims(claims)
-                .expiration(new Date(System.currentTimeMillis() + expiration*1000))
-                .signWith(getSigningKey())
-                .compact();
-    }
     public String createToken(Integer userId,Integer role){
         HashMap<String,Object> claims=new HashMap<>();
         claims.put("sub",String.valueOf(userId));
         claims.put("role",String.valueOf(role));
-        return createToken(claims);
+        claims.put("exp",new Date(System.currentTimeMillis() + expiration*1000));
+        return Jwts.builder()
+                .claims(claims)
+                .signWith(getSigningKey())
+                .compact();
     }
     public Claims validateToken(String token) {
         Claims claims = null;

@@ -37,7 +37,7 @@ public class JwtAspect {
                 Integer role = Integer.parseInt(claims.get("role").toString());
                 request.setAttribute("userId", userId);
                 request.setAttribute("role",role);
-            } catch (JwtException ex) {
+            } catch (JwtException je) {
                 throw new JwtException("invalid token, need to login");
             }
         } else {

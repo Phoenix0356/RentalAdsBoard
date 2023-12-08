@@ -14,10 +14,11 @@ spring:
     password: hdu
 
 jwt:
-  secret: fhajshVRBUslhfihvmfahFSFSGgliaebhgiojfcoSFSDFhgiwf
+  secret: yssxfsfsfawnAgjluvvbgsfgdvebrhsrujrbcatyveynwyexmydmt
   #  60*60*24
   expiration: 86400
 
-
+logging:
+  config: C:\Users\Phoenix\IdeaProjects\RentalAdsBoard\src\main\resources\logback-spring.xml
 
 

@@ -1,5 +1,6 @@
 package com.example.RentalAdsBoard.service.serviceImpl;
 
+import com.example.RentalAdsBoard.controller.exception.DataBaseException;
 import com.example.RentalAdsBoard.dao.*;
 import com.example.RentalAdsBoard.dao.pageDao.AdPageDao;
 import com.example.RentalAdsBoard.entity.Ad;
@@ -55,7 +56,7 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public ResultVo getAdsFromIndex(Integer pageNumber, Integer size){
+    public ResultVo getAdsFromIndex(Integer pageNumber, Integer size) throws DataBaseException {
         List<AdVo> adVoList=new ArrayList<>();
         PageVo<AdVo> pageVo=new PageVo<>();
         try {
@@ -75,24 +76,24 @@ public class AdServiceImpl implements AdService {
             pageVo.setTotalPages(totalPages);
 
         }catch (Exception e){
-            return new ResultVo().error("load ads failed");
+            throw new DataBaseException("get ads failed");
         }
         return new ResultVo().success(pageVo);
     }
     @Override
-    public ResultVo getAdById(Integer adId){
+    public ResultVo getAdById(Integer adId) throws DataBaseException {
         AdVo adVo;
         try {
             Ad ad=adDao.getById(adId);
             adVo=new AdVo();
             adVo.setAdVo(ad);
         }catch (Exception e){
-            return new ResultVo().error("get ads failed");
+            throw new DataBaseException("get ad failed");
         }
         return new ResultVo().success(adVo);
     }
     @Override
-    public ResultVo SaveAdById(Integer userId,AdVo adVo){
+    public ResultVo SaveAdById(Integer userId,AdVo adVo) throws DataBaseException {
         try {
             Ad ad=new Ad();
 
@@ -108,12 +109,12 @@ public class AdServiceImpl implements AdService {
 
 
         }catch (Exception e){
-            return new ResultVo().error("save ad failed");
+            throw new DataBaseException("save ad failed");
         }
         return new ResultVo().success(adVo);
     }
     @Override
-    public ResultVo updateAdById(Integer userId,AdVo adVo){
+    public ResultVo updateAdById(Integer userId,AdVo adVo) throws DataBaseException {
         try {
             Ad ad=adDao.getById(adVo.getAdId());
 
@@ -124,20 +125,20 @@ public class AdServiceImpl implements AdService {
             baseDao.update(ad);
 
         }catch (Exception e){
-            return new ResultVo().error("update ad failed");
+            throw new DataBaseException("update ad failed");
         }
         return new ResultVo().success(adVo);
     }
 
 
     @Override
-    public ResultVo deleteAdById(Integer adId){
+    public ResultVo deleteAdById(Integer adId) throws DataBaseException {
         try {
             Ad ad=adDao.getById(adId);
             baseDao.delete(ad);
             DataUtil.deleteAllPictures(ad);
         }catch (Exception e){
-            return new ResultVo().error("delete ad failed");
+            throw new DataBaseException("delete ad failed");
         }
         return new ResultVo().success();
     }

@@ -1,5 +1,6 @@
 package com.example.RentalAdsBoard.service.serviceImpl;
 
+import com.example.RentalAdsBoard.controller.exception.DataBaseException;
 import com.example.RentalAdsBoard.dao.AdDao;
 import com.example.RentalAdsBoard.dao.BaseDao;
 import com.example.RentalAdsBoard.dao.PictureDao;
@@ -25,18 +26,18 @@ public class PictureServiceImpl implements PictureService {
     @Autowired
     private AdDao adDao;
     @Override
-    public ResultVo getPictureById(Integer pictureId){
+    public ResultVo getPictureById(Integer pictureId) throws DataBaseException {
         PictureVo pictureVo = new PictureVo();
         try {
             Picture picture=pictureDao.getPictureById(pictureId);
             pictureVo.setPictureVo(picture);
         }catch (Exception e){
-            return new ResultVo().error("get picture failed");
+            throw new DataBaseException("get picture failed");
         }
         return new ResultVo().success(pictureVo);
     }
     @Override
-    public ResultVo getAdFirstPicture(Integer adId){
+    public ResultVo getAdFirstPicture(Integer adId) throws DataBaseException {
         PictureVo pictureVo=new PictureVo();
         try {
 
@@ -46,12 +47,12 @@ public class PictureServiceImpl implements PictureService {
             pictureVo.setPictureVo(picture);
 
         }catch (Exception e){
-            return new ResultVo().error("load picture failed");
+            throw new DataBaseException("get picture failed");
         }
         return new ResultVo().success(pictureVo);
     }
     @Override
-    public ResultVo getAdPictureList(Integer adId){
+    public ResultVo getAdPictureList(Integer adId) throws DataBaseException {
 
         List<PictureVo> listVo = new ArrayList<>();
         try {
@@ -64,13 +65,13 @@ public class PictureServiceImpl implements PictureService {
             }
 
         }catch (Exception e){
-            return new ResultVo().error("load picture list failed");
+            throw new DataBaseException("load pictures failed");
         }
         return new ResultVo().success(listVo);
     }
 
     @Override
-    public ResultVo savePictureById(PictureVo pictureVo){
+    public ResultVo savePictureById(PictureVo pictureVo) throws DataBaseException {
         try {
             Picture picture=new Picture();
 
@@ -83,13 +84,13 @@ public class PictureServiceImpl implements PictureService {
             pictureVo.setPictureId(pictureId);
 
         }catch (Exception e){
-            return new ResultVo().error("save picture failed");
+            throw new DataBaseException("save picture failed");
         }
         return new ResultVo().success(pictureVo);
     }
 
     @Override
-    public ResultVo updatePictureById(PictureVo pictureVo){
+    public ResultVo updatePictureById(PictureVo pictureVo) throws DataBaseException {
         try {
             Picture picture=pictureDao.getPictureById(pictureVo.getPictureId());
 
@@ -101,17 +102,17 @@ public class PictureServiceImpl implements PictureService {
             baseDao.update(picture);
 
         }catch (Exception e){
-            return new ResultVo().error("Update picture failed");
+            throw new DataBaseException("save picture failed");
         }
         return new ResultVo().success(pictureVo);
     }
 
     @Override
-    public ResultVo deletePictureById(Integer pictureId){
+    public ResultVo deletePictureById(Integer pictureId) throws DataBaseException {
         try {
             baseDao.delete(pictureDao.getPictureById(pictureId));
         }catch (Exception e){
-            return new ResultVo().error("delete picture failed");
+            throw new DataBaseException("delete picture failed");
         }
         return new ResultVo().success();
     }
