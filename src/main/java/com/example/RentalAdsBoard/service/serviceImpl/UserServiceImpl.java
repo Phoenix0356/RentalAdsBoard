@@ -2,6 +2,8 @@ package com.example.RentalAdsBoard.service.serviceImpl;
 
 import com.example.RentalAdsBoard.dao.BaseDao;
 import com.example.RentalAdsBoard.dao.UserDao;
+import com.example.RentalAdsBoard.dao.pageDao.UserPageDao;
+import com.example.RentalAdsBoard.entity.Ad;
 import com.example.RentalAdsBoard.entity.User;
 import com.example.RentalAdsBoard.service.UserService;
 
@@ -11,6 +13,10 @@ import com.example.RentalAdsBoard.util.PasswordEncoder;
 import com.example.RentalAdsBoard.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,9 +32,10 @@ public class UserServiceImpl implements UserService  {
     @Autowired
     private BaseDao<User> baseDao;
     @Autowired
+    private UserPageDao userPageDao;
+    @Autowired
     private PasswordEncoder passwordEncoder;
-    @Value("${avatar_storage.path}")
-    private String path;
+
     @Override
     public ResultVo getUser(Integer userId, String username) {
         UserVo userVo=new UserVo();
@@ -43,20 +50,29 @@ public class UserServiceImpl implements UserService  {
     }
 
     @Override
-    public ResultVo getUsersList(){
+    public ResultVo getUsersList(Integer pageNumber, Integer size){
         List<UserVo> userVoList=new ArrayList<>();
+        PageVo<UserVo> pageVo=new PageVo<>();
+
         try {
-            List<User> list=userDao.getUsersList();
-            for (User user:list){
+            Sort sort = Sort.by(Sort.Direction.DESC, "userId");
+            Pageable pageable= PageRequest.of(pageNumber, size,sort);
+            Page<User> page=userPageDao.findAll(pageable);
+            long totalPages=page.getTotalPages();
+
+            for (User user:page){
                 UserVo userVo=new UserVo();
                 userVo.setUserVo(user);
                 userVoList.add(userVo);
             }
 
+            pageVo.setVoList(userVoList);
+            pageVo.setTotalPages(totalPages);
+
         }catch (Exception e){
             return new ResultVo().error("get user list failed");
         }
-        return new ResultVo().success(userVoList);
+        return new ResultVo().success(pageVo);
     }
     @Override
     public ResultVo updateUserById(Integer userId,UserVo userVo){
@@ -64,7 +80,7 @@ public class UserServiceImpl implements UserService  {
             User user=userDao.getById(userId);
             user.setUsername(userVo.getUsername());
             user.setEmail(userVo.getEmail());
-            user.setAvatarPath(DataUtil.saveOrUpdateImage(userVo.getAvatarBase64(), user.getAvatarPath(),path,true));
+            user.setAvatarPath(DataUtil.saveOrUpdateImage(userVo.getAvatarBase64(), user.getAvatarPath(),"static\\avatar",true));
             baseDao.update(user);
         }catch (Exception e){
             return new ResultVo().error("update user info failed");
@@ -142,7 +158,7 @@ public class UserServiceImpl implements UserService  {
             user.setPassword(passwordEncoder.encodePassword(registerVo.getPassword()));
             user.setEmail(registerVo.getEmail());
             user.setRole(Integer.parseInt(registerVo.getRole()));
-            user.setAvatarPath(DataUtil.saveOrUpdateImage(registerVo.getAvatarBase64(),user.getAvatarPath(),path,true));
+            user.setAvatarPath(DataUtil.saveOrUpdateImage(registerVo.getAvatarBase64(),user.getAvatarPath(),"static\\avatar",true));
             userId=baseDao.save(user);
         }catch (Exception e){
             return new ResultVo().error("register failed");

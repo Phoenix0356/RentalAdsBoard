@@ -6,11 +6,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface AdService {
-    ResultVo getUserAdList(Integer userId);
+    ResultVo getUserAdList(Integer userId,Integer pageNumber,Integer size);
 
-    ResultVo getLatestAdList();
-
-    ResultVo getAdsFromIndex(int startNumber, int adsNumber);
+    ResultVo getAdsFromIndex(Integer pageNumber, Integer size);
 
     ResultVo getAdById(Integer adId);
 

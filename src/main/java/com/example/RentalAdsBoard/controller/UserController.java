@@ -13,56 +13,54 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     UserService userService;
-    // get userinfo by token or given username
-    @GetMapping("/user/get")
+    @GetMapping("/board/home")
     public ResultVo getUser(HttpServletRequest request,
                             @RequestParam("username") Optional<String> username) throws Exception {
         Integer userId=(Integer) request.getAttribute("userId");
         return userService.getUser(userId,username.orElse(null));
     }
-    // update username, email, avatar
-    @PutMapping("/user/update/info")
+
+    @PutMapping("/board/update")
     public ResultVo updateUserById(HttpServletRequest request,
                                    @RequestBody()UserVo userVo){
         Integer userId=(Integer) request.getAttribute("userId");
         return userService.updateUserById((Integer) userId,userVo);
     }
-    @PostMapping("/user/login")
+    @PostMapping("/board/login")
     public ResultVo login(@RequestBody() LoginVo loginVo){
 
         return userService.login(loginVo);
     }
-    @PostMapping("/user/register")
+    @PostMapping("/board/register")
     public ResultVo register(@RequestBody()RegisterVo registerVo){
         return userService.register(registerVo);
     }
-    @PutMapping("/user/update/password")
+    @PutMapping("/board/update/password")
     public ResultVo updatePassword(HttpServletRequest request,
                                    @RequestBody() UserVo userVo){
         Integer userId=(Integer) request.getAttribute("userId");
         return userService.updateUserPassword(userId,userVo);
     }
-    // a user deleting himself
-    @DeleteMapping("/user/delete")
+    @DeleteMapping("/board/delete")
     public ResultVo deleteUserById(HttpServletRequest request) {
         Integer userId=(Integer) request.getAttribute("userId");
         return userService.deleteUserById(userId);
     }
-    // get all users list
-    @GetMapping("/user/list")
-    public ResultVo getUsersList(){
-        return userService.getUsersList();
+    @GetMapping("/board/root")
+    public ResultVo getUsersList(@RequestParam("page_number") Integer pageNumber,
+                                 @RequestParam("size")Integer size){
+        return userService.getUsersList(pageNumber,size);
     }
-    // admin deleting other user
-    @DeleteMapping("/user/admin/delete")
+
+    @DeleteMapping("/board/root/delete")
     public ResultVo deleteUserByAdmin(HttpServletRequest request,
                                       @RequestParam("username") String username){
         Integer role=(Integer) request.getAttribute("role");
         if (role<2) return new ResultVo().error("Permission denied");
         return userService.deleteUserByAdmin(username);
     }
-    // admin switching other user's role
-    @PutMapping("/user/admin/role")
+
+    @PutMapping("/board/root/manage")
     public ResultVo manageAuthority(HttpServletRequest request,
                                     @RequestParam("roleChanged") Integer roleChanged,
                                     @RequestParam("username") String username){
@@ -71,8 +69,7 @@ public class UserController {
         if (role<2) return new ResultVo().error("Permission denied");
         return userService.manageAuthority(username,roleChanged,userId);
     }
-    // admin resetting other user's password
-    @PutMapping("/user/admin/resetPassword")
+    @PutMapping("/board/root/resetPassword")
     public ResultVo resetPassword(HttpServletRequest request,
                                    @RequestParam("username") String username){
         Integer role=(Integer) request.getAttribute("role");

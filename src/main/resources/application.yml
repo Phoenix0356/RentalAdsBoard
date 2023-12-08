@@ -11,12 +11,6 @@ spring:
     username: postgres
     password: 123456
 
-avatar_storage:
-  path: static\avatar
-
-picture_storage:
-  path: static\itemPicture
-
 jwt:
   secret: fhajshVRBUslhfihvmfahFSFSGgliaebhgiojfcoSFSDFhgiwf
   #  60*60*24

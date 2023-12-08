@@ -1,15 +1,19 @@
 package com.example.RentalAdsBoard.service.serviceImpl;
 
-import com.example.RentalAdsBoard.dao.AdDao;
-import com.example.RentalAdsBoard.dao.BaseDao;
-import com.example.RentalAdsBoard.dao.UserDao;
+import com.example.RentalAdsBoard.dao.*;
+import com.example.RentalAdsBoard.dao.pageDao.AdPageDao;
 import com.example.RentalAdsBoard.entity.Ad;
 import com.example.RentalAdsBoard.entity.User;
 import com.example.RentalAdsBoard.service.AdService;
 import com.example.RentalAdsBoard.util.DataUtil;
 import com.example.RentalAdsBoard.vo.AdVo;
+import com.example.RentalAdsBoard.vo.PageVo;
 import com.example.RentalAdsBoard.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,55 +27,57 @@ public class AdServiceImpl implements AdService {
     AdDao adDao;
     @Autowired
     UserDao userDao;
+    @Autowired
+    AdPageDao adpageDao;
     @Override
-    public ResultVo getUserAdList(Integer userId){
+    public ResultVo getUserAdList(Integer userId, Integer pageNumber, Integer size){
         List<AdVo> adVoList=new ArrayList<>();
+        PageVo<AdVo> pageVo=new PageVo<>();
         try {
-            List<Ad> list=adDao.getUserADs(userId);
+            Sort sort = Sort.by(Sort.Direction.DESC, "adId");
+            Pageable pageable=PageRequest.of(pageNumber,size,sort);
+            Page<Ad> page=adpageDao.findByUserId(userId,pageable);
+            long totalPage=page.getTotalPages();
 
-            for (Ad ad:list){
+            for (Ad ad:page){
                 AdVo adVo=new AdVo();
                 adVo.setAdVo(ad);
                 adVoList.add(adVo);
             }
+
+            pageVo.setVoList(adVoList);
+            pageVo.setTotalPages(totalPage);
 
         }catch (Exception e){
             return new ResultVo().error("load user ads list failed");
         }
-        return new ResultVo().success(adVoList);
-    }
-    @Override
-    public ResultVo getLatestAdList(){
-        List<AdVo> adVoList=new ArrayList<>();
-        try {
-            List<Ad> list=adDao.getAdsList();
-
-            for (Ad ad:list){
-               AdVo adVo=new AdVo();
-               adVo.setAdVo(ad);
-               adVoList.add(adVo);
-            }
-        }catch (Exception e){
-            return new ResultVo().error("load ads list failed");
-        }
-        return new ResultVo().success(adVoList);
+        return new ResultVo().success(pageVo);
     }
 
     @Override
-    public ResultVo getAdsFromIndex(int startNumber, int adsNumber){
+    public ResultVo getAdsFromIndex(Integer pageNumber, Integer size){
         List<AdVo> adVoList=new ArrayList<>();
+        PageVo<AdVo> pageVo=new PageVo<>();
         try {
-            List<Ad> list=adDao.getAdsList();
 
-            for (Ad ad:list){
+            Sort sort = Sort.by(Sort.Direction.DESC, "adId");
+            Pageable pageable= PageRequest.of(pageNumber, size,sort);
+            Page<Ad> page=adpageDao.findAll(pageable);
+            long totalPages=page.getTotalPages();
+
+            for (Ad ad:page){
                 AdVo adVo=new AdVo();
                 adVo.setAdVo(ad);
                 adVoList.add(adVo);
             }
+
+            pageVo.setVoList(adVoList);
+            pageVo.setTotalPages(totalPages);
+
         }catch (Exception e){
             return new ResultVo().error("load ads failed");
         }
-        return new ResultVo().success(adVoList);
+        return new ResultVo().success(pageVo);
     }
     @Override
     public ResultVo getAdById(Integer adId){
@@ -87,25 +93,19 @@ public class AdServiceImpl implements AdService {
     }
     @Override
     public ResultVo SaveAdById(Integer userId,AdVo adVo){
-        boolean saveFlag=true;
         try {
-            Ad ad;
-            if (adVo.getAdId()==null)ad =new Ad();
-            else {
-                saveFlag=false;
-                ad=adDao.getById(adVo.getAdId());
-            }
+            Ad ad=new Ad();
 
             ad.setAddress(adVo.getAddress());
             ad.setTitle(adVo.getTitle());
             ad.setDescription(adVo.getDescription());
 
-            if (saveFlag){
-                User user=userDao.getById(userId);
-                ad.setUser(user);
-                int adId=baseDao.save(ad);
-                adVo.setAdId(adId);
-            }else baseDao.update(ad);
+            User user=userDao.getById(userId);
+            ad.setUser(user);
+
+            int adId=baseDao.save(ad);
+            adVo.setAdId(adId);
+
 
         }catch (Exception e){
             return new ResultVo().error("save ad failed");

@@ -24,8 +24,6 @@ public class PictureServiceImpl implements PictureService {
     private BaseDao<Picture> baseDao;
     @Autowired
     private AdDao adDao;
-    @Value("${picture_storage.path}")
-    private String path;
     @Override
     public ResultVo getPictureById(Integer pictureId){
         PictureVo pictureVo = new PictureVo();
@@ -76,11 +74,10 @@ public class PictureServiceImpl implements PictureService {
         try {
             Picture picture=new Picture();
 
-
             Ad ad=adDao.getById(pictureVo.getAdId());
             picture.setAd(ad);
 
-            picture.setPath(DataUtil.saveOrUpdateImage(pictureVo.getPictureBase64(), picture.getPath(), path,false));
+            picture.setPath(DataUtil.saveOrUpdateImage(pictureVo.getPictureBase64(), picture.getPath(), "static\\picture",false));
 
             int pictureId = baseDao.save(picture);
             pictureVo.setPictureId(pictureId);
@@ -99,14 +96,12 @@ public class PictureServiceImpl implements PictureService {
 
             Ad ad=adDao.getById(pictureVo.getAdId());
             picture.setAd(ad);
-            picture.setPath(DataUtil.saveOrUpdateImage(pictureVo.getPictureBase64(), picture.getPath(), path,false));
+            picture.setPath(DataUtil.saveOrUpdateImage(pictureVo.getPictureBase64(), picture.getPath(), "static\\picture",false));
 
             baseDao.update(picture);
 
         }catch (Exception e){
             return new ResultVo().error("Update picture failed");
-
-
         }
         return new ResultVo().success(pictureVo);
     }
