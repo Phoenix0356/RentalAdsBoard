@@ -2,7 +2,7 @@ package com.example.RentalAdsBoard.util;
 
 
 import com.example.RentalAdsBoard.entity.BaseEntity;
-import com.example.RentalAdsBoard.entity.Picture;
+import com.example.RentalAdsBoard.entity.Image;
 import com.example.RentalAdsBoard.entity.User;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -16,18 +16,18 @@ import java.util.*;
 public class DataUtil {
     //    @Value("${avatar_storage.default}")
 //    private String defaultAvatar;
-    public static String pictureToBase64(String path) {
-        String pictureBase64;
+    public static String imageToBase64(String path) {
+        String imageBase64;
         try {
-            byte[] pictureBytes = Files.readAllBytes(Paths.get(path));
-            pictureBase64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(pictureBytes);
+            byte[] imageBytes = Files.readAllBytes(Paths.get(path));
+            imageBase64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(imageBytes);
         } catch (IOException e) {
             return null;
         }
-        return pictureBase64;
+        return imageBase64;
     }
 
-    public static String saveOrUpdateImage(String pictureBase64, String originalPath, String path, boolean isAvatar) {
+    public static String saveOrUpdateImage(String imageBase64, String originalPath, String path, boolean isAvatar) {
         String newPath = null;
         try {
             //delete the uploaded image
@@ -37,7 +37,7 @@ public class DataUtil {
             String resourcesPath = System.getProperty("user.dir") + "\\src\\main\\resources\\" + path;
 
             // if user don't upload an image
-            if (pictureBase64 == null || pictureBase64.isEmpty()) {
+            if (imageBase64 == null || imageBase64.isEmpty()) {
                 if (isAvatar) {
                     return resourcesPath + "\\" + "default.webp";
                 } else return null;
@@ -47,10 +47,10 @@ public class DataUtil {
                 //create save path and decode the Base64
                 String alterFileName = UUID.randomUUID().toString();
                 newPath = resourcesPath + "\\" + alterFileName + ".png";
-                String base64WithoutPrefix = pictureBase64.replaceFirst("^data:image/\\w+;base64,", "");
-                byte[] pictureBytes = Base64.getDecoder().decode(base64WithoutPrefix);
+                String base64WithoutPrefix = imageBase64.replaceFirst("^data:image/\\w+;base64,", "");
+                byte[] imageBytes = Base64.getDecoder().decode(base64WithoutPrefix);
                 //save the new image
-                Files.write(Paths.get(newPath), pictureBytes);
+                Files.write(Paths.get(newPath), imageBytes);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -58,7 +58,7 @@ public class DataUtil {
         return newPath;
     }
 
-    //if there is already an uploaded picture,delete it.
+    //if there is already an uploaded image,delete it.
     public static void deleteImage(String path) throws IOException {
         if (!(path == null || path.isEmpty()) && !path.contains("default")) {
             Files.deleteIfExists(Paths.get(path));
@@ -66,7 +66,7 @@ public class DataUtil {
     }
 
     //Delete all images using level order traversal
-    public static void deleteAllPictures(BaseEntity<?> entity) throws IOException {
+    public static void deleteAllImages(BaseEntity<?> entity) throws IOException {
         Queue<BaseEntity<?>> queue = new LinkedList<>();
         queue.offer(entity);
         while (!queue.isEmpty()) {
@@ -76,8 +76,8 @@ public class DataUtil {
             if (baseEntity instanceof User) {
                 deleteImage(((User) baseEntity).getAvatarPath());
             }
-            if (baseEntity instanceof Picture) {
-                deleteImage(((Picture) baseEntity).getPath());
+            if (baseEntity instanceof Image) {
+                deleteImage(((Image) baseEntity).getPath());
             }
 
             if (list != null && !list.isEmpty()) {
@@ -87,24 +87,4 @@ public class DataUtil {
             }
         }
     }
-
-    //recursively delete all the pictures related
-//    public static void deleteAllPictures(BaseEntity<?> entity) throws IOException {
-//        if (entity instanceof Picture) {
-//            deleteImage(((Picture) entity).getPath());
-//            return;
-//        }
-//
-//        if (entity instanceof User) {
-//            deleteImage(((User) entity).getAvatarPath());
-//        }
-//
-//        List<?> list = entity.getList();
-//        if (list != null && !list.isEmpty()) {
-//            for (Object object : list) {
-//                deleteAllPictures((BaseEntity<?>) object);
-//            }
-//
-//        }
-//    }
 }

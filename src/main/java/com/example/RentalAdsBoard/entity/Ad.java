@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "ads")
-public class Ad extends BaseEntity<Picture> implements Serializable {
+public class Ad extends BaseEntity<Image> implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ad_id")
@@ -36,7 +36,7 @@ public class Ad extends BaseEntity<Picture> implements Serializable {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "ad", cascade = CascadeType.REMOVE, orphanRemoval = true,fetch = FetchType.EAGER)
-    private List<Picture> pictures = new ArrayList<>();
+    private List<Image> images = new ArrayList<>();
 
     @Override
     public Integer getId() {
@@ -44,8 +44,8 @@ public class Ad extends BaseEntity<Picture> implements Serializable {
     }
 
     @Override
-    public List<Picture> getList() {
-        return pictures;
+    public List<Image> getList() {
+        return images;
     }
 
 

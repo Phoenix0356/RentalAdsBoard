@@ -20,31 +20,4 @@ public class AdDao {
             return session.get(Ad.class, adId);
         }
     }
-
-    public List<Ad> getUserADs(Integer userId){
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "FROM Ad WHERE userId = :id";
-            Query<Ad> query = session.createQuery(hql, Ad.class);
-            query.setParameter("id", userId);
-            return query.list();
-        }
-    }
-
-    public List<Ad> getAdsList(){
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "FROM Ad ORDER BY adId DESC";
-            Query<Ad> query = session.createQuery(hql, Ad.class);
-            return query.list();
-        }
-    }
-
-/*    public List<Ad> getAdsFromIndex(int startNumber, int adsNumber){
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "FROM Ad ORDER BY adId DESC";
-            Query<Ad> query = session.createQuery(hql, Ad.class);
-            query.setFirstResult(startNumber);
-            query.setMaxResults(adsNumber);
-            return query.list();
-        }
-    }*/
 }

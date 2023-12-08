@@ -12,27 +12,21 @@ import javax.servlet.http.HttpServletRequest;
 public class AdsController {
     @Autowired
     AdService adService;
-    // get all ads list
-    @GetMapping("/ads/list")
-    public ResultVo getLatestAdsList(){
-        return adService.getLatestAdList();
-    }
-    //get ads list posted by user with pagination
     @GetMapping("/ads/list/self")
-    public ResultVo getUserAds(HttpServletRequest request){
+    public ResultVo getUserAds(HttpServletRequest request,
+                               @RequestParam("page_number")Integer page_number,
+                               @RequestParam("size")Integer size){
         Integer userId=(Integer) request.getAttribute("userId");
-        return adService.getUserAdList(userId);
+        return adService.getUserAdList(userId,page_number,size);
     }
-    //get one ad by adId
     @GetMapping("/ads/get")
     public ResultVo getAdById(@RequestParam("ad_id")Integer adId){
         return adService.getAdById(adId);
     }
-    // get ads list with pagination
-    @GetMapping("/ads/list/index")
-    public ResultVo getAdFromIndex(@RequestParam("start_number")Integer startNumber,
-                                   @RequestParam("ads_number")Integer adsNumber){
-        return adService.getAdsFromIndex(startNumber,adsNumber);
+    @GetMapping("/ads/list")
+    public ResultVo getAdFromIndex(@RequestParam("page_number") Integer pageNumber,
+                                   @RequestParam("size") Integer size){
+        return adService.getAdsFromIndex(pageNumber,size);
     }
     @PostMapping("/ads/save")
     public ResultVo saveAd(HttpServletRequest request,

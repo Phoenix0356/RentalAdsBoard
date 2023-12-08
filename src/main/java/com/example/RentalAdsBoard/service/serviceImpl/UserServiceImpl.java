@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService  {
             userVo.setUserVo(user);
         } catch (Exception e){
 
-            return new ResultVo().error("get user info failed");
+            return new ResultVo().error("Failed loading user info");
         }
         return new ResultVo().success(userVo);
     }
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService  {
             pageVo.setTotalPages(totalPages);
 
         }catch (Exception e){
-            return new ResultVo().error("get user list failed");
+            return new ResultVo().error("Failed loading users list");
         }
         return new ResultVo().success(pageVo);
     }
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService  {
             user.setAvatarPath(DataUtil.saveOrUpdateImage(userVo.getAvatarBase64(), user.getAvatarPath(),"static\\avatar",true));
             baseDao.update(user);
         }catch (Exception e){
-            return new ResultVo().error("update user info failed");
+            return new ResultVo().error("Failed updating user info");
         }
         return new ResultVo().success(userVo);
     }
@@ -101,11 +101,11 @@ public class UserServiceImpl implements UserService  {
             if (passwordEncoder.matchPassword(originPassword, user.getPassword())) {
                 user.setPassword(newPassword);
             }
-            else return new ResultVo().error("wrong password");
+            else return new ResultVo().error("Wrong password");
 
             baseDao.update(user);
         }catch (Exception e){
-            return new ResultVo().error("reset password failed");
+            return new ResultVo().error("Failed resetting password");
         }
         return new ResultVo().success();
     }
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService  {
             user.setPassword(passwordEncoder.encodePassword("12345"));
             baseDao.update(user);
         }catch (Exception e){
-            return new ResultVo().error("reset password failed");
+            return new ResultVo().error("Failed resetting password");
         }
 
         return new ResultVo().success();
@@ -127,9 +127,9 @@ public class UserServiceImpl implements UserService  {
         try {
             User user=userDao.getById(userId);
             baseDao.delete(user);
-            DataUtil.deleteAllPictures(user);
+            DataUtil.deleteAllImages(user);
         }catch (Exception e){
-            return new ResultVo().error("delete user failed");
+            return new ResultVo().error("Failed deleting user");
         }
         return new ResultVo().success();
     }
@@ -139,9 +139,9 @@ public class UserServiceImpl implements UserService  {
         try {
             User user=userDao.getByUsername(username);
             baseDao.delete(user);
-            DataUtil.deleteAllPictures(user);
+            DataUtil.deleteAllImages(user);
         }catch (Exception e){
-            return new ResultVo().error("delete user failed");
+            return new ResultVo().error("Failed deleting user");
         }
         return new ResultVo().success();
     }
@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService  {
         Integer userId;
         try {
             if (userDao.getByUsername(registerVo.getUsername())!=null){
-                return new ResultVo().error("the name has already been taken");
+                return new ResultVo().error("The name has already been taken");
             }
             User user=new User();
             user.setUsername(registerVo.getUsername());
@@ -161,7 +161,7 @@ public class UserServiceImpl implements UserService  {
             user.setAvatarPath(DataUtil.saveOrUpdateImage(registerVo.getAvatarBase64(),user.getAvatarPath(),"static\\avatar",true));
             userId=baseDao.save(user);
         }catch (Exception e){
-            return new ResultVo().error("register failed");
+            return new ResultVo().error("Register failed");
         }
         return new ResultVo().success(jwtTokenUtil.createToken(userId,1));
     }
@@ -172,16 +172,16 @@ public class UserServiceImpl implements UserService  {
         String password;
         try {
             User user=userDao.getByUsername(loginVo.getUsername());
-            if (user==null) return new ResultVo().error("the username is invalidate");
+            if (user==null) return new ResultVo().error("Username not found, please register first");
             password=user.getPassword();
             userId=user.getUserId();
             role=user.getRole();
 
         } catch (Exception e){
-            return new ResultVo().error("login failed");
+            return new ResultVo().error("Login failed");
         }
         return passwordEncoder.matchPassword(loginVo.getPassword(),password)?
-                new ResultVo().success(jwtTokenUtil.createToken(userId,role)):new ResultVo().error("the password is wrong");
+                new ResultVo().success(jwtTokenUtil.createToken(userId,role)):new ResultVo().error("Wrong password");
     }
     @Override
     public ResultVo manageAuthority(String username, Integer level, Integer userId) {
@@ -194,7 +194,7 @@ public class UserServiceImpl implements UserService  {
                 return new ResultVo().success(jwtTokenUtil.createToken(userId,level));
             }
         }catch (Exception e){
-            return new ResultVo().error("manage level failed");
+            return new ResultVo().error("Failed changing role");
         }
         return new ResultVo().success();
     }

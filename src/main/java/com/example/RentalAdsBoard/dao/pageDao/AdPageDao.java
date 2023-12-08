@@ -14,6 +14,5 @@ public interface AdPageDao extends JpaRepository<Ad, Integer> {
     Page<Ad> findAll(Pageable pageable);
     Page<Ad> findByUserId(Integer userId, Pageable pageable);
 
-
 }
 

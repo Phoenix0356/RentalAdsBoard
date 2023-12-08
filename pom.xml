@@ -130,10 +130,10 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/classes/static/itemPicture</outputDirectory>
+                            <outputDirectory>${basedir}/target/classes/static/itemImage</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>src/main/resources/static/itemPicture</directory>
+                                    <directory>src/main/resources/static/itemImage</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>

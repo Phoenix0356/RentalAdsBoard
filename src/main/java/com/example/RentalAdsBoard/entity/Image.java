@@ -11,12 +11,12 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "pictures")
-public class Picture extends BaseEntity<Picture> implements Serializable {
+@Table(name = "Images")
+public class Image extends BaseEntity<Image> implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "picture_id")
-    private Integer pictureId;
+    @Column(name = "image_id")
+    private Integer imageId;
 
     @Column(name = "ad_id", insertable = false, updatable = false)
     private Integer adId;
@@ -31,11 +31,11 @@ public class Picture extends BaseEntity<Picture> implements Serializable {
 
     @Override
     public Integer getId() {
-        return pictureId;
+        return imageId;
     }
 
     @Override
-    public List<Picture> getList() {
+    public List<Image> getList() {
         return null;
     }
 }

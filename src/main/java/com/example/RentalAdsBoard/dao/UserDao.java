@@ -28,13 +28,4 @@ public class UserDao {
             return query.uniqueResult();
         }
     }
-
-    public List<User> getUsersList(){
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "FROM User ORDER BY userId DESC";
-            Query<User> query = session.createQuery(hql, User.class);
-            return query.list();
-        }
-    }
-    
 }

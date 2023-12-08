@@ -49,7 +49,7 @@ public class AdServiceImpl implements AdService {
             pageVo.setTotalPages(totalPage);
 
         }catch (Exception e){
-            return new ResultVo().error("load user ads list failed");
+            return new ResultVo().error("Failed loading user ads");
         }
         return new ResultVo().success(pageVo);
     }
@@ -75,7 +75,7 @@ public class AdServiceImpl implements AdService {
             pageVo.setTotalPages(totalPages);
 
         }catch (Exception e){
-            return new ResultVo().error("load ads failed");
+            return new ResultVo().error("Failed loading ads");
         }
         return new ResultVo().success(pageVo);
     }
@@ -87,7 +87,7 @@ public class AdServiceImpl implements AdService {
             adVo=new AdVo();
             adVo.setAdVo(ad);
         }catch (Exception e){
-            return new ResultVo().error("get ads failed");
+            return new ResultVo().error("Failed loading ad info");
         }
         return new ResultVo().success(adVo);
     }
@@ -108,7 +108,7 @@ public class AdServiceImpl implements AdService {
 
 
         }catch (Exception e){
-            return new ResultVo().error("save ad failed");
+            return new ResultVo().error("Failed saving ad");
         }
         return new ResultVo().success(adVo);
     }
@@ -124,7 +124,7 @@ public class AdServiceImpl implements AdService {
             baseDao.update(ad);
 
         }catch (Exception e){
-            return new ResultVo().error("update ad failed");
+            return new ResultVo().error("Failed editing ad");
         }
         return new ResultVo().success(adVo);
     }
@@ -135,9 +135,9 @@ public class AdServiceImpl implements AdService {
         try {
             Ad ad=adDao.getById(adId);
             baseDao.delete(ad);
-            DataUtil.deleteAllPictures(ad);
+            DataUtil.deleteAllImages(ad);
         }catch (Exception e){
-            return new ResultVo().error("delete ad failed");
+            return new ResultVo().error("Failed deleting ad");
         }
         return new ResultVo().success();
     }
