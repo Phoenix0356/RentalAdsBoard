@@ -7,11 +7,11 @@ spring:
     driver-class-name: org.postgresql.Driver
     #url: jdbc:postgresql://game-meet-werewolf.ngrok-free.app/Rental_ads_board
 #    url: jdbc:postgresql://192.168.1.109:5432/Rental_ads_board
-#    url: jdbc:postgresql://localhost:5432/postgres
-    url: jdbc:postgresql://localhost:5432/Rental_ads_board
+    url: jdbc:postgresql://localhost:5432/postgres
+#    url: jdbc:postgresql://localhost:5432/Rental_ads_board
     username: postgres
-#    password: admin
-    password: hdu
+    password: admin
+#    password: hdu
 
 jwt:
   secret: yssxfsfsfawnAgjluvvbgsfgdvebrhsrujrbcatyveynwyexmydmt
@@ -19,6 +19,6 @@ jwt:
   expiration: 86400
 
 logging:
-  config: C:\Users\Phoenix\IdeaProjects\RentalAdsBoard\src\main\resources\logback-spring.xml
+  config: D:\IdeaProject\RentalAdsBoard\src\main\resources\logback-spring.xml
 
 
