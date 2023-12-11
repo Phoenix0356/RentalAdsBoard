@@ -25,7 +25,6 @@ public class ChatDao {
             query.setParameter("from", username);
             query.setParameter("to", targetUsername);
 
-            List<Chat> l=query.list();
             return query.list();
 
         }
