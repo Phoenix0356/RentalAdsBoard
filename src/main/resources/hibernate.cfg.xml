@@ -23,6 +23,7 @@
         <mapping class="com.example.RentalAdsBoard.entity.User"/>
         <mapping class="com.example.RentalAdsBoard.entity.Ad"/>
         <mapping class="com.example.RentalAdsBoard.entity.Picture"/>
+        <mapping class="com.example.RentalAdsBoard.entity.Chat"/>
 
 
     </session-factory>

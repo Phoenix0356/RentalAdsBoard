@@ -29,7 +29,7 @@ public class PictureController {
         return pictureService.savePictureById(pictureVo);
     }
 
-    @PostMapping("/picture/update")
+    @PutMapping("/picture/update")
     public ResultVo savePicture(@RequestBody PictureVo pictureVo) throws DataBaseException {
         return pictureService.updatePictureById(pictureVo);
     }

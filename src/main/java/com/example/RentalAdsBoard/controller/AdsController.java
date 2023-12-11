@@ -37,7 +37,7 @@ public class AdsController {
         return adService.SaveAdById(userId,adVo);
     }
 
-    @PostMapping("/ads/update")
+    @PutMapping("/ads/update")
     public ResultVo updateAd(HttpServletRequest request,
                              @RequestBody() AdVo adVo ) throws DataBaseException {
         Integer userId=(Integer) request.getAttribute("userId");
