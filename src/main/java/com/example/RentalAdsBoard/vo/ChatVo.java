@@ -17,6 +17,6 @@ public class ChatVo {
     public void setChatVo(Chat chat){
         this.userFrom = chat.getUserFrom();
         this.userTo = chat.getUserTo();
-        this.message = chat.getMessage();
+        this.message = chat.getMessage().substring(1, chat.getMessage().length() - 1);
     }
 }
