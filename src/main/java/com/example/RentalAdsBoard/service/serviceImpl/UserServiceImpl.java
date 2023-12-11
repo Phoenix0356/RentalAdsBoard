@@ -4,7 +4,6 @@ import com.example.RentalAdsBoard.controller.exception.DataBaseException;
 import com.example.RentalAdsBoard.dao.BaseDao;
 import com.example.RentalAdsBoard.dao.UserDao;
 import com.example.RentalAdsBoard.dao.pageDao.UserPageDao;
-import com.example.RentalAdsBoard.entity.Ad;
 import com.example.RentalAdsBoard.entity.User;
 import com.example.RentalAdsBoard.service.UserService;
 
@@ -13,7 +12,6 @@ import com.example.RentalAdsBoard.util.JwtTokenUtil;
 import com.example.RentalAdsBoard.util.PasswordEncoder;
 import com.example.RentalAdsBoard.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -196,6 +194,11 @@ public class UserServiceImpl implements UserService  {
             throw new DataBaseException("manage authority failed");
         }
         return new ResultVo().success();
+    }
+
+    @Override
+    public void p(){
+        System.out.println("hhhdsfsfsafassa");
     }
 
 

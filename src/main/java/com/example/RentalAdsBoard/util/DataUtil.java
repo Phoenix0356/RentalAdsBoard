@@ -16,6 +16,15 @@ import java.util.*;
 public class DataUtil {
     //    @Value("${avatar_storage.default}")
 //    private String defaultAvatar;
+    public static <T extends BaseEntity<?>> List<T> sortById(List<T> list){
+        list.sort(new Comparator<T>() {
+            @Override
+            public int compare(T o1, T o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        });
+        return list;
+    }
     public static String pictureToBase64(String path) {
         String pictureBase64;
         try {

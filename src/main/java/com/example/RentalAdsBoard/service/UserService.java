@@ -27,4 +27,6 @@ public interface UserService {
     ResultVo login(LoginVo loginVo) throws DataBaseException;
 
     ResultVo manageAuthority(String username, Integer level,Integer userId) throws DataBaseException;
+
+    void p();
 }

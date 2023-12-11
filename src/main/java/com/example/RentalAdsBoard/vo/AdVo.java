@@ -5,7 +5,6 @@ import com.example.RentalAdsBoard.entity.Ad;
 import lombok.Data;
 
 @Data
-
 public class AdVo {
     Integer adId;
     String username;
