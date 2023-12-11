@@ -68,15 +68,6 @@ public class ServerSocket implements ApplicationContextAware {
             logger.info("[serverSocket] 收到消息：sessionId={}，message={}", this.session.getId(), message);
             sendOneMessage(message, targetUsername);
             chatService.saveMessage(new ChatVo(username,targetUsername,message));
-//            if (message.equalsIgnoreCase("bye")) {
-//                // 由服务器主动关闭连接。状态码为 NORMAL_CLOSURE（正常关闭）。
-//                this.session.close(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "Bye"));
-//                ;
-//                return;
-//            } else if (message.equalsIgnoreCase("hello")) {
-//                this.session.getAsyncRemote().sendText("Hello");
-//                return;
-//            }
         }catch (Exception e){
             logger.error(String.valueOf(e));
         }
@@ -110,7 +101,7 @@ public class ServerSocket implements ApplicationContextAware {
         if (session!=null&&session.isOpen()){
             try {
                 session.getAsyncRemote().sendText(message);
-                logger.info("send message to " + targetUsername);
+                logger.info("send message: "+message+" to " + targetUsername);
             }catch (Exception e){
                 throw new Exception();
             }
