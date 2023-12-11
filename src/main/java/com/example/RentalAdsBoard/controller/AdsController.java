@@ -25,6 +25,7 @@ public class AdsController {
     public ResultVo getAdById(@RequestParam("ad_id")Integer adId) throws DataBaseException {
         return adService.getAdById(adId);
     }
+    
     @GetMapping("/ads/index/get")
     public ResultVo getAdFromIndex(@RequestParam("page_number") Integer pageNumber,
                                    @RequestParam("size") Integer size) throws DataBaseException {
@@ -48,5 +49,11 @@ public class AdsController {
     public ResultVo deleteAd(@RequestParam("ad_id")Integer adId) throws DataBaseException {
         return adService.deleteAdById(adId);
     }
-
+    
+    @GetMapping("/ads/search")
+    public  ResultVo searchAds(@RequestParam("Key")String Key,
+                               @RequestParam("page_number") Integer pageNumber,
+                               @RequestParam("size") Integer size) throws DataBaseException{
+        return adService.searchAdsByKey(Key,pageNumber,size);
+    }
 }

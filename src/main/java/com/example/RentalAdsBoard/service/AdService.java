@@ -18,4 +18,6 @@ public interface AdService {
     ResultVo updateAdById(Integer userId,AdVo adVo) throws DataBaseException;
 
     ResultVo deleteAdById(Integer adId) throws DataBaseException;
+
+    ResultVo searchAdsByKey(String Key, Integer pageNumber, Integer size) throws DataBaseException;
 }
