@@ -14,8 +14,10 @@ public class UserController extends BaseController{
     UserService userService;
 
     @GetMapping("/board/home")
-    public ResultVo getUserById(@ModelAttribute("userId") Integer userId){
-        return userService.getUserById(userId);
+    public ResultVo getUserById(@ModelAttribute("userId") Integer userId,
+                                @RequestParam(value = "username",required = false) String username){
+
+        return userService.getUser(userId,username);
     }
 
     @PutMapping("/board/update")

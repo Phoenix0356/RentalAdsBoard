@@ -6,9 +6,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-    ResultVo getUserById(Integer userId);
 
-//    ResultVo getByUsername(String username);
+    ResultVo getUser(Integer userId, String username);
 
     ResultVo getUsersList(Integer pageNumber, Integer size);
 
