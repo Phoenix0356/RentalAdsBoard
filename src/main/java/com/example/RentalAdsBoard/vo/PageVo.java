@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 @Data
-public class PageVo {
-    List<AdVo> list;
-    long totalPage;
+public class PageVo<T> {
+    List<T> voList;
+    long totalPages;
 }

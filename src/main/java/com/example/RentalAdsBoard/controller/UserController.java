@@ -43,8 +43,9 @@ public class UserController extends BaseController{
         return userService.deleteUserById(userId);
     }
     @GetMapping("/board/root")
-    public ResultVo getUsersList(){
-        return userService.getUsersList();
+    public ResultVo getUsersList(@RequestParam("page_number") Integer pageNumber,
+                                 @RequestParam("size")Integer size){
+        return userService.getUsersList(pageNumber,size);
     }
 
     @DeleteMapping("/board/root/delete")

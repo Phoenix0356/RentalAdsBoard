@@ -10,16 +10,15 @@ public interface UserService {
 
 //    ResultVo getByUsername(String username);
 
-    ResultVo updateUserById(Integer userId,UserVo userVo);
+    ResultVo getUsersList(Integer pageNumber, Integer size);
+
+    ResultVo updateUserById(Integer userId, UserVo userVo);
 
     ResultVo updateUserPassword(Integer userId,UserVo userVo);
 
     ResultVo resetPasswordByManager(String username);
 
     ResultVo deleteUserById(Integer userId);
-
-    ResultVo getUsersList();
-
     ResultVo deleteUserByAdmin(String username);
 
     ResultVo register(RegisterVo registerVo);

@@ -6,9 +6,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface AdService {
-    ResultVo getUserAdList(Integer userId);
 
-    ResultVo getLatestAdList();
+    ResultVo getUserAdList(Integer userId, Integer pageNumber, Integer size);
 
     ResultVo getAdsFromIndex(Integer startNumber, Integer adsNumber);
 
@@ -19,4 +18,6 @@ public interface AdService {
     ResultVo updateAdById(Integer userId,AdVo adVo);
 
     ResultVo deleteAdById(Integer adId);
+
+    ResultVo searchAdsByKey(String Key, Integer pageNumber, Integer size);
 }

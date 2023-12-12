@@ -12,23 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 public class AdsController extends BaseController{
     @Autowired
     AdService adService;
-    //get ads for home page
-    @GetMapping("/ads/home")
-    public ResultVo getLatestAdsList(){
-        return adService.getLatestAdList();
-    }
-    //get ads owned by the user
+
     @GetMapping("/ads/get")
-    public ResultVo getUserAds(@ModelAttribute("userId") Integer userId){
-        return adService.getUserAdList(userId);
+    public ResultVo getUserAds(@ModelAttribute("userId") Integer userId,
+                               @RequestParam("page_number")Integer page_number,
+                               @RequestParam("size")Integer size){
+        return adService.getUserAdList(userId,page_number,size);
     }
-    //get one ad by adId
     @GetMapping("/ads/user/get")
     public ResultVo getAdById(@RequestParam("ad_id")Integer adId){
         return adService.getAdById(adId);
     }
     @GetMapping("/ads/index/get")
-    public ResultVo getAdFromIndex(@RequestParam("page")Integer page,
+    public ResultVo getAdFromIndex(@RequestParam("page_number")Integer page,
                                    @RequestParam("size")Integer size){
         return adService.getAdsFromIndex(page,size);
     }
@@ -54,6 +50,13 @@ public class AdsController extends BaseController{
     @DeleteMapping("/ads/delete")
     public ResultVo deleteAd(@RequestParam("ad_id")Integer adId){
         return adService.deleteAdById(adId);
+    }
+
+    @GetMapping("/ads/search")
+    public  ResultVo searchAds(@RequestParam("Key")String Key,
+                               @RequestParam("page_number") Integer pageNumber,
+                               @RequestParam("size") Integer size){
+        return adService.searchAdsByKey(Key,pageNumber,size);
     }
 
 }
