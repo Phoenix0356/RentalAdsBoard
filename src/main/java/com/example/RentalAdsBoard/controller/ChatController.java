@@ -13,7 +13,7 @@ public class ChatController {
     ChatService chatService;
     @GetMapping("/chat/get/history")
     public ResultVo getHistoryList(@RequestParam("username")String username,
-                                   @RequestParam("target_username") String targetUsername) throws Exception {
+                                   @RequestParam("user_to") String targetUsername) throws Exception {
         return chatService.getHistoryList(username,targetUsername);
     }
 }

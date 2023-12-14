@@ -10,7 +10,7 @@ import java.io.File;
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class RentalAdsBoardApplication {
     public static void main(String[] args) {
-        System.setProperty("logPath", System.getProperty("user.dir"));
+        System.setProperty("projectPath", System.getProperty("user.dir"));
         SpringApplication.run(RentalAdsBoardApplication.class, args);
 
     }

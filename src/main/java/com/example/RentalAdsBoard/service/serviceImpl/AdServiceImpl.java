@@ -44,7 +44,7 @@ public class AdServiceImpl implements AdService {
             Pageable pageable=PageRequest.of(pageNumber,size,sort);
             Page<Ad> page=adpageDao.findByUserId(userId,pageable);
             
-            setPageVo(adVoList, pageVo, page);
+            pageVo.setPageVo(adVoList, pageVo, page);
 
         }catch (Exception e){
             return new ResultVo().error("load user ads list failed");
@@ -53,18 +53,7 @@ public class AdServiceImpl implements AdService {
     }
     
     //set PageVo
-    private void setPageVo(List<AdVo> adVoList, PageVo<AdVo> pageVo, Page<Ad> page) {
-        long totalPage=page.getTotalPages();
 
-        for (Ad ad:page){
-            AdVo adVo=new AdVo();
-            adVo.setAdVo(ad);
-            adVoList.add(adVo);
-        }
-
-        pageVo.setVoList(adVoList);
-        pageVo.setTotalPages(totalPage);
-    }
 
     @Override
     public ResultVo getAdsFromIndex(Integer pageNumber, Integer size) throws DataBaseException {
@@ -75,7 +64,7 @@ public class AdServiceImpl implements AdService {
             Sort sort = Sort.by(Sort.Direction.DESC, "adId");
             Pageable pageable= PageRequest.of(pageNumber, size,sort);
             Page<Ad> page=adpageDao.findAll(pageable);
-            setPageVo(adVoList, pageVo, page);
+            pageVo.setPageVo(adVoList, pageVo, page);
 
         }catch (Exception e){
             throw new DataBaseException("get ads failed");
@@ -156,7 +145,7 @@ public class AdServiceImpl implements AdService {
             Sort sort = Sort.by(Sort.Direction.DESC, "adId");
             Pageable pageable = PageRequest.of(pageNumber, size, sort);
             ads = adRepository.searchAds(Key, pageable);
-            setPageVo(adVoList, pageVo, ads);
+            pageVo.setPageVo(adVoList, pageVo, ads);
         } catch (Exception e) {
             throw new DataBaseException("get ads failed");
         }

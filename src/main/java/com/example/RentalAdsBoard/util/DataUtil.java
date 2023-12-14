@@ -14,8 +14,11 @@ import java.util.*;
 
 @Component
 public class DataUtil {
-    //    @Value("${avatar_storage.default}")
-//    private String defaultAvatar;
+    public static String getNames(String message){
+        int ind=message.indexOf(":");
+        return message.substring(0,ind);
+
+    }
     public static <T extends BaseEntity<?>> List<T> sortById(List<T> list){
         list.sort(new Comparator<T>() {
             @Override

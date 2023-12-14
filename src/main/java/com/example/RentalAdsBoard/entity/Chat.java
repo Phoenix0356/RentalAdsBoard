@@ -24,6 +24,8 @@ public class Chat extends BaseEntity<Chat>{
     @Column(name = "message")
     String message;
 
+    @Column(name = "is_read")
+    boolean isRead;
 
     @Override
     public Integer getId() {

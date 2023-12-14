@@ -1,5 +1,6 @@
 package com.example.RentalAdsBoard.controller.advice;
 
+import com.example.RentalAdsBoard.controller.exception.ChatException;
 import com.example.RentalAdsBoard.controller.exception.DataBaseException;
 import com.example.RentalAdsBoard.vo.ResultVo;
 import io.jsonwebtoken.JwtException;
@@ -33,5 +34,12 @@ public class GlobalExceptionHandler {
     public ResultVo handleDataBaseException(DataBaseException de) {
         logger.error("database operation error",de);
         return new ResultVo().error(de.getMessage());
+    }
+
+    @ExceptionHandler(ChatException.class)
+    @ResponseBody
+    public ResultVo handleChatException(ChatException ce) {
+        logger.error("websocket error",ce);
+        return new ResultVo().error(ce.getMessage());
     }
 }

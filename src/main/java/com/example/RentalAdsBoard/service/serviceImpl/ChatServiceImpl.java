@@ -26,13 +26,15 @@ public class ChatServiceImpl implements ChatService {
         List<ChatVo> voList = new ArrayList<>();
         try {
             List<Chat> list = chatDao.getHistoryList(username, targetName);
-
             DataUtil.sortById(list);
 
             for (Chat c : list) {
                 ChatVo chatVo = new ChatVo();
                 chatVo.setChatVo(c);
                 voList.add(chatVo);
+                //update the state of the chat to "has been read"
+                c.setRead(true);
+                baseDao.update(c);
             }
         } catch (Exception e) {
             throw new DataBaseException("get history chats failed");
@@ -48,6 +50,7 @@ public class ChatServiceImpl implements ChatService {
             chat.setUserFrom(chatVo.getUserFrom());
             chat.setUserTo(chatVo.getUserTo());
             chat.setMessage(chatVo.getMessage());
+            chat.setRead(chatVo.isRead());
 
             baseDao.save(chat);
         }catch (Exception e){
