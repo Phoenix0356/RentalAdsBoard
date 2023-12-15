@@ -9,5 +9,7 @@ import org.springframework.stereotype.Service;
 public interface ChatService {
     ResultVo getHistoryList(String username, String targetName) throws Exception;
 
+    ResultVo getHistoryChatters(String username) throws DataBaseException;
+
     void saveMessage(ChatVo chatVo) throws DataBaseException;
 }

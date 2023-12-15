@@ -28,7 +28,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @ServerEndpoint("/websocket/{username}")
 public class ServerSocket implements ApplicationContextAware {
     private static CopyOnWriteArraySet<ServerSocket> serverSockets =new CopyOnWriteArraySet<>();
-
     private static ConcurrentHashMap<String,Session> sessionPool = new ConcurrentHashMap<String,Session>();
     private static ApplicationContext applicationContext;
     private static final Logger logger = LoggerFactory.getLogger("SocketLogger");
@@ -43,7 +42,7 @@ public class ServerSocket implements ApplicationContextAware {
     @OnOpen
     public void onOpen(Session session, @PathParam(value = "username")String username,
                        @PathParam(value = "targetUsername")String targetUsername,
-                       EndpointConfig endpointConfig){
+                       EndpointConfig endpointConfig) throws ChatException {
         try {
             this.session = session;
             this.username = username;
@@ -54,13 +53,13 @@ public class ServerSocket implements ApplicationContextAware {
             sessionPool.put(username,session);
             logger.info("[websocket] 新的连接：id={}", this.session.getId());
 
-        }catch (IOException ioException){
-            logger.error(String.valueOf(ioException));
+        }catch (Exception e){
+            throw new ChatException("connect server failed");
 
         }
     }
     @OnMessage
-    public void onMessage(String message) throws IOException {
+    public void onMessage(String message) throws IOException, ChatException {
         try {
             logger.info("[serverSocket] 收到消息：sessionId={}，message={}", this.session.getId(), message);
 
@@ -69,18 +68,18 @@ public class ServerSocket implements ApplicationContextAware {
             sendOneMessage(chatVo);
 
         }catch (Exception e){
-            logger.error(String.valueOf(e));
+            throw new ChatException("send message failed");
         }
     }
 
     @OnClose
-    public void onClose(CloseReason closeReason){
+    public void onClose(CloseReason closeReason) throws ChatException {
         try{
             serverSockets.remove(this);
             sessionPool.remove(username);
             logger.info("[websocket] 连接断开：id={}，reason={}", this.session.getId(),closeReason);
         }catch (Exception e) {
-            logger.error(String.valueOf(e));
+            throw new ChatException("close server failed");
         }
 
 
@@ -95,21 +94,14 @@ public class ServerSocket implements ApplicationContextAware {
     public void sendOneMessage(ChatVo chatVo) throws Exception {
         Session sessionTo = sessionPool.get(chatVo.getUserTo());
         if (sessionTo!=null&&sessionTo.isOpen()){
-            try {
-                chatVo.setRead(true);
-                ObjectMapper mapper = new ObjectMapper();
-                String jsonStr = mapper.writeValueAsString(chatVo);
-                sessionTo.getAsyncRemote().sendText(jsonStr);
-
-            }catch (Exception e){
-                throw new ChatException("send message failed");
-            }
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonStr = mapper.writeValueAsString(chatVo);
+            sessionTo.getAsyncRemote().sendText(jsonStr);
+            chatVo.setRead(true);
         }else {
             chatVo.setRead(false);
         }
         chatService.saveMessage(chatVo);
 
     }
-
-
 }
