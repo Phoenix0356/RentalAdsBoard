@@ -13,6 +13,7 @@ public class ChatVo {
     String userFrom;
     String userTo;
     String message;
+    //the name of the field of front-end is "read", as "is" is commonly ignored in conversion to Json
     boolean isRead;
 
     public void setChatVo(Chat chat){

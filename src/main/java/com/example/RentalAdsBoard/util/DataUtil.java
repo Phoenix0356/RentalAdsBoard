@@ -30,7 +30,7 @@ public class DataUtil {
         String pictureBase64;
         try {
             byte[] pictureBytes = Files.readAllBytes(Paths.get(path));
-            pictureBase64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(pictureBytes);
+            pictureBase64 = Base64.getEncoder().encodeToString(pictureBytes);
         } catch (IOException e) {
             return null;
         }
