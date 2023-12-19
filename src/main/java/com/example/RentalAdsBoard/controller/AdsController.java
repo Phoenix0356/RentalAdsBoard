@@ -13,18 +13,20 @@ import javax.servlet.http.HttpServletRequest;
 public class AdsController {
     @Autowired
     AdService adService;
-    @GetMapping("/ads/list/self")
+    @GetMapping("/ads/get")
     public ResultVo getUserAds(HttpServletRequest request,
                                @RequestParam("page_number")Integer page_number,
-                               @RequestParam("size")Integer size) throws DataBaseException {
+                               @RequestParam("size")Integer size){
         Integer userId=(Integer) request.getAttribute("userId");
         return adService.getUserAdList(userId,page_number,size);
     }
-    @GetMapping("/ads/get")
+    //get one ad by adId
+    @GetMapping("/ads/user/get")
     public ResultVo getAdById(@RequestParam("ad_id")Integer adId) throws DataBaseException {
         return adService.getAdById(adId);
     }
-    @GetMapping("/ads/list")
+    
+    @GetMapping("/ads/index/get")
     public ResultVo getAdFromIndex(@RequestParam("page_number") Integer pageNumber,
                                    @RequestParam("size") Integer size) throws DataBaseException {
         return adService.getAdsFromIndex(pageNumber,size);
@@ -36,7 +38,7 @@ public class AdsController {
         return adService.SaveAdById(userId,adVo);
     }
 
-    @PostMapping("/ads/update")
+    @PutMapping("/ads/update")
     public ResultVo updateAd(HttpServletRequest request,
                              @RequestBody() AdVo adVo ) throws DataBaseException {
         Integer userId=(Integer) request.getAttribute("userId");
@@ -47,5 +49,11 @@ public class AdsController {
     public ResultVo deleteAd(@RequestParam("ad_id")Integer adId) throws DataBaseException {
         return adService.deleteAdById(adId);
     }
-
+    
+    @GetMapping("/ads/search")
+    public  ResultVo searchAds(@RequestParam("Key")String Key,
+                               @RequestParam("page_number") Integer pageNumber,
+                               @RequestParam("size") Integer size) throws DataBaseException{
+        return adService.searchAdsByKey(Key,pageNumber,size);
+    }
 }

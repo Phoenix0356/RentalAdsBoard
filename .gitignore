@@ -36,3 +36,4 @@ build/
 
 
 /src/main/resources/static/
+/log/exception.log

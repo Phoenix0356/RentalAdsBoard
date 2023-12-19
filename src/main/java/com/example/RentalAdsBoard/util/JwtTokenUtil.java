@@ -22,27 +22,29 @@ public class JwtTokenUtil {
     @Value ("${jwt.secret}")
     private String secret;
 
+
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 
-    public String genToken(Integer userId,Integer role){
+    public String createToken(Integer userId,Integer role){
         HashMap<String,Object> claims=new HashMap<>();
         claims.put("sub",String.valueOf(userId));
         claims.put("role",String.valueOf(role));
+        claims.put("exp",new Date(System.currentTimeMillis() + expiration*1000));
         return Jwts.builder()
                 .claims(claims)
-                .expiration(new Date(System.currentTimeMillis() + expiration*1000))
                 .signWith(getSigningKey())
                 .compact();
     }
-
     public Claims validateToken(String token) {
-        return Jwts.parser()
+        Claims claims = null;
+        claims = Jwts.parser()
                 .verifyWith(getSigningKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+        return claims;
     }
 
 }

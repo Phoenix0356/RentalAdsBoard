@@ -16,7 +16,7 @@ public interface UserService {
 
     ResultVo deleteUserById(Integer userId) throws DataBaseException;
 
-    ResultVo getUser(Integer userId, String username) throws Exception;
+    ResultVo getUser(Integer userId, String username) throws DataBaseException;
 
     ResultVo getUsersList(Integer pageNumber,Integer size) throws DataBaseException;
 
@@ -27,4 +27,6 @@ public interface UserService {
     ResultVo login(LoginVo loginVo) throws DataBaseException;
 
     ResultVo manageAuthority(String username, Integer level,Integer userId) throws DataBaseException;
+
+    void p();
 }

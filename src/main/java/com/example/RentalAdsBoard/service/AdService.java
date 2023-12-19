@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface AdService {
-    ResultVo getUserAdList(Integer userId,Integer pageNumber,Integer size) throws DataBaseException;
+    ResultVo getUserAdList(Integer userId,Integer pageNumber,Integer size);
 
     ResultVo getAdsFromIndex(Integer pageNumber, Integer size) throws DataBaseException;
 
@@ -18,4 +18,6 @@ public interface AdService {
     ResultVo updateAdById(Integer userId,AdVo adVo) throws DataBaseException;
 
     ResultVo deleteAdById(Integer adId) throws DataBaseException;
+
+    ResultVo searchAdsByKey(String Key, Integer pageNumber, Integer size) throws DataBaseException;
 }
