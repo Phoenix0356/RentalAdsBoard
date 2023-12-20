@@ -22,4 +22,10 @@ public class ChatController {
     public ResultVo getHistoryChatter(@RequestParam("username") String username) throws DataBaseException {
         return chatService.getHistoryChatters(username);
     }
+
+    @GetMapping("/chat/message/last")
+    public ResultVo getLatestChat(@RequestParam("user_from")String userFrom,
+                                  @RequestParam("user_to") String userTo) throws Exception {
+        return chatService.getLatestChat(userFrom,userTo);
+    }
 }

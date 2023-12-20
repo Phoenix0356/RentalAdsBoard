@@ -33,7 +33,7 @@ public class ChatDao {
 
     }
 
-    public List<Chat> getHistorySendChats(String userSent){
+    public List<Chat>getHistorySendChats(String userSent){
 
         try (Session session= HibernateUtil.getSessionFactory().openSession()) {
             String hql = "FROM Chat WHERE userFrom = :name ";
@@ -59,6 +59,18 @@ public class ChatDao {
 
         }
 
+    }
+
+    public Chat getLatestCHat(String userSent,String userReceived){
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            String hql = "FROM Chat where (userFrom =: from AND userTo =: to) OR (userFrom =: to AND userTo =: from) ORDER BY chatId DESC";
+            Query<Chat> query = session.createQuery(hql, Chat.class);
+            query.setParameter("from",userSent);
+            query.setParameter("to",userReceived);
+            query.setMaxResults(1);
+            return query.uniqueResult();
+
+        }
     }
 
 }

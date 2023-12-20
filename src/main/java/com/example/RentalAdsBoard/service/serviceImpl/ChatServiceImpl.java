@@ -75,6 +75,18 @@ public class ChatServiceImpl implements ChatService {
         }
         return new ResultVo().success(voList);
     }
+    @Override
+    public ResultVo getLatestChat(String username, String targetUsername) throws DataBaseException {
+        ChatVo chatVo=new ChatVo();
+        try {
+            Chat chat=chatDao.getLatestCHat(username,targetUsername);
+            chatVo.setChatVo(chat);
+
+        } catch (Exception e) {
+            throw new DataBaseException("get last chat failed");
+        }
+        return new ResultVo().success(chatVo);
+    }
 
     @Override
     public void saveMessage(ChatVo chatVo) throws DataBaseException {

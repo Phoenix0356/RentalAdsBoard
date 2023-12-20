@@ -11,5 +11,7 @@ public interface ChatService {
 
     ResultVo getHistoryChatters(String username) throws DataBaseException;
 
+    ResultVo getLatestChat(String username, String targetUsername) throws DataBaseException;
+
     void saveMessage(ChatVo chatVo) throws DataBaseException;
 }
