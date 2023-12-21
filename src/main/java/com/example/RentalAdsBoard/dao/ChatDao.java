@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +18,15 @@ import java.util.List;
 @Scope("prototype")
 @Transactional
 public class ChatDao {
-    public List<Chat> getHistoryMessageList(String username, String targetUsername){
+    public List<Chat> getHistoryMessageList(Integer userId, Integer targetUserId){
 
         try (Session session= HibernateUtil.getSessionFactory().openSession()) {
             String hql = "FROM Chat WHERE (userFrom = :from AND userTo = :to) OR (userFrom = :to AND userTo = :from)";
 
             Query<Chat> query = session.createQuery(hql, Chat.class);
 
-            query.setParameter("from", username);
-            query.setParameter("to", targetUsername);
+            query.setParameter("from", userId);
+            query.setParameter("to", targetUserId);
 
             return query.list();
 
@@ -33,7 +34,7 @@ public class ChatDao {
 
     }
 
-    public List<Chat>getHistorySendChats(String userSent){
+    public List<Chat>getHistorySendChats(Integer userSent){
 
         try (Session session= HibernateUtil.getSessionFactory().openSession()) {
             String hql = "FROM Chat WHERE userFrom = :name ";
@@ -47,7 +48,7 @@ public class ChatDao {
 
     }
 
-    public List<Chat> getHistoryReceiveChats(String userReceived){
+    public List<Chat> getHistoryReceiveChats(Integer userReceived){
 
         try (Session session= HibernateUtil.getSessionFactory().openSession()) {
             String hql = "FROM Chat WHERE userTo = :name";
@@ -61,7 +62,7 @@ public class ChatDao {
 
     }
 
-    public Chat getLatestCHat(String userSent,String userReceived){
+    public Chat getLatestCHat(Integer userSent,Integer userReceived){
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             String hql = "FROM Chat where (userFrom =: from AND userTo =: to) OR (userFrom =: to AND userTo =: from) ORDER BY chatId DESC";
             Query<Chat> query = session.createQuery(hql, Chat.class);

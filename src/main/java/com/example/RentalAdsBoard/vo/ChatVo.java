@@ -16,9 +16,9 @@ public class ChatVo {
     //the name of the field of front-end is "read", as "is" is commonly ignored in conversion to Json
     boolean isRead;
 
-    public void setChatVo(Chat chat){
-        this.userFrom = chat.getUserFrom();
-        this.userTo = chat.getUserTo();
+    public void setChatVo(String userFrom,String userTo,Chat chat){
+        this.userFrom = userFrom;
+        this.userTo = userTo;
         this.message = chat.getMessage();
         this.isRead= chat.isRead();
     }

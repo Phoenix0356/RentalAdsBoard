@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.RentalAdsBoard.entity.Chat;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,15 +29,16 @@ public class ChatServiceImpl implements ChatService {
     UserDao userDao;
 
     @Override
-    public ResultVo getHistoryList(String username, String targetName) throws Exception {
+    public ResultVo getHistoryList(Integer userId, String targetUsername) throws Exception {
         List<ChatVo> voList = new ArrayList<>();
         try {
-            List<Chat> list=chatDao.getHistoryMessageList(username, targetName);
+            User userTo=userDao.getByUsername(targetUsername);
+            List<Chat> list=chatDao.getHistoryMessageList(userId, userTo.getUserId());
             DataUtil.sortById(list);
 
             for (Chat c : list) {
                 ChatVo chatVo = new ChatVo();
-                chatVo.setChatVo(c);
+                chatVo.setChatVo(userDao.getById(userId).getUsername(),targetUsername,c);
                 voList.add(chatVo);
                 //update the state of the chat to "has been read"
                 c.setRead(true);
@@ -49,22 +51,23 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public ResultVo getHistoryChatters(String username) throws DataBaseException {
+    public ResultVo getHistoryChatters(Integer userId) throws DataBaseException {
         List<UserVo> voList=new ArrayList<>();
         try {
             HashSet<User> set=new HashSet<>();
 
-            List<Chat> listSend = chatDao.getHistorySendChats(username);
+
+            List<Chat> listSend = chatDao.getHistorySendChats(userId);
             for (Chat c:listSend){
-                User cur=userDao.getByUsername(c.getUserTo());
+                User cur=userDao.getById(c.getUserTo());
                 if (set.add(cur)){
                     voList.add(new UserVo().setUserVo(cur));
                 }
             }
 
-            List<Chat> listReceive = chatDao.getHistoryReceiveChats(username);
+            List<Chat> listReceive = chatDao.getHistoryReceiveChats(userId);
             for (Chat c:listReceive){
-                User cur=userDao.getByUsername(c.getUserFrom());
+                User cur=userDao.getById(c.getUserFrom());
                 if (set.add(cur)){
                     voList.add(new UserVo().setUserVo(cur));
                 }
@@ -76,11 +79,12 @@ public class ChatServiceImpl implements ChatService {
         return new ResultVo().success(voList);
     }
     @Override
-    public ResultVo getLatestChat(String username, String targetUsername) throws DataBaseException {
+    public ResultVo getLatestChat(Integer userId, String targetUsername) throws DataBaseException {
         ChatVo chatVo=new ChatVo();
         try {
-            Chat chat=chatDao.getLatestCHat(username,targetUsername);
-            chatVo.setChatVo(chat);
+            User userTo=userDao.getByUsername(targetUsername);
+            Chat chat=chatDao.getLatestCHat(userId,userTo.getUserId());
+            chatVo.setChatVo(userDao.getById(userId).getUsername(),targetUsername,chat);
 
         } catch (Exception e) {
             throw new DataBaseException("get last chat failed");
@@ -93,8 +97,8 @@ public class ChatServiceImpl implements ChatService {
         try {
             Chat chat=new Chat();
 
-            chat.setUserFrom(chatVo.getUserFrom());
-            chat.setUserTo(chatVo.getUserTo());
+            chat.setUserFrom(userDao.getByUsername(chatVo.getUserFrom()).getUserId());
+            chat.setUserTo(userDao.getByUsername(chatVo.getUserTo()).getUserId());
             chat.setMessage(chatVo.getMessage());
             chat.setRead(chatVo.isRead());
 

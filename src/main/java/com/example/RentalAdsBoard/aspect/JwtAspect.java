@@ -20,7 +20,6 @@ public class JwtAspect {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
     @Pointcut(value = "execution(* com.example.RentalAdsBoard.controller.*Controller.*(..)) "
-            + "&& execution(* com.example.RentalAdsBoard.websocket.ServerSocket.*(..)) "
             + "&& !execution(* com.example.RentalAdsBoard.controller.UserController.login(..)) "
             + "&& !execution(* com.example.RentalAdsBoard.controller.UserController.register(..))")
     public void point(){

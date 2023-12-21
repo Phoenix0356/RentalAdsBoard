@@ -8,24 +8,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class ChatController {
     @Autowired
     ChatService chatService;
     @GetMapping("/chat/history/message")
-    public ResultVo getHistoryList(@RequestParam("user_from")String userFrom,
+    public ResultVo getHistoryList(HttpServletRequest request,
                                    @RequestParam("user_to") String userTo) throws Exception {
-        return chatService.getHistoryList(userFrom,userTo);
+        Integer userId=(Integer) request.getAttribute("userId");
+        return chatService.getHistoryList(userId,userTo);
     }
 
     @GetMapping("/chat/history/chatter")
-    public ResultVo getHistoryChatter(@RequestParam("username") String username) throws DataBaseException {
-        return chatService.getHistoryChatters(username);
+    public ResultVo getHistoryChatter(HttpServletRequest request) throws DataBaseException {
+        Integer userId=(Integer) request.getAttribute("userId");
+        return chatService.getHistoryChatters(userId);
     }
 
     @GetMapping("/chat/message/last")
-    public ResultVo getLatestChat(@RequestParam("user_from")String userFrom,
+    public ResultVo getLatestChat(HttpServletRequest request,
                                   @RequestParam("user_to") String userTo) throws Exception {
-        return chatService.getLatestChat(userFrom,userTo);
+        Integer userId=(Integer) request.getAttribute("userId");
+        return chatService.getLatestChat(userId,userTo);
     }
 }

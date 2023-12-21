@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ChatService {
-    ResultVo getHistoryList(String username, String targetName) throws Exception;
+    ResultVo getHistoryList(Integer userId, String targetName) throws Exception;
 
-    ResultVo getHistoryChatters(String username) throws DataBaseException;
+    ResultVo getHistoryChatters(Integer userId) throws DataBaseException;
 
-    ResultVo getLatestChat(String username, String targetUsername) throws DataBaseException;
+    ResultVo getLatestChat(Integer userId, String targetUsername) throws DataBaseException;
 
     void saveMessage(ChatVo chatVo) throws DataBaseException;
 }

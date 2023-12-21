@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -17,10 +18,10 @@ public class Chat extends BaseEntity<Chat>{
     private Integer chatId;
 
     @Column(name = "user_from")
-    String userFrom;
+    Integer userFrom;
 
     @Column(name = "user_to")
-    String userTo;
+    Integer userTo;
 
     @Column(name = "message")
     String message;
